@@ -1,6 +1,6 @@
 ﻿namespace CaveManager.Controllers
 {
-    public class CaveControlleur
+    public class CaveController
     {
     }
 }
