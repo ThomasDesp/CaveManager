@@ -1,5 +1,6 @@
 ﻿using CaveManager.Entities;
 using CaveManager.Repository.Repository.Contract;
+using System.ComponentModel;
 using System.Xml.Linq;
 
 namespace CaveManager.Repository
@@ -37,16 +38,40 @@ namespace CaveManager.Repository
         }
 
         /// <summary>
-        /// Eemove wine from a Drawer with his id
+        /// Update a wine by his id
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        public async Task<Wine> UpdateWine(int idWine, string name, string type, string designation, int minVintageRecommended, int maxVintageRecommended,)
+        { 
+            Wine t = await context.Wines.FirstOrDefaultAsync(w => w.Id == idWine);
+            t.Name = name;
+            t.Type = type;
+            t.Designation = designation;
+            t.MinVintageRecommended = minVintageRecommended;
+            t.MaxVintageRecommended = maxVintageRecommended;
+            //t.IdDrawerPlace = idDrawerPlace;
+
+            await context.SaveChangesAsync();
+            return t;
+        }
+
+        /// <summary>
+        /// Remove wine from a Drawer with his id
         /// </summary>
         /// <param name="idWine"></param>
         /// <returns></returns>
-        public async Task<bool> DeleteCommentAsync(int idWine)
+        public async Task<bool> RemoveWine(int idWine)
         {
-            var deleteComment = await context.Wines.Where(c => c.Id == idWine).SingleOrDefaultAsync();
+            var deleteComment = await context.Wines.Where(w => w.Id == idWine).SingleOrDefaultAsync();
             context.Comments.Remove(deleteComment);
             context.SaveChanges();
             return true;
+        }
+
+        public async Task<bool> ChangeWinePlace(Wine wine, int idDrawer)
+        {
+
         }
 
     }
