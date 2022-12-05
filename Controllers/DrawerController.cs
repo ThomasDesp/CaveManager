@@ -1,6 +1,6 @@
 ﻿namespace CaveManager.Controllers
 {
-    public class DrawerControlleur
+    public class DrawerController
     {
     }
 }

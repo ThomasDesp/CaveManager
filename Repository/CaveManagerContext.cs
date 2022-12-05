@@ -13,7 +13,6 @@ namespace CaveManager.Repository
         public DbSet<Cave> Cave { get; set; }
         public DbSet<Wine> Wine { get; set; }
         public DbSet<Drawer> Drawer { get; set; }
-        public DbSet<DrawerPlace> DrawerPlace { get; set; }
 
         public CaveManagerContext(DbContextOptions<CaveManagerContext> option)
             : base(option)
@@ -27,39 +26,27 @@ namespace CaveManager.Repository
 
 
             // default data
-            var wine1 = new Wine
-            {
-                Id = 1,
-                Name = "Ronflex"
-            };
 
-            var wine2 = new Wine
-            {
-                Id = 2,
-                Name = "Dimoret",
-            };
 
-            var wine3 = new Wine
-            {
-                Id = 3,
-                Name = "Artikodin",
-            };
+            var cave1 = new Cave { Id = 1, Name = "BatCave" };
+            var cave2 = new Cave { Id = 2, Name = "ThomCave" };
+            var cave3 = new Cave { Id = 3, Name = "Cavaleo" };
 
-            var cave1 = new Cave { Id = 1, Name = "Blue" };
-            var cave2 = new Cave { Id = 2, Name = "Cynthia"};
-            var cave3 = new Cave { Id = 3, Name = "Red" };
+            var drawer1 = new Drawer { Id = 1, Name = "Pomme", MaxPlace = 10, PlaceUsed = 0, IdCave = 1 };
+            var drawer2 = new Drawer { Id = 2, Name = "Poire", MaxPlace = 10, PlaceUsed = 0, IdCave = 2 };
+            var drawer3 = new Drawer { Id = 3, Name = "Banana", MaxPlace = 10, PlaceUsed = 0, IdCave = 1 };
 
-            var Move1 = new Drawer { Id = 1, Name = "Tackle" };
-            var Move2 = new Drawer { Id = 2, Name = "Ice punch" };
-            var Move3 = new Drawer { Id = 3, Name = "Ice wind"};
+            var Wine1 = new Wine { Id = 1, Name = "Vin de fou", Type = "Red Wine" };
+            var Wine2 = new Wine { Id = 2, Name = "Vin pas fou", Type = "Rosé Wine" };
+            var Wine3 = new Wine { Id = 3, Name = "Vin de fou pas fou", Type = "White Wine" };
 
 
 
 
-
-            modelBuilder.Entity<Wine>().HasData(new List<Wine> { wine3, wine3, wine3 });
             modelBuilder.Entity<Cave>().HasData(new List<Cave> { cave1, cave1, cave1 });
-            modelBuilder.Entity<Drawer>().HasData(new List<Drawer> { Move1, Move2, Move3 });
+            modelBuilder.Entity<Drawer>().HasData(new List<Drawer> { drawer1, drawer2, drawer3 });
+            modelBuilder.Entity<Wine>().HasData(new List<Wine> { Wine1, Wine2, Wine3 });
+
 
             base.OnModelCreating(modelBuilder);
         }
