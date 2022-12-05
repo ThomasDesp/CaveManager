@@ -1,8 +1,8 @@
-﻿namespace CaveManager.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+namespace CaveManager.Entities
 {
-    public class Cave
-    {
-        [Table("Cave")]
+    
+   [Table("Cave")]
     public class Cave
     {
 
@@ -12,11 +12,11 @@
         }
 
 
-        public int CaveID { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
 
         public List<Drawer> Drawer { get; set; }
     }
-    }
+    
 }
