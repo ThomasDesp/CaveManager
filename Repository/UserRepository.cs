@@ -40,12 +40,12 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
-        public async Task<User> UpdateUserAsync(int idUser, string firstname, string lastname, string email, string password, int adress)
+        public async Task<User> UpdateUserAsync(int idUser, string firstname, string lastname, string email, string password, string adress)
         {
             User userUpdate = await context.Users.FirstOrDefaultAsync(u => u.Id == idUser);
             userUpdate.FirstName = firstname;
             userUpdate.LastName = lastname;
-            userUpdate.Fullname = firstname + lastname;
+            userUpdate.FullName = firstname + lastname;
             userUpdate.Email = email;
             userUpdate.Password = password;
             userUpdate.Adress = adress;

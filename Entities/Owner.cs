@@ -1,6 +1,6 @@
 ﻿namespace CaveManager.Entities
 {
-    public class User
+    public class Owner
     {
         public int Id { get; set; }
         public bool IsAged { get; set; }
@@ -14,7 +14,7 @@
 
         public List<Cave>? Caves { get; set; }
         
-        public User()
+        public Owner()
         {
 
         }
