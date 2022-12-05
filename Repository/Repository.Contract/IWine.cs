@@ -2,7 +2,7 @@
 
 namespace CaveManager.Repository.Repository.Contract
 {
-    public interface IWineRepository
+    public interface IWine
     {
         Task<Wine> AddWineAsync(Wine wine);
         Task<Wine> SelectWineAsync(int idWine);

@@ -8,8 +8,8 @@ namespace CaveManager.Controllers
     [WineController]
     public class WineController : ControllerBase
     {
-        IWineRepository wineRepository;
-        public WineController(IWineRepository wineRepository)
+        IWine wineRepository;
+        public WineController(IWine wineRepository)
         {
             this.wineRepository = wineRepository;
         }

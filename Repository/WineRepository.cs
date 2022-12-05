@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace CaveManager.Repository
 {
-    public class WineRepository : IWineRepository
+    public class WineRepository : IWine
     {
         //WikyContext context;
         //ILogger<WineRepository> logger;
