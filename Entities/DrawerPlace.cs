@@ -6,8 +6,6 @@ namespace CaveManager.Entities
     {
 
         public int Id { get; set; }
-        public int MaxPlace { get; set; }
-        public int PlaceUsed { get; set; }
         public int IdDrawer { get; set; }
         public List<Wine> Wines { get; set; }
 
