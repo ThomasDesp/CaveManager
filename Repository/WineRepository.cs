@@ -20,7 +20,7 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="wine"></param>
         /// <returns></returns>
-        public async Task<Wine> AddWine(Wine wine)
+        public async Task<Wine> AddWineAsync(Wine wine)
         {
             var addWine = context.Wines.Add(wine);
             await context.SaveChangesAsync();
@@ -32,7 +32,7 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="idWine"></param>
         /// <returns></returns>
-        public async Task<Wine> SelectWine(int idWine)
+        public async Task<Wine> SelectWineAsync(int idWine)
         {
             return await context.Wines.FindAsync(idWine);
         }
@@ -42,18 +42,19 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
-        public async Task<Wine> UpdateWine(int idWine, string name, string type, string designation, int minVintageRecommended, int maxVintageRecommended,)
+        public async Task<Wine> UpdateWineAsync(int idWine, string name, string type, string designation, int minVintageRecommended, int maxVintageRecommended)
         { 
-            Wine t = await context.Wines.FirstOrDefaultAsync(w => w.Id == idWine);
-            t.Name = name;
-            t.Type = type;
-            t.Designation = designation;
-            t.MinVintageRecommended = minVintageRecommended;
-            t.MaxVintageRecommended = maxVintageRecommended;
-            //t.IdDrawerPlace = idDrawerPlace;
+            Wine wineUpdate = await context.Wines.FirstOrDefaultAsync(w => w.Id == idWine);
+            wineUpdate.Name = name;
+            wineUpdate.Type = type;
+            wineUpdate.Designation = designation;
+            wineUpdate.MinVintageRecommended = minVintageRecommended;
+            wineUpdate.MaxVintageRecommended = maxVintageRecommended;
+            wineUpdate.MaxVintageRecommended = maxVintageRecommended;
+            //wineUpdate.IdDrawerPlace = idDrawerPlace;
 
             await context.SaveChangesAsync();
-            return t;
+            return wineUpdate;
         }
 
         /// <summary>
@@ -61,7 +62,7 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="idWine"></param>
         /// <returns></returns>
-        public async Task<bool> RemoveWine(int idWine)
+        public async Task<bool> RemoveWineAsync(int idWine)
         {
             var deleteComment = await context.Wines.Where(w => w.Id == idWine).SingleOrDefaultAsync();
             context.Comments.Remove(deleteComment);
@@ -69,7 +70,7 @@ namespace CaveManager.Repository
             return true;
         }
 
-        public async Task<bool> ChangeWinePlace(Wine wine, int idDrawer)
+        public async Task<bool> ChangeWinePlaceAsync(Wine wine, int idDrawer)
         {
 
 
