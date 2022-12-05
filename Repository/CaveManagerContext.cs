@@ -13,6 +13,7 @@ namespace CaveManager.Repository
         public DbSet<Cave> Cave { get; set; }
         public DbSet<Wine> Wine { get; set; }
         public DbSet<Drawer> Drawer { get; set; }
+        public DbSet<Owner> Owner { get; set; }
 
         public CaveManagerContext(DbContextOptions<CaveManagerContext> option)
             : base(option)
@@ -36,17 +37,23 @@ namespace CaveManager.Repository
             var drawer2 = new Drawer { Id = 2, Name = "Poire", MaxPlace = 10, PlaceUsed = 0, IdCave = 2 };
             var drawer3 = new Drawer { Id = 3, Name = "Banana", MaxPlace = 10, PlaceUsed = 0, IdCave = 1 };
 
-            var Wine1 = new Wine { Id = 1, Name = "Vin de fou", Type = "Red Wine" };
-            var Wine2 = new Wine { Id = 2, Name = "Vin pas fou", Type = "Rosé Wine" };
-            var Wine3 = new Wine { Id = 3, Name = "Vin de fou pas fou", Type = "White Wine" };
+            var wine1 = new Wine { Id = 1, Name = "Vin de fou", Type = "Red Wine" };
+            var wine2 = new Wine { Id = 2, Name = "Vin pas fou", Type = "Rosé Wine" };
+            var wine3 = new Wine { Id = 3, Name = "Vin de fou pas fou", Type = "White Wine" };
 
+            var owner1 = new Owner { Id = 1, FirstName = "Wil", LastName="TF" , IsAged =true , Email="wil@gmail.com", Password = "MelmanoucheA9" };
+            var owner2 = new Owner { Id = 2, FirstName = "Leo", LastName = "SMaster", IsAged = true, Email = "leo@gmail.com", Password = "1v9A" };
+            var owner3 = new Owner { Id = 3, FirstName = "Thom", LastName = "PokFan", IsAged = true, Email = "thom@gmail.com", Password = "DAzE2" };
 
-
+            /* public int Id { get; set; }
+        public bool IsAged { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }*/
 
             modelBuilder.Entity<Cave>().HasData(new List<Cave> { cave1, cave1, cave1 });
             modelBuilder.Entity<Drawer>().HasData(new List<Drawer> { drawer1, drawer2, drawer3 });
-            modelBuilder.Entity<Wine>().HasData(new List<Wine> { Wine1, Wine2, Wine3 });
-
+            modelBuilder.Entity<Wine>().HasData(new List<Wine> { wine1, wine2, wine3 });
+            modelBuilder.Entity<Owner>().HasData(new List<Owner> { owner1, owner2, owner3 });
 
             base.OnModelCreating(modelBuilder);
         }
