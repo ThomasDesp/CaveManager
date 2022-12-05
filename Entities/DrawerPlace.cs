@@ -7,7 +7,7 @@ namespace CaveManager.Entities
 
         public int Id { get; set; }
         public int IdDrawer { get; set; }
-        public List<Wine> Wines { get; set; }
+        public List<Wine>? Wines { get; set; }
 
         public DrawerPlace(){
 
