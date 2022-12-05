@@ -1,5 +1,8 @@
-﻿namespace CaveManager.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CaveManager.Entities
 {
+    [Table("Wine")]
     public class Wine
     {
         public int Id { get; set; }
