@@ -24,12 +24,6 @@ namespace CaveManager.Repository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // fluent API
-
-
-            // default data
-
-
             var cave1 = new Cave { Id = 1, Name = "BatCave" };
             var cave2 = new Cave { Id = 2, Name = "ThomCave" };
             var cave3 = new Cave { Id = 3, Name = "Cavaleo" };
@@ -42,19 +36,15 @@ namespace CaveManager.Repository
             var wine2 = new Wine { Id = 2, Name = "Vin pas fou", Type = "Rosé Wine", IdDrawer=1 };
             var wine3 = new Wine { Id = 3, Name = "Vin de fou pas fou", Type = "White Wine", IdDrawer=2 };
 
-            var owner1 = new Owner { Id = 1, FirstName = "Wil", LastName="TF" , IsAged =true , Email="wil@gmail.com", Password = "MelmanoucheA9" };
-            var owner2 = new Owner { Id = 2, FirstName = "Leo", LastName = "SMaster", IsAged = true, Email = "leo@gmail.com", Password = "1v9A" };
-            var owner3 = new Owner { Id = 3, FirstName = "Thom", LastName = "PokFan", IsAged = true, Email = "thom@gmail.com", Password = "DAzE2" };
+            var owner1 = new Owner { Id = 1, FirstName = "Wil", LastName="TF" , IsAged =true , Email="wil@gmail.com", Password = "MelmanoucheA9", IsFirstConnection=false };
+            var owner2 = new Owner { Id = 2, FirstName = "Leo", LastName = "SMaster", IsAged = true, Email = "leo@gmail.com", Password = "1v9A", IsFirstConnection=false };
+            var owner3 = new Owner { Id = 3, FirstName = "Thom", LastName = "PokFan", IsAged = true, Email = "thom@gmail.com", Password = "DAzE2", IsFirstConnection=true };
 
-            /* public int Id { get; set; }
-        public bool IsAged { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }*/
-
-            modelBuilder.Entity<Cave>().HasData(new List<Cave> { cave1, cave1, cave1 });
+            modelBuilder.Entity<Owner>().HasData(new List<Owner> { owner1, owner2, owner3 });
+            modelBuilder.Entity<Cave>().HasData(new List<Cave> { cave1, cave2, cave3 });
             modelBuilder.Entity<Drawer>().HasData(new List<Drawer> { drawer1, drawer2, drawer3 });
             modelBuilder.Entity<Wine>().HasData(new List<Wine> { wine1, wine2, wine3 });
-            modelBuilder.Entity<Owner>().HasData(new List<Owner> { owner1, owner2, owner3 });
+            
 
             base.OnModelCreating(modelBuilder);
         }
