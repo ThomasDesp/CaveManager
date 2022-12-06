@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CaveManager.Controllers
 {
     [Route("[controller]/[action]")]
-    [WineController]
+    [ApiController]
     public class WineController : ControllerBase
     {
         IWine wineRepository;
@@ -13,6 +13,7 @@ namespace CaveManager.Controllers
         {
             this.wineRepository = wineRepository;
         }
+
 
     }
 }

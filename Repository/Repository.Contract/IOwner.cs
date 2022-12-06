@@ -7,6 +7,6 @@ namespace CaveManager.Repository.Repository.Contract
         Task<Owner> AddOwnerAsync(Owner owner);
         Task<Owner> SelectOwnerAsync(int idOwner);
         Task<Owner> UpdateOwnerAsync(int idOwner, string firstname, string lastname, string email, string password, string adress);
-        Task<Owner> RemoveOwnerAsync(int idOwner);
+        Task<bool> RemoveOwnerAsync(int idOwner);
     }
 }

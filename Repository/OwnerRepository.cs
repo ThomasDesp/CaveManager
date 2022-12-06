@@ -1,17 +1,18 @@
 ﻿using CaveManager.Entities;
 using CaveManager.Repository.Repository.Contract;
+using Microsoft.EntityFrameworkCore;
 
 namespace CaveManager.Repository
 {
     public class OwnerRepository : IOwner
     {
-        //WikyContext context;
-        //ILogger<OwnerRepository> logger;
-        //public OwnerRepository(WikyContext context, ILogger<OwnerRepository> logger)
-        //{
-        //    this.context = context;
-        //    this.logger = logger;
-        //}
+        CaveManagerContext context;
+        ILogger<OwnerRepository> logger;
+        public OwnerRepository(CaveManagerContext context, ILogger<OwnerRepository> logger)
+        {
+            this.context = context;
+            this.logger = logger;
+        }
 
         /// <summary>
         /// Add an owner
@@ -20,7 +21,7 @@ namespace CaveManager.Repository
         /// <returns></returns>
         public async Task<Owner> AddOwnerAsync(Owner owner)
         {
-            var addOwner = context.Owners.Add(owner);
+            var addOwner = context.Owner.Add(owner);
             await context.SaveChangesAsync();
             return owner;
         }
@@ -30,9 +31,9 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="idOwner"></param>
         /// <returns></returns>
-        public async Task<Wine> SelectOwnerAsync(int idOwner)
+        public async Task<Owner> SelectOwnerAsync(int idOwner)
         {
-            return await context.Owners.FindAsync(idOwner);
+            return await context.Owner.FindAsync(idOwner);
         }
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace CaveManager.Repository
         /// <returns></returns>
         public async Task<Owner> UpdateOwnerAsync(int idOwner, string firstname, string lastname, string email, string password, string adress)
         {
-            Owner ownerUpdate = await context.Owners.FirstOrDefaultAsync(u => u.Id == idOwner);
+            Owner ownerUpdate = await context.Owner.FirstOrDefaultAsync(u => u.Id == idOwner);
             ownerUpdate.FirstName = firstname;
             ownerUpdate.LastName = lastname;
             ownerUpdate.FullName = firstname + lastname;
@@ -62,8 +63,8 @@ namespace CaveManager.Repository
         /// <returns></returns>
         public async Task<bool> RemoveOwnerAsync(int idOwner)
         {
-            var deleteOwner = await context.Owners.Where(w => w.Id == idOwner).SingleOrDefaultAsync();
-            context.Comments.Remove(deleteOwner);
+            var deleteOwner = await context.Owner.Where(w => w.Id == idOwner).SingleOrDefaultAsync();
+            context.Owner.Remove(deleteOwner);
             context.SaveChanges();
             return true;
         }
