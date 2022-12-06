@@ -20,9 +20,11 @@ namespace CaveManager.Repository
         /// Add Wine to a Drawer
         /// </summary>
         /// <param name="wine"></param>
+        /// <param name="idDrawer"></param>
         /// <returns></returns>
-        public async Task<Wine> AddWineAsync(Wine wine)
+        public async Task<Wine> AddWineAsync(Wine wine, int idDrawer)
         {
+            wine.IdDrawer = idDrawer;   
             var addWine = context.Wine.Add(wine);
             await context.SaveChangesAsync();
             return wine;
@@ -33,9 +35,19 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="idWine"></param>
         /// <returns></returns>
-        public async Task<Wine> SelectWineAsync(int idWine)
+        public async Task<Wine> GetWineAsync(int idWine)
         {
             return await context.Wine.FindAsync(idWine);
+        }
+
+        /// <summary>
+        /// Get wines by his drawer's id 
+        /// </summary>
+        /// <param name="idDrawer"></param>
+        /// <returns></returns>
+        public async Task<List<Wine>> GetAllWinesFromADrawerAsync(int idDrawer)
+        {
+            return await context.Wine.Where(w => w.Id == idDrawer).ToListAsync();
         }
 
         /// <summary>
@@ -43,7 +55,7 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
-        public async Task<Wine> UpdateWineAsync(int idWine, string name, string type, string designation, int minVintageRecommended, int maxVintageRecommended)
+        public async Task<Wine> PutWineAsync(int idWine, string name, string type, string designation, int minVintageRecommended, int maxVintageRecommended)
         { 
             Wine wineUpdate = await context.Wine.FirstOrDefaultAsync(w => w.Id == idWine);
             wineUpdate.Name = name;
@@ -63,10 +75,10 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="idWine"></param>
         /// <returns></returns>
-        public async Task<bool> RemoveWineAsync(int idWine)
+        public async Task<bool> DeleteWineAsync(int idWine)
         {
-            var deleteComment = await context.Wine.Where(w => w.Id == idWine).SingleOrDefaultAsync();
-            context.Wine.Remove(deleteComment);
+            var deleteWine = await context.Wine.Where(w => w.Id == idWine).SingleOrDefaultAsync();
+            context.Wine.Remove(deleteWine);
             context.SaveChanges();
             return true;
         }
