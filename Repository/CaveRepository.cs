@@ -1,4 +1,6 @@
 ﻿using CaveManager.Repository.Repository.Contract;
+using CaveManager.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CaveManager.Repository
 {
@@ -41,9 +43,9 @@ namespace CaveManager.Repository
         /// <returns></returns>
         public async Task<Cave> UpdateCaveAsync(int Id, string Name, int IdUser)
         {
-            Cave caveUpdate = await context.Cave.FirstOrDefaultAsync(u => u.Id == idCave);
-            caveUpdate.Name = name;
-            caveUpdate.IdUser = idUser;
+            Cave caveUpdate = await context.Cave.FirstOrDefaultAsync(u => u.Id == IdCave);
+            caveUpdate.Name = Name;
+            caveUpdate.IdUser = IdUser;
             
             //caveUpdate.
 
