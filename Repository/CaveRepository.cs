@@ -1,4 +1,6 @@
 ﻿using CaveManager.Repository.Repository.Contract;
+using CaveManager.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CaveManager.Repository
 {
@@ -13,21 +15,21 @@ namespace CaveManager.Repository
         }
 
         /// <summary>
-        /// Add an owner
+        /// Add an cave
         /// </summary>
-        /// <param name="owner"></param>
+        /// <param name="cave"></param>
         /// <returns></returns>
         public async Task<Cave> AddCaveAsync(Cave cave)
         {
             var addCave = context.Cave.Add(cave);
             await context.SaveChangesAsync();
-            return owner;
+            return cave;
         }
 
         /// <summary>
-        /// Get an owner by his id 
+        /// Get an cave by his id 
         /// </summary>
-        /// <param name="idOwner"></param>
+        /// <param name="idcave"></param>
         /// <returns></returns>
         public async Task<Cave> SelectCaveAsync(int idCave)
         {
@@ -41,9 +43,9 @@ namespace CaveManager.Repository
         /// <returns></returns>
         public async Task<Cave> UpdateCaveAsync(int Id, string Name, int IdUser)
         {
-            Cave caveUpdate = await context.Cave.FirstOrDefaultAsync(u => u.Id == idCave);
-            caveUpdate.Name = name;
-            caveUpdate.IdUser = idUser;
+            Cave caveUpdate = await context.Cave.FirstOrDefaultAsync(u => u.Id == IdCave);
+            caveUpdate.Name = Name;
+            caveUpdate.IdUser = IdUser;
             
             //caveUpdate.
 
@@ -52,9 +54,9 @@ namespace CaveManager.Repository
         }
 
         /// <summary>
-        /// Remove an owner with his id
+        /// Remove an cave with his id
         /// </summary>
-        /// <param name="idOwner"></param>
+        /// <param name="idcave"></param>
         /// <returns></returns>
         public async Task<bool> RemoveCaveAsync(int idCave)
         {
