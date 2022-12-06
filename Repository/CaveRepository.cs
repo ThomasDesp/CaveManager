@@ -13,9 +13,9 @@ namespace CaveManager.Repository
         }
 
         /// <summary>
-        /// Add an owner
+        /// Add an cave
         /// </summary>
-        /// <param name="owner"></param>
+        /// <param name="cave"></param>
         /// <returns></returns>
         public async Task<Cave> AddCaveAsync(Cave cave)
         {
@@ -25,9 +25,9 @@ namespace CaveManager.Repository
         }
 
         /// <summary>
-        /// Get an owner by his id 
+        /// Get an cave by his id 
         /// </summary>
-        /// <param name="idOwner"></param>
+        /// <param name="idcave"></param>
         /// <returns></returns>
         public async Task<Cave> SelectCaveAsync(int idCave)
         {
@@ -52,9 +52,9 @@ namespace CaveManager.Repository
         }
 
         /// <summary>
-        /// Remove an owner with his id
+        /// Remove an cave with his id
         /// </summary>
-        /// <param name="idOwner"></param>
+        /// <param name="idcave"></param>
         /// <returns></returns>
         public async Task<bool> RemoveCaveAsync(int idCave)
         {
