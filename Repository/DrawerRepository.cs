@@ -9,13 +9,13 @@ namespace CaveManager.Repository
     {
 
 
-        DrawerManagerContext context;
-            ILogger<DrawerRepository> logger;
-            public DrawerRepository(DrawerManagerContext context, ILogger<DrawerRepository> logger)
-            {
-                this.context = context;
-                this.logger = logger;
-            }
+        CaveManagerContext context;
+        ILogger<DrawerRepository> logger;
+        public DrawerRepository(CaveManagerContext context, ILogger<DrawerRepository> logger)
+        {
+            this.context = context;
+            this.logger = logger;
+        }
 
         /// <summary>
         /// Add an cave
@@ -44,11 +44,10 @@ namespace CaveManager.Repository
             /// </summary>
             /// <param name=""></param>
             /// <returns></returns>
-        public async Task<Drawer> UpdateDrawerAsync(int Id, string Name, int MaxPlace, int PlaceUsed ,int IdCave)
+        public async Task<Drawer> UpdateDrawerAsync(int Id, string Name, int MaxPlace, int PlaceUsed)
             {
-                Drawer drawerUpdate = await context.Cave.FirstOrDefaultAsync(u => u.Id == IdDrawer);
+                Drawer drawerUpdate = await context.Drawer.FindAsync(Id);  
                 drawerUpdate.Name = Name;
-                drawerUpdate.IdCave = IdCave;
                 drawerUpdate.MaxPlace = MaxPlace;
                 drawerUpdate.PlaceUsed = PlaceUsed;
             //drawerUpdate.
