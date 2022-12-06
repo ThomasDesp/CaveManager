@@ -1,4 +1,6 @@
-﻿namespace CaveManager.Entities
+﻿using System.Text.RegularExpressions;
+
+namespace CaveManager.Entities
 {
     public class Owner
     {
@@ -19,5 +21,19 @@
 
         }
 
+        public bool IsPasswordValidated (string password)
+        {
+            var hasNumber = new Regex(@"[0-9]+");
+            var hasUpperChar = new Regex(@"[A-Z]+");
+            var hasLowerChar = new Regex(@"[a-z]+");
+            var hasMinimum8Chars = new Regex(@".{8,}");
+            var hasSpecialChars = new Regex(@"[#?!@$ %^&*-]+");
+            var isValidated = hasNumber.IsMatch(password) && hasUpperChar.IsMatch(password) && hasMinimum8Chars.IsMatch(password) && hasLowerChar.IsMatch(password) && hasSpecialChars.IsMatch(password);
+
+            if (isValidated)
+                return true;
+            else 
+                return false;
+        }
     }
 }

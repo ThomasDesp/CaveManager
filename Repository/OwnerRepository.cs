@@ -41,16 +41,17 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
-        public async Task<Owner> UpdateOwnerAsync(int idOwner, string firstname, string lastname, string email, string password, string adress)
+        public async Task<Owner> UpdateOwnerAsync(int idOwner, string firstname, string lastname, string email, string password, string adress, string phoneNumber1, string phoneNumber2, string phoneNumber3)
         {
-            Owner ownerUpdate = await context.Owner.FirstOrDefaultAsync(u => u.Id == idOwner);
+            Owner ownerUpdate = await context.Owner.FirstOrDefaultAsync(o => o.Id == idOwner);
             ownerUpdate.FirstName = firstname;
-            ownerUpdate.LastName = lastname;
             ownerUpdate.FullName = firstname + lastname;
             ownerUpdate.Email = email;
             ownerUpdate.Password = password;
             ownerUpdate.Adress = adress;
-            //ownerUpdate.PhoneNumbers =  ;
+            ownerUpdate.PhoneNumber1 = phoneNumber1;
+            ownerUpdate.PhoneNumber2 = phoneNumber2;
+            ownerUpdate.PhoneNumber3 = phoneNumber3;
 
             await context.SaveChangesAsync();
             return ownerUpdate;
@@ -63,10 +64,20 @@ namespace CaveManager.Repository
         /// <returns></returns>
         public async Task<bool> RemoveOwnerAsync(int idOwner)
         {
-            var deleteOwner = await context.Owner.Where(w => w.Id == idOwner).SingleOrDefaultAsync();
+            var deleteOwner = await context.Owner.Where(o => o.Id == idOwner).SingleOrDefaultAsync();
             context.Owner.Remove(deleteOwner);
             context.SaveChanges();
             return true;
+        }
+        /// <summary>
+        /// Looking for an owner with email and password
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task<Owner> RetrieveOwnerByPasswordAndLoginAsync(string email, string password)
+        {
+            return context.Owner.Where(o => o.Email == email && o.Password == password).FirstOrDefault();
         }
     }
 }
