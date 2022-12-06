@@ -1,4 +1,7 @@
-﻿namespace CaveManager.Controllers
+﻿using CaveManager.Repository.Repository.Contract;
+using Microsoft.AspNetCore.Mvc
+
+namespace CaveManager.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
