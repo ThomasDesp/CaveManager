@@ -21,7 +21,7 @@ namespace CaveManager.Repository
         {
             var addCave = context.Cave.Add(cave);
             await context.SaveChangesAsync();
-            return owner;
+            return cave;
         }
 
         /// <summary>
