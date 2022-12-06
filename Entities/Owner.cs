@@ -31,7 +31,7 @@ namespace CaveManager.Entities
 
         }
 
-        public bool IsPasswordValidated (string password)
+        public static bool IsPasswordValidated (string password)
         {
             var hasNumber = new Regex(@"[0-9]+");
             var hasUpperChar = new Regex(@"[A-Z]+");

@@ -41,13 +41,12 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
-        public async Task<Owner> UpdateOwnerAsync(int idOwner, string firstname, string lastname, string email, string password, string adress, string phoneNumber1, string phoneNumber2, string phoneNumber3)
+        public async Task<Owner> UpdateOwnerAsync(int idOwner, string firstname, string lastname, string email, string adress, string phoneNumber1, string phoneNumber2, string phoneNumber3)
         {
             Owner ownerUpdate = await context.Owner.FirstOrDefaultAsync(o => o.Id == idOwner);
             ownerUpdate.FirstName = firstname;
             ownerUpdate.FullName = firstname + lastname;
             ownerUpdate.Email = email;
-            ownerUpdate.Password = password;
             ownerUpdate.Adress = adress;
             ownerUpdate.PhoneNumber1 = phoneNumber1;
             ownerUpdate.PhoneNumber2 = phoneNumber2;
@@ -56,6 +55,29 @@ namespace CaveManager.Repository
             await context.SaveChangesAsync();
             return ownerUpdate;
         }
+
+        /// <summary>
+        /// Update owner's password
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        public async Task<Tuple<string,bool>> UpdateOwnerPasswordAsync(int idOwner, string password)
+        {
+            Owner ownerUpdate = await context.Owner.FirstOrDefaultAsync(o => o.Id == idOwner);
+            if (ownerUpdate == null)
+                return new Tuple<string, bool>("Owner Id dont exist", false);
+            var passwordChecked = Owner.IsPasswordValidated(password);
+            if (passwordChecked)
+                ownerUpdate.Password = password;
+            else
+                return new Tuple<string, bool>("Password incorrect please retry", false);
+            
+            await context.SaveChangesAsync();
+            return new Tuple<string, bool>("test",true);
+        }
+
+        
+
 
         /// <summary>
         /// Remove an owner with his id
