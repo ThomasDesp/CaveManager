@@ -37,7 +37,7 @@ namespace CaveManager.Repository
         }
 
         /// <summary>
-        /// Update an owner by his id
+        /// Update an owner by his id 
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
