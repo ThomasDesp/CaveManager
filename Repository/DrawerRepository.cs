@@ -23,27 +23,33 @@ namespace CaveManager.Repository
         /// <param name="Drawer"></param>
         /// <returns></returns>
         public async Task<Drawer> AddDrawerAsync(Drawer drawer)
-            {
-                var addDrawer = context.Drawer.Add(drawer);
-                await context.SaveChangesAsync();
-                return drawer;
-            }
+        {
+            var addDrawer = context.Drawer.Add(drawer);
+            await context.SaveChangesAsync();
+            return drawer;
+        }
 
             /// <summary>
             /// Get an drawer by his id 
             /// </summary>
             /// <param name="iddrawer"></param>
             /// <returns></returns>
-            public async Task<Drawer> SelectDrawerAsync(int idDrawer)
-            {
-                return await context.Drawer.FindAsync(idDrawer);
-            }
+        public async Task<Drawer> SelectDrawerAsync(int idDrawer)
+        {
+            return await context.Drawer.FindAsync(idDrawer);
+        }
 
-            /// <summary>
-            /// Update an Drawer by his id
-            /// </summary>
-            /// <param name=""></param>
-            /// <returns></returns>
+        public async Task<List<Drawer>> GetAllDrawerFromACave(int idCave)
+        {
+
+            return await context.Drawer.Where(w => w.IdCave == idCave).ToListAsync();
+        }
+
+        /// <summary>
+        /// Update an Drawer by his id
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
         public async Task<Drawer> UpdateDrawerAsync(int Id, string Name, int MaxPlace, int PlaceUsed)
             {
                 Drawer drawerUpdate = await context.Drawer.FindAsync(Id);  
