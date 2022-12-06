@@ -5,6 +5,7 @@ using System.Reflection.Emit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualBasic;
+using CaveManager.Repository.Repository.Contract;
 
 namespace CaveManager.Repository
 {
@@ -33,13 +34,13 @@ namespace CaveManager.Repository
             var cave2 = new Cave { Id = 2, Name = "ThomCave" };
             var cave3 = new Cave { Id = 3, Name = "Cavaleo" };
 
-            var drawer1 = new Drawer { Id = 1, Name = "Pomme", MaxPlace = 10, PlaceUsed = 0, IdCave = 1 };
-            var drawer2 = new Drawer { Id = 2, Name = "Poire", MaxPlace = 10, PlaceUsed = 0, IdCave = 2 };
+            var drawer1 = new Drawer { Id = 1, Name = "Pomme", MaxPlace = 10, PlaceUsed = 2, IdCave = 1 };
+            var drawer2 = new Drawer { Id = 2, Name = "Poire", MaxPlace = 10, PlaceUsed = 1, IdCave = 2 };
             var drawer3 = new Drawer { Id = 3, Name = "Banana", MaxPlace = 10, PlaceUsed = 0, IdCave = 1 };
 
-            var wine1 = new Wine { Id = 1, Name = "Vin de fou", Type = "Red Wine" };
-            var wine2 = new Wine { Id = 2, Name = "Vin pas fou", Type = "Rosé Wine" };
-            var wine3 = new Wine { Id = 3, Name = "Vin de fou pas fou", Type = "White Wine" };
+            var wine1 = new Wine { Id = 1, Name = "Vin de fou", Type = "Red Wine", IdDrawer=1 };
+            var wine2 = new Wine { Id = 2, Name = "Vin pas fou", Type = "Rosé Wine", IdDrawer=1 };
+            var wine3 = new Wine { Id = 3, Name = "Vin de fou pas fou", Type = "White Wine", IdDrawer=2 };
 
             var owner1 = new Owner { Id = 1, FirstName = "Wil", LastName="TF" , IsAged =true , Email="wil@gmail.com", Password = "MelmanoucheA9" };
             var owner2 = new Owner { Id = 2, FirstName = "Leo", LastName = "SMaster", IsAged = true, Email = "leo@gmail.com", Password = "1v9A" };
