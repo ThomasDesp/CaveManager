@@ -13,6 +13,5 @@ namespace CaveManager.Controllers
             this.ownerRepository = ownerRepository;
         }
 
-
     }
 }
