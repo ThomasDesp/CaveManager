@@ -41,7 +41,6 @@ namespace CaveManager.Repository
 
         public async Task<List<Drawer>> GetAllDrawerFromACave(int idCave)
         {
-
             return await context.Drawer.Where(w => w.IdCave == idCave).ToListAsync();
         }
 
@@ -70,7 +69,7 @@ namespace CaveManager.Repository
             public async Task<bool> RemoveDrawerAsync(int idDrawer)
             {
                 var deleteDrawer = await context.Drawer.Where(w => w.Id == idDrawer).SingleOrDefaultAsync();
-                RemoveAllWineAsync(idDrawer);
+                await RemoveAllWineAsync(idDrawer);
                 context.Drawer.Remove(deleteDrawer);
                 await context.SaveChangesAsync();
                 return true;
@@ -81,7 +80,6 @@ namespace CaveManager.Repository
             var deleteWines = await context.Wine.Where(w => w.IdDrawer == idDrawer).ToListAsync();
             foreach (var item in deleteWines)
             {
-
                 context.Wine.Remove(item);
             }
             await context.SaveChangesAsync();
