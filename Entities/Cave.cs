@@ -13,7 +13,7 @@ namespace CaveManager.Entities
         public int Id { get; set; }
 
         public string Name { get; set; }
-        public int IdUser { get; set; }
+        public int IdOwner { get; set; }
 
         public List<Drawer> Drawer { get; set; }
     }

@@ -24,9 +24,9 @@ namespace CaveManager.Repository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var cave1 = new Cave { Id = 1, Name = "BatCave" };
-            var cave2 = new Cave { Id = 2, Name = "ThomCave" };
-            var cave3 = new Cave { Id = 3, Name = "Cavaleo" };
+            var cave1 = new Cave { Id = 1, IdOwner = 2,Name = "BatCave" };
+            var cave2 = new Cave { Id = 2 , IdOwner = 2,Name = "ThomCave" };
+            var cave3 = new Cave { Id = 3, IdOwner = 1, Name = "Cavaleo" };
 
             var drawer1 = new Drawer { Id = 1, Name = "Pomme", MaxPlace = 10, PlaceUsed = 2, IdCave = 1 };
             var drawer2 = new Drawer { Id = 2, Name = "Poire", MaxPlace = 10, PlaceUsed = 1, IdCave = 2 };
