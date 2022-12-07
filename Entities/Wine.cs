@@ -3,6 +3,7 @@
 namespace CaveManager.Entities
 {
     [Table("Wine")]
+    [Serializable]
     public class Wine
     {
         public int Id { get; set; }

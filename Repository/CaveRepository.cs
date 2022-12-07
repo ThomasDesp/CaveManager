@@ -38,7 +38,7 @@ namespace CaveManager.Repository
             return await context.Cave.FindAsync(idCave);
         }
 
-        public async Task<List<Cave>> GetAllCaveFromACave(int idOwner)
+        public async Task<List<Cave>> GetAllCaveFromAOwner(int idOwner)
         {
             return await context.Cave.Where(w => w.IdOwner == idOwner).ToListAsync();
         }

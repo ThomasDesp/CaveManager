@@ -2,6 +2,7 @@
 namespace CaveManager.Entities
 {
     [Table("Drawer")]
+    [Serializable]
     public class Drawer
     {
         public int Id { get; set; }
