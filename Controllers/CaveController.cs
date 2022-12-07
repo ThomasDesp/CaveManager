@@ -56,23 +56,10 @@ namespace CaveManager.Controllers
             return Ok(cave);
         }
         [HttpPut("{id}")]
-        public async ActionResult<Cave> UpdateCave( int id,string name ) 
-        {
-            if (cave.Id != id)
-                return BadRequest();
+        public async Task<ActionResult<Cave>> UpdateCave( int id,string name ) 
+        { 
             var portedevoiture = await caveRepository.UpdateCaveAsync(id , name);
-
-
-
-
-
-
-
-
-
-
-
-
+            return Ok(portedevoiture);
 
         }
         [HttpDelete("{id}")]
@@ -83,6 +70,14 @@ namespace CaveManager.Controllers
 
                 return Ok(cave);
         
+        }
+        [HttpDelete("{idCave}")]
+        public async Task<ActionResult<bool>> RemoveCave(int idCave)
+        {
+            await caveRepository.RemoveCaveAsync(idCave);
+            if (cave.Id != id)
+                return BadRequest();
+            return Ok(true);
         }
 
     }

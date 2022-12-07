@@ -6,12 +6,14 @@ namespace CaveManager.Repository
 {
     public class CaveRepository : ICave
     {
+        IDrawer drawerRepository;
         CaveManagerContext context;
         ILogger<CaveRepository> logger;
-        public CaveRepository(CaveManagerContext context, ILogger<CaveRepository> logger)
+        public CaveRepository(CaveManagerContext context, ILogger<CaveRepository> logger,IDrawer drawerRepository)
         {
             this.context = context;
             this.logger = logger;
+            this.drawerRepository = drawerRepository;
         }
 
         /// <summary>
@@ -59,8 +61,18 @@ namespace CaveManager.Repository
         public async Task<bool> RemoveCaveAsync(int idCave)
         {
             var deleteCave = await context.Cave.Where(w => w.Id == idCave).SingleOrDefaultAsync();
+            RemoveAllDrawer(idCave);
             context.Cave.Remove(deleteCave);
             context.SaveChanges();
+            return true;
+        }
+        public async Task<bool> RemoveAllDrawer(int idCave)
+        {
+            var deleteDrawer = await context.Drawer.Where(w => w.IdCave == idCave).ToListAsync();
+            foreach (var item in deleteDrawer)
+            {
+                drawerRepository.RemoveDrawerAsync(idCave);
+            }
             return true;
         }
     }
