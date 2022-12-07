@@ -115,7 +115,7 @@ namespace CaveManager.Controllers
 
         /// <summary>
         /// Delete Caves associated with an idOwner when deleting his account
-        /// </summary>
+        /// </summary> 
         /// <param name="idOwner"></param>
         /// <returns></returns>
         [HttpDelete("{idOwner}")]
