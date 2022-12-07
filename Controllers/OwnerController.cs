@@ -73,6 +73,7 @@ namespace CaveManager.Controllers
         public async Task<ActionResult<bool>> DeleteOwner(int idOwner)
         {
             // Delete Wine, Drawner and Cave associated with idOwner
+            await ownerRepository.DeleteCaveAsync(idOwner);
             await ownerRepository.DeleteOwnerAsync(idOwner);
             return Ok(true);
         }
@@ -121,7 +122,7 @@ namespace CaveManager.Controllers
         [HttpDelete("{idOwner}")]
         public async Task<ActionResult<bool>> DeleteCaves(int idOwner)
         {
-            await ownerRepository.DeleteCavesAsync(idOwner);
+            await ownerRepository.DeleteCaveAsync(idOwner);
             return Ok(true);
         }
     }

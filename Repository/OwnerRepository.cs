@@ -6,12 +6,14 @@ namespace CaveManager.Repository
 {
     public class OwnerRepository : IOwner
     {
+        ICave caveRepository;
         CaveManagerContext context;
         ILogger<OwnerRepository> logger;
-        public OwnerRepository(CaveManagerContext context, ILogger<OwnerRepository> logger)
+        public OwnerRepository(CaveManagerContext context, ILogger<OwnerRepository> logger, ICave caveRepository)
         {
             this.context = context;
             this.logger = logger;
+            this.caveRepository = caveRepository;
         }
 
         /// <summary>
@@ -61,7 +63,7 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
-        public async Task<Tuple<string,bool>> UpdateOwnerPasswordAsync(int idOwner, string password)
+        public async Task<Tuple<string, bool>> UpdateOwnerPasswordAsync(int idOwner, string password)
         {
             Owner ownerUpdate = await context.Owner.FirstOrDefaultAsync(o => o.Id == idOwner);
             if (ownerUpdate == null)
@@ -71,9 +73,9 @@ namespace CaveManager.Repository
                 ownerUpdate.Password = password;
             else
                 return new Tuple<string, bool>("Password incorrect please retry", false);
-            
+
             await context.SaveChangesAsync();
-            return new Tuple<string, bool>("test",true);
+            return new Tuple<string, bool>("test", true);
         }
 
 
@@ -87,7 +89,7 @@ namespace CaveManager.Repository
         {
             var deleteOwner = await context.Owner.Where(o => o.Id == idOwner).SingleOrDefaultAsync();
             context.Owner.Remove(deleteOwner);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return true;
         }
         /// <summary>
@@ -101,11 +103,32 @@ namespace CaveManager.Repository
             return context.Owner.Where(o => o.Email == email && o.Password == password).FirstOrDefault();
         }
 
-        public async Task<bool> DeleteCavesAsync(int idOwner)
+        /// <summary>
+        /// Delete cave by idOwner
+        /// </summary>
+        /// <param name="idOwner"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteCaveAsync(int idOwner)
         {
             var deleteCave = await context.Cave.Where(c => c.IdOwner == idOwner).SingleOrDefaultAsync();
-            //context.Cave.Remove(deleteOwner);
-            context.SaveChanges();
+            RemoveAllCaves(idOwner);
+            context.Cave.Remove(deleteCave);
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        /// <summary>
+        /// Remove all caves from an idOwner
+        /// </summary>
+        /// <param name="idCave"></param>
+        /// <returns></returns>
+        public async Task<bool> RemoveAllCaves(int idCave)
+        {
+            var deleteCave = await context.Cave.Where(c => c.Id == idCave).ToListAsync();
+            foreach (var item in deleteCave)
+            {
+                caveRepository.RemoveCaveAsync(item.Id);
+            }
             return true;
         }
     }
