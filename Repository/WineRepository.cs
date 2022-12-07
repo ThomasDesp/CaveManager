@@ -79,7 +79,7 @@ namespace CaveManager.Repository
         {
             var deleteWine = await context.Wine.Where(w => w.Id == idWine).SingleOrDefaultAsync();
             context.Wine.Remove(deleteWine);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return true;
         }
 

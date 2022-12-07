@@ -10,6 +10,6 @@ namespace CaveManager.Repository.Repository.Contract
         Task<Tuple<string, bool>> UpdateOwnerPasswordAsync(int idOwner, string password);
         Task<bool> DeleteOwnerAsync(int idOwner);
         Task<Owner> RetrieveOwnerByPasswordAndLoginAsync(string email, string password);
-        Task<bool> DeleteCavesAsync(int idOwner);
+        Task<bool> DeleteCaveAsync(int idOwner);
     }
 }
