@@ -9,5 +9,6 @@ namespace CaveManager.Repository.Repository.Contract
         Task<List<Drawer>> GetAllDrawerFromACave(int idCave);
         Task<Drawer> UpdateDrawerAsync(int idDrawer, string Name, int MaxPlace, int PlaceUsed);
         Task<bool> RemoveDrawerAsync(int idDrawer);
+        Task<bool> RemoveAllWineAsync(int idDrawer);
     }
 }
