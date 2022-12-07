@@ -21,9 +21,9 @@ namespace CaveManager.Controllers
 
         
         [HttpPost]
-        public async Task<ActionResult<Cave>> PostAddCave(Cave cave,int idUser)
+        public async Task<ActionResult<Cave>> PostAddCave(Cave cave,int idOwner)
         {
-            cave.IdUser = idUser;
+            cave.IdOwner = idOwner;
             var caveCreated = await caveRepository.AddCaveAsync(cave);
 
             if (caveCreated != null)
@@ -41,7 +41,7 @@ namespace CaveManager.Controllers
                 {
                     Id = 1,
                     Name = "BatCave",
-                    IdUser = cave.IdUser,
+                    IdOwner = cave.IdOwner,
 
                 };
 
@@ -49,7 +49,7 @@ namespace CaveManager.Controllers
                 {
                     Id = 2,
                     Name = "PouCave",
-                    IdUser = cave.IdUser,
+                    IdOwner = cave.IdOwner,
 
                 };
             }
@@ -62,21 +62,15 @@ namespace CaveManager.Controllers
             return Ok(portedevoiture);
 
         }
-        [HttpDelete("{id}")]
-        public ActionResult<Cave> DeleteCave([FromRoute] int id, [FromBody] Cave cave) 
-        {
-            if (cave.Id != id )
-                return BadRequest();
-
-                return Ok(cave);
+       
         
-        }
+        
         [HttpDelete("{idCave}")]
         public async Task<ActionResult<bool>> RemoveCave(int idCave)
         {
             await caveRepository.RemoveCaveAsync(idCave);
-            if (cave.Id != id)
-                return BadRequest();
+           
+                
             return Ok(true);
         }
 
