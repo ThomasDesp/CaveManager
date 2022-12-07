@@ -1,19 +1,24 @@
 ﻿using CaveManager.Entities;
 using CaveManager.Repository.Repository.Contract;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 
 namespace CaveManager.Repository
 {
     public class OwnerRepository : IOwner
     {
         ICave caveRepository;
+        IDrawer drawerRepository;
+        IWine wineRepository;
         CaveManagerContext context;
         ILogger<OwnerRepository> logger;
-        public OwnerRepository(CaveManagerContext context, ILogger<OwnerRepository> logger, ICave caveRepository)
+        public OwnerRepository(CaveManagerContext context, ILogger<OwnerRepository> logger, ICave caveRepository, IDrawer drawerRepository, IWine wineRepository)
         {
             this.context = context;
             this.logger = logger;
             this.caveRepository = caveRepository;
+            this.drawerRepository = drawerRepository;
+            this.wineRepository = wineRepository;
         }
 
         /// <summary>
@@ -130,6 +135,17 @@ namespace CaveManager.Repository
                 caveRepository.RemoveCaveAsync(item.Id);
             }
             return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idOwner"></param>
+        /// <returns></returns>
+        public async Task<List<Cave>> AllDataForOwner(int idOwner)
+        {
+            var getAll = await context.Cave.Where(c => c.IdOwner == idOwner).ToListAsync();
+            return getAll;
         }
     }
 }
