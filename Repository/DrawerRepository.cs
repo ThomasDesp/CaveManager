@@ -70,9 +70,21 @@ namespace CaveManager.Repository
             public async Task<bool> RemoveDrawerAsync(int idDrawer)
             {
                 var deleteDrawer = await context.Drawer.Where(w => w.Id == idDrawer).SingleOrDefaultAsync();
+                //Delete
                 context.Drawer.Remove(deleteDrawer);
                 context.SaveChanges();
                 return true;
             }
+
+         public async Task<bool> RemoveAllWine(int idDrawer)
+         {
+            var deleteWines = await context.Wine.Where(w => w.IdDrawer == idDrawer).ToListAsync();
+            foreach (var item in deleteWines)
+            {
+                context.Wine.Remove(item);
+            }
+            context.SaveChanges();
+            return true;
+        }
     }
 }

@@ -39,10 +39,17 @@ namespace CaveManager.Controllers
         [HttpPut]
         public async Task<ActionResult<Drawer>> UpdateDrawer(int Id, string Name, int MaxPlace, int PlaceUsed)
         {
-            
-
             return Ok(drawerRepository.UpdateDrawerAsync(Id,Name,MaxPlace,PlaceUsed));
         }
+
+        [HttpDelete]
+        public async Task<ActionResult<Drawer>> DeleteDrawer(int Id)
+        {
+            return Ok(drawerRepository.RemoveDrawerAsync(Id));
+        }
+
+
+
 
 
 
