@@ -41,7 +41,6 @@ namespace CaveManager.Repository
 
         public async Task<List<Drawer>> GetAllDrawerFromACave(int idCave)
         {
-
             return await context.Drawer.Where(w => w.IdCave == idCave).ToListAsync();
         }
 

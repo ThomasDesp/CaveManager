@@ -38,6 +38,11 @@ namespace CaveManager.Repository
             return await context.Cave.FindAsync(idCave);
         }
 
+        public async Task<List<Cave>> GetAllCaveFromACave(int idOwner)
+        {
+            return await context.Cave.Where(w => w.IdOwner == idOwner).ToListAsync();
+        }
+
         /// <summary>
         /// Update an owner by his id 
         /// </summary>
