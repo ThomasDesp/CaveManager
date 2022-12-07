@@ -64,6 +64,7 @@ namespace CaveManager.Controllers
         [HttpDelete("{idWine}")]
         public async Task<ActionResult<bool>> DeleteWine(int idWine)
         {
+            
             await wineRepository.DeleteWineAsync(idWine);
             return Ok(true);
         }

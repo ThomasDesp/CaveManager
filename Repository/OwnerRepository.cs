@@ -83,7 +83,7 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="idOwner"></param>
         /// <returns></returns>
-        public async Task<bool> RemoveOwnerAsync(int idOwner)
+        public async Task<bool> DeleteOwnerAsync(int idOwner)
         {
             var deleteOwner = await context.Owner.Where(o => o.Id == idOwner).SingleOrDefaultAsync();
             context.Owner.Remove(deleteOwner);
@@ -99,6 +99,14 @@ namespace CaveManager.Repository
         public async Task<Owner> RetrieveOwnerByPasswordAndLoginAsync(string email, string password)
         {
             return context.Owner.Where(o => o.Email == email && o.Password == password).FirstOrDefault();
+        }
+
+        public async Task<bool> DeleteCavesAsync(int idOwner)
+        {
+            var deleteCave = await context.Cave.Where(c => c.IdOwner == idOwner).SingleOrDefaultAsync();
+            //context.Cave.Remove(deleteOwner);
+            context.SaveChanges();
+            return true;
         }
     }
 }
