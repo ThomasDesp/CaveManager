@@ -12,8 +12,7 @@ namespace CaveManager.Entities
     {
         [Key]
         public int Id { get; set; }
-        public bool IsAged { get; set; }
-        public bool IsFirstConnection { get; set; }
+        public bool IsCGUAccepted { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string? FullName { get; set; }

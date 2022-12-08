@@ -23,11 +23,12 @@ namespace CaveManager.Controllers
         /// Add Owner to Db
         /// </summary>
         /// <param name="owner"></param>
+        /// <param name="birthday"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Owner>> PostAddOwner(Owner owner)
+        public async Task<ActionResult<bool>> PostAddOwner(Owner owner, DateTime birthday)
         {
-            var ownerCreated = await ownerRepository.AddOwnerAsync(owner);
+            var ownerCreated = await ownerRepository.AddOwnerAsync(owner,birthday);
 
             if (ownerCreated != null)
                 return Ok(ownerCreated);
@@ -123,6 +124,19 @@ namespace CaveManager.Controllers
         public async Task<ActionResult<bool>> DeleteCaves(int idOwner)
         {
             await ownerRepository.DeleteCaveAsync(idOwner);
+            return Ok(true);
+        }
+
+
+        /// <summary>
+        /// Check age with user's birthday
+        /// </summary>
+        /// <param name="birthDate"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<ActionResult<bool>> CheckAge(DateTime birthDate)
+        {
+            await ownerRepository.CheckAgeAsync(birthDate);
             return Ok(true);
         }
 

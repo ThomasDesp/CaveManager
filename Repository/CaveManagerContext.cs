@@ -36,9 +36,9 @@ namespace CaveManager.Repository
             var wine2 = new Wine { Id = 2, Name = "Vin pas fou", Type = "Rosé Wine", DrawerId=1,Bottling=2011, MaxVintageRecommended = 8, MinVintageRecommended = 4 };
             var wine3 = new Wine { Id = 3, Name = "Vin de fou pas fou", Type = "White Wine", DrawerId=2,Bottling=2012, MaxVintageRecommended = 12, MinVintageRecommended = 10 };
 
-            var owner1 = new Owner { Id = 1, FirstName = "Wil", LastName="TF" , IsAged =true , Email="wil@gmail.com", Password = "MelmanoucheA9", IsFirstConnection=false };
-            var owner2 = new Owner { Id = 2, FirstName = "Leo", LastName = "SMaster", IsAged = true, Email = "leo@gmail.com", Password = "1v9A", IsFirstConnection=false };
-            var owner3 = new Owner { Id = 3, FirstName = "Thom", LastName = "PokFan", IsAged = true, Email = "thom@gmail.com", Password = "DAzE2", IsFirstConnection=true };
+            var owner1 = new Owner { Id = 1, FirstName = "Wil", LastName="TF" , Email="wil@gmail.com", Password = "MelmanoucheA9", IsCGUAccepted = true };
+            var owner2 = new Owner { Id = 2, FirstName = "Leo", LastName = "SMaster", Email = "leo@gmail.com", Password = "1v9A", IsCGUAccepted = true };
+            var owner3 = new Owner { Id = 3, FirstName = "Thom", LastName = "PokFan", Email = "thom@gmail.com", Password = "DAzE2", IsCGUAccepted = false };
 
             modelBuilder.Entity<Owner>().HasData(new List<Owner> { owner1, owner2, owner3 });
             modelBuilder.Entity<Cave>().HasData(new List<Cave> { cave1, cave2, cave3 });

@@ -27,11 +27,20 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public async Task<Owner> AddOwnerAsync(Owner owner)
+        public async Task<bool> AddOwnerAsync(Owner owner, DateTime birthday)
         {
-            var addOwner = context.Owner.Add(owner);
-            await context.SaveChangesAsync();
-            return owner;
+            var checkAge = await CheckAgeAsync(birthday);
+            if (checkAge)
+            {
+                var addOwner = context.Owner.Add(owner);
+                await context.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
         /// <summary>
@@ -136,6 +145,25 @@ namespace CaveManager.Repository
                 caveRepository.RemoveCaveAsync(item.Id);
             }
             return true;
+        }
+
+        /// <summary>
+        /// Check if user have 18 years. If true => Creation Owner's account, false => Accont is not created
+        /// </summary>
+        /// <param name="birthDate"></param>
+        /// <returns></returns>
+        public async Task<bool> CheckAgeAsync(DateTime birthDate)
+        {
+            var ageSub = DateTime.Now - birthDate;
+            //6570 days is the number of days for 18 years
+            if (ageSub.TotalDays >= 6570)
+            {
+                //Appel création compte (dans créa compte appel first connection)
+
+                return true;
+            }
+            else
+                return false;
         }
 
         /// <summary>
