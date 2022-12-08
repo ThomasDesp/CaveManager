@@ -131,11 +131,11 @@ namespace CaveManager.Controllers
         /// </summary>
         /// <param name="idOwner"></param>
         /// <returns></returns>
-        [HttpGet]
-        public async Task<ActionResult<bool>> AllDataForOwner(int idOwner)
-        {
-            var test = await ownerRepository.AllDataForOwnerAsync(idOwner);
-            return Ok(test);
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<bool>> AllDataForOwner(int idOwner)
+        //{
+        //    var test = await ownerRepository.AllDataForOwnerAsync(idOwner);
+        //    return Ok(test);
+        //}
     }
 }

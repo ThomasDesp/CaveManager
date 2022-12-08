@@ -84,5 +84,17 @@ namespace CaveManager.Controllers
         {
             return Ok(await wineRepository.PutWineAsync(idWine,name,type,designation,minVintageRecommended, maxVintageRecommended));
         }
+
+        /// <summary>
+        /// Duplicate a wine and add it to a specific drawer
+        /// </summary>
+        /// <param name="idWine"></param>
+        /// <param name="idDrawer"></param>
+        /// <returns></returns>
+        public async Task<ActionResult<bool>> DuplicateWine(int idWine, int idDrawer)
+        {
+            await wineRepository.DuplicateWineAsync(idWine, idDrawer);
+            return Ok(true);
+        }
     }
 }

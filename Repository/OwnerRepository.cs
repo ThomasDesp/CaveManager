@@ -143,19 +143,20 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="idOwner"></param>
         /// <returns></returns>
-        public async Task<json> AllDataForOwnerAsync(int idOwner) //Task<List<Cave>>
-        {
-            //var getAll = await context.Cave.Where(c => c.IdOwner == idOwner).ToListAsync();
-            var getAllCaves = caveRepository.GetAllCaveFromAOwner(idOwner);
-            var getAllDrawers = drawerRepository.GetAllDrawerFromACave(idOwner);
-            var getAllWines = wineRepository.GetAllWinesFromADrawerAsync(idOwner);
+        //public async Task<bool> AllDataForOwnerAsync(int idOwner) //Task<List<Cave>>
+        //{
+        //    //var getAll = await context.Cave.Where(c => c.IdOwner == idOwner).ToListAsync();
+        //    var getAllCaves = caveRepository.GetAllCaveFromAOwner(idOwner);
+        //    IEnumerable<Cave> test = new (getAllCaves);
+        //    //var getAllDrawers = drawerRepository.GetAllDrawerFromACave(idOwner);//idCave);
+        //    //var getAllWines = wineRepository.GetAllWinesFromADrawerAsync(idOwner);
 
-            string fileName = "C:\\Users\\toush\\OneDrive\\Bureau\\Cave\\wwwroot\\Resources\\Data.json";
-            using FileStream createStream = File.Create(fileName);
-            await JsonSerializer.SerializeAsync(createStream, (getAllCaves, getAllDrawers, getAllWines));
-            await createStream.DisposeAsync();
+        //    string fileName = "C:\\Users\\toush\\OneDrive\\Bureau\\Cave\\wwwroot\\Resources\\Data.json";
+        //    using FileStream createStream = File.Create(fileName);
+        //    await JsonSerializer.SerializeAsync(createStream, (getAllCaves, getAllCaves));
+        //    await createStream.DisposeAsync();
 
-            return test;
-        }
+        //    return true;
+        //}
     }
 }

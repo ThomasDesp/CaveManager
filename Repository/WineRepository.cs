@@ -3,6 +3,7 @@ using CaveManager.Repository.Repository.Contract;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.Xml.Linq;
+using static Azure.Core.HttpHeader;
 
 namespace CaveManager.Repository
 {
@@ -63,7 +64,6 @@ namespace CaveManager.Repository
             wineUpdate.Designation = designation;
             wineUpdate.MinVintageRecommended = minVintageRecommended;
             wineUpdate.MaxVintageRecommended = maxVintageRecommended;
-            wineUpdate.MaxVintageRecommended = maxVintageRecommended;
             //wineUpdate.IdDrawerPlace = idDrawerPlace;
 
             await context.SaveChangesAsync();
@@ -79,6 +79,27 @@ namespace CaveManager.Repository
         {
             var deleteWine = await context.Wine.Where(w => w.Id == idWine).SingleOrDefaultAsync();
             context.Wine.Remove(deleteWine);
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        /// <summary>
+        /// Duplicate wine and add it to a specific drawer
+        /// </summary>
+        /// <param name="idWine"></param>
+        /// <param name="idDrawer"></param>
+        /// <returns></returns>
+        public async Task<bool> DuplicateWineAsync(int idWine, int idDrawer)
+        {
+            var duplicateWine = await context.Wine.Where(w => w.Id == idWine).SingleOrDefaultAsync();
+            var name = duplicateWine.Name ;
+            var type = duplicateWine.Type;
+            var designation = duplicateWine.Designation;
+            var minVintageRecommended = duplicateWine.MinVintageRecommended;
+            var maxVintageRecommended = duplicateWine.MaxVintageRecommended;
+            Wine wine = new Wine { Name = name, Type = type, Designation = designation, MinVintageRecommended = minVintageRecommended, MaxVintageRecommended = maxVintageRecommended };
+
+            AddWineAsync(wine, idDrawer);
             await context.SaveChangesAsync();
             return true;
         }
