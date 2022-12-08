@@ -42,8 +42,7 @@ namespace CaveManager.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdUser = table.Column<int>(type: "int", nullable: false),
-                    OwnerId = table.Column<int>(type: "int", nullable: true)
+                    OwnerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -52,7 +51,8 @@ namespace CaveManager.Migrations
                         name: "FK_Cave_Owner_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "Owner",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,8 +64,7 @@ namespace CaveManager.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MaxPlace = table.Column<int>(type: "int", nullable: false),
                     PlaceUsed = table.Column<int>(type: "int", nullable: false),
-                    IdCave = table.Column<int>(type: "int", nullable: false),
-                    CaveId = table.Column<int>(type: "int", nullable: true)
+                    CaveId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,7 +73,8 @@ namespace CaveManager.Migrations
                         name: "FK_Drawer_Cave_CaveId",
                         column: x => x.CaveId,
                         principalTable: "Cave",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -88,8 +88,8 @@ namespace CaveManager.Migrations
                     Designation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MinVintageRecommended = table.Column<int>(type: "int", nullable: true),
                     MaxVintageRecommended = table.Column<int>(type: "int", nullable: true),
-                    IdDrawer = table.Column<int>(type: "int", nullable: false),
-                    DrawerId = table.Column<int>(type: "int", nullable: true)
+                    Bottling = table.Column<int>(type: "int", nullable: false),
+                    DrawerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,27 +98,8 @@ namespace CaveManager.Migrations
                         name: "FK_Wine_Drawer_DrawerId",
                         column: x => x.DrawerId,
                         principalTable: "Drawer",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.InsertData(
-                table: "Cave",
-                columns: new[] { "Id", "IdUser", "Name", "OwnerId" },
-                values: new object[,]
-                {
-                    { 1, 0, "BatCave", null },
-                    { 2, 0, "ThomCave", null },
-                    { 3, 0, "Cavaleo", null }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Drawer",
-                columns: new[] { "Id", "CaveId", "IdCave", "MaxPlace", "Name", "PlaceUsed" },
-                values: new object[,]
-                {
-                    { 1, null, 1, 10, "Pomme", 2 },
-                    { 2, null, 2, 10, "Poire", 1 },
-                    { 3, null, 1, 10, "Banana", 0 }
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -132,13 +113,33 @@ namespace CaveManager.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Wine",
-                columns: new[] { "Id", "Designation", "DrawerId", "IdDrawer", "MaxVintageRecommended", "MinVintageRecommended", "Name", "Type" },
+                table: "Cave",
+                columns: new[] { "Id", "Name", "OwnerId" },
                 values: new object[,]
                 {
-                    { 1, null, null, 1, null, null, "Vin de fou", "Red Wine" },
-                    { 2, null, null, 1, null, null, "Vin pas fou", "Rosé Wine" },
-                    { 3, null, null, 2, null, null, "Vin de fou pas fou", "White Wine" }
+                    { 1, "BatCave", 2 },
+                    { 2, "ThomCave", 2 },
+                    { 3, "Cavaleo", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Drawer",
+                columns: new[] { "Id", "CaveId", "MaxPlace", "Name", "PlaceUsed" },
+                values: new object[,]
+                {
+                    { 1, 1, 10, "Pomme", 2 },
+                    { 2, 2, 10, "Poire", 1 },
+                    { 3, 1, 10, "Banana", 0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Wine",
+                columns: new[] { "Id", "Bottling", "Designation", "DrawerId", "MaxVintageRecommended", "MinVintageRecommended", "Name", "Type" },
+                values: new object[,]
+                {
+                    { 1, 0, null, 1, null, null, "Vin de fou", "Red Wine" },
+                    { 2, 0, null, 1, null, null, "Vin pas fou", "Rosé Wine" },
+                    { 3, 0, null, 2, null, null, "Vin de fou pas fou", "White Wine" }
                 });
 
             migrationBuilder.CreateIndex(

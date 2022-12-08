@@ -115,7 +115,7 @@ namespace CaveManager.Repository
         /// <returns></returns>
         public async Task<bool> DeleteCaveAsync(int idOwner)
         {
-            var deleteCave = await context.Cave.Where(c => c.IdOwner == idOwner).SingleOrDefaultAsync();
+            var deleteCave = await context.Cave.Where(c => c.OwnerId == idOwner).SingleOrDefaultAsync();
             RemoveAllCaves(idOwner);
             context.Cave.Remove(deleteCave);
             await context.SaveChangesAsync();
@@ -144,7 +144,7 @@ namespace CaveManager.Repository
         /// <returns></returns>
         public async Task<List<Cave>> AllDataForOwner(int idOwner)
         {
-            var getAll = await context.Cave.Where(c => c.IdOwner == idOwner).ToListAsync();
+            var getAll = await context.Cave.Where(c => c.OwnerId == idOwner).ToListAsync();
             return getAll;
         }
     }

@@ -8,7 +8,8 @@ namespace CaveManager.Entities
         public string Name { get; set; }
         public int MaxPlace { get; set; }
         public int PlaceUsed { get; set; }
-        public int IdCave { get; set; }
+        public int CaveId { get; set; }
         public List<Wine>? Wines {get; set;}
+        public Cave Cave { get; set; }
     }
 }

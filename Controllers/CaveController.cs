@@ -23,7 +23,7 @@ namespace CaveManager.Controllers
         [HttpPost]
         public async Task<ActionResult<Cave>> PostAddCave(Cave cave,int idOwner)
         {
-            cave.IdOwner = idOwner;
+            cave.OwnerId = idOwner;
             var caveCreated = await caveRepository.AddCaveAsync(cave);
 
             if (caveCreated != null)
@@ -41,7 +41,7 @@ namespace CaveManager.Controllers
                 {
                     Id = 1,
                     Name = "BatCave",
-                    IdOwner = cave.IdOwner,
+                    OwnerId = cave.OwnerId,
 
                 };
 
@@ -49,7 +49,7 @@ namespace CaveManager.Controllers
                 {
                     Id = 2,
                     Name = "PouCave",
-                    IdOwner = cave.IdOwner,
+                    OwnerId = cave.OwnerId,
 
                 };
             }

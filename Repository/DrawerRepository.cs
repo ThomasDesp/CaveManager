@@ -41,7 +41,22 @@ namespace CaveManager.Repository
 
         public async Task<List<Drawer>> GetAllDrawerFromACave(int idCave)
         {
-            return await context.Drawer.Where(w => w.IdCave == idCave).ToListAsync();
+            return await context.Drawer.Where(w => w.CaveId == idCave).ToListAsync();
+        }
+
+        public async Task<List<Wine>> GetAllWineFromOwnerAsync(int idOwner)
+        {
+            //var wines = await context.Wine.Include(w => w.Drawer).ThenInclude(d => d.Cave).Where(w => w.Drawer.IdCave == idCave && w.Bottling+w.MinVintageRecommended <= date && w.Bottling + w.MaxVintageRecommended >= date ).ToListAsync();
+            var wines = await context.Wine.Include(w => w.Drawer).ThenInclude(d => d.Cave).ThenInclude(o => o.Owner)
+                .Where(w => w.Drawer.Cave.OwnerId == idOwner).ToListAsync();
+            return wines;
+        }
+
+        public async Task<List<Wine>> GetAllPeakWineFromOwnerAsync(int idOwner)
+        {
+            int date = DateTime.Now.Year;
+            var wines = await context.Wine.Include(w => w.Drawer).ThenInclude(d => d.Cave).ThenInclude(o => o.Owner).Where(w => w.Drawer.Cave.OwnerId == idOwner && w.Bottling + w.MinVintageRecommended <= date && w.Bottling + w.MaxVintageRecommended >= date).ToListAsync();
+            return wines;
         }
 
         /// <summary>
@@ -77,7 +92,7 @@ namespace CaveManager.Repository
 
          public async Task<bool> RemoveAllWineAsync(int idDrawer)
          {
-            var deleteWines = await context.Wine.Where(w => w.IdDrawer == idDrawer).ToListAsync();
+            var deleteWines = await context.Wine.Where(w => w.DrawerId == idDrawer).ToListAsync();
             foreach (var item in deleteWines)
             {
                 context.Wine.Remove(item);

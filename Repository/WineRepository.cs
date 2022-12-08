@@ -24,7 +24,7 @@ namespace CaveManager.Repository
         /// <returns></returns>
         public async Task<Wine> AddWineAsync(Wine wine, int idDrawer)
         {
-            wine.IdDrawer = idDrawer;   
+            wine.DrawerId = idDrawer;   
             var addWine = context.Wine.Add(wine);
             await context.SaveChangesAsync();
             return wine;

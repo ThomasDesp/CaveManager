@@ -35,7 +35,12 @@ namespace CaveManager.Controllers
 
             return Ok(drawers);
         }
-
+        [HttpGet]
+        public async Task<ActionResult<List<Wine>>> GetAllPeakWineFromOwner(int idOwner)
+        {
+            var wines = await drawerRepository.GetAllPeakWineFromOwnerAsync(idOwner);
+            return Ok(wines);
+        }
         [HttpPut]
         public async Task<ActionResult<Drawer>> UpdateDrawer(int Id, string Name, int MaxPlace, int PlaceUsed)
         {
@@ -46,6 +51,12 @@ namespace CaveManager.Controllers
         public async Task<ActionResult<Drawer>> DeleteDrawer(int Id)
         {
             return Ok(drawerRepository.RemoveDrawerAsync(Id));
+        }
+        [HttpGet("{idOwner}")]
+        public async Task<ActionResult<List<Wine>>> GetAllWineFromOwner(int idOwner)
+        {
+            var wines = await drawerRepository.GetAllWineFromOwnerAsync(idOwner);
+            return Ok(wines);
         }
 
 

@@ -30,14 +30,11 @@ namespace CaveManager.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("IdOwner")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OwnerId")
+                    b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -50,20 +47,20 @@ namespace CaveManager.Migrations
                         new
                         {
                             Id = 1,
-                            IdOwner = 2,
-                            Name = "BatCave"
+                            Name = "BatCave",
+                            OwnerId = 2
                         },
                         new
                         {
                             Id = 2,
-                            IdOwner = 2,
-                            Name = "ThomCave"
+                            Name = "ThomCave",
+                            OwnerId = 2
                         },
                         new
                         {
                             Id = 3,
-                            IdOwner = 1,
-                            Name = "Cavaleo"
+                            Name = "Cavaleo",
+                            OwnerId = 1
                         });
                 });
 
@@ -75,10 +72,7 @@ namespace CaveManager.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CaveId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdCave")
+                    b.Property<int>("CaveId")
                         .HasColumnType("int");
 
                     b.Property<int>("MaxPlace")
@@ -101,7 +95,7 @@ namespace CaveManager.Migrations
                         new
                         {
                             Id = 1,
-                            IdCave = 1,
+                            CaveId = 1,
                             MaxPlace = 10,
                             Name = "Pomme",
                             PlaceUsed = 2
@@ -109,7 +103,7 @@ namespace CaveManager.Migrations
                         new
                         {
                             Id = 2,
-                            IdCave = 2,
+                            CaveId = 2,
                             MaxPlace = 10,
                             Name = "Poire",
                             PlaceUsed = 1
@@ -117,7 +111,7 @@ namespace CaveManager.Migrations
                         new
                         {
                             Id = 3,
-                            IdCave = 1,
+                            CaveId = 1,
                             MaxPlace = 10,
                             Name = "Banana",
                             PlaceUsed = 0
@@ -214,13 +208,13 @@ namespace CaveManager.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Bottling")
+                        .HasColumnType("int");
+
                     b.Property<string>("Designation")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DrawerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdDrawer")
+                    b.Property<int>("DrawerId")
                         .HasColumnType("int");
 
                     b.Property<int?>("MaxVintageRecommended")
@@ -247,21 +241,24 @@ namespace CaveManager.Migrations
                         new
                         {
                             Id = 1,
-                            IdDrawer = 1,
+                            Bottling = 0,
+                            DrawerId = 1,
                             Name = "Vin de fou",
                             Type = "Red Wine"
                         },
                         new
                         {
                             Id = 2,
-                            IdDrawer = 1,
+                            Bottling = 0,
+                            DrawerId = 1,
                             Name = "Vin pas fou",
                             Type = "Rosé Wine"
                         },
                         new
                         {
                             Id = 3,
-                            IdDrawer = 2,
+                            Bottling = 0,
+                            DrawerId = 2,
                             Name = "Vin de fou pas fou",
                             Type = "White Wine"
                         });
@@ -269,23 +266,35 @@ namespace CaveManager.Migrations
 
             modelBuilder.Entity("CaveManager.Entities.Cave", b =>
                 {
-                    b.HasOne("CaveManager.Entities.Owner", null)
+                    b.HasOne("CaveManager.Entities.Owner", "Owner")
                         .WithMany("Caves")
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("CaveManager.Entities.Drawer", b =>
                 {
-                    b.HasOne("CaveManager.Entities.Cave", null)
+                    b.HasOne("CaveManager.Entities.Cave", "Cave")
                         .WithMany("Drawer")
-                        .HasForeignKey("CaveId");
+                        .HasForeignKey("CaveId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cave");
                 });
 
             modelBuilder.Entity("CaveManager.Entities.Wine", b =>
                 {
-                    b.HasOne("CaveManager.Entities.Drawer", null)
+                    b.HasOne("CaveManager.Entities.Drawer", "Drawer")
                         .WithMany("Wines")
-                        .HasForeignKey("DrawerId");
+                        .HasForeignKey("DrawerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Drawer");
                 });
 
             modelBuilder.Entity("CaveManager.Entities.Cave", b =>
