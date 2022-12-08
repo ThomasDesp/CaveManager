@@ -50,32 +50,32 @@ namespace CaveManager.Controllers
                 return BadRequest("Cave not found");
         }
 
-        
+
         [HttpPut("{id}")]
-        public async Task<ActionResult<Cave>> UpdateCave( int id,string name ) 
-        { 
-            var portedevoiture = await caveRepository.UpdateCaveAsync(id , name);
-            
+        public async Task<ActionResult<Cave>> UpdateCave(int id, string name)
+        {
+            var portedevoiture = await caveRepository.UpdateCaveAsync(id, name);
+
             if (portedevoiture != null)
                 return Ok(portedevoiture);
             else
                 return BadRequest("Cave not found");
 
         }
-       
-        
-        
+
+
+
         [HttpDelete("{idCave}")]
         public async Task<ActionResult<Cave>> RemoveCave(int idCave)
         {
-            var deleteCave= await caveRepository.RemoveCaveAsync(idCave);   
-            if (deleteCave!=null)
+            var deleteCave = await caveRepository.RemoveCaveAsync(idCave);
+            if (deleteCave != null)
             {
                 return Ok(deleteCave);
 
             }
             return BadRequest("Cave not found");
-            
+
         }
 
 

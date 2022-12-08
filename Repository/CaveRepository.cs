@@ -9,7 +9,7 @@ namespace CaveManager.Repository
         IDrawer drawerRepository;
         CaveManagerContext context;
         ILogger<CaveRepository> logger;
-        public CaveRepository(CaveManagerContext context, ILogger<CaveRepository> logger,IDrawer drawerRepository)
+        public CaveRepository(CaveManagerContext context, ILogger<CaveRepository> logger, IDrawer drawerRepository)
         {
             this.context = context;
             this.logger = logger;
@@ -37,10 +37,10 @@ namespace CaveManager.Repository
         {
             return await context.Cave.FindAsync(idCave);
         }
-        
+
         public async Task<List<Cave>> GetAllCaveFromAOwner(int ownerId)
         {
-            return await context.Cave.Include(c => c.Drawer).ThenInclude(c =>c.Wines).Where(w => w.OwnerId == ownerId).ToListAsync();
+            return await context.Cave.Include(c => c.Drawer).ThenInclude(c => c.Wines).Where(w => w.OwnerId == ownerId).ToListAsync();
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace CaveManager.Repository
             else
                 return deleteCave;
 
-            
+
         }
         public async Task<bool> RemoveAllDrawerAsync(int idCave)
         {

@@ -29,11 +29,11 @@ namespace CaveManager.Repository
             return drawer;
         }
 
-            /// <summary>
-            /// Get an drawer by his id 
-            /// </summary>
-            /// <param name="iddrawer"></param>
-            /// <returns></returns>
+        /// <summary>
+        /// Get an drawer by his id 
+        /// </summary>
+        /// <param name="iddrawer"></param>
+        /// <returns></returns>
         public async Task<Drawer> SelectDrawerAsync(int idDrawer)
         {
             return await context.Drawer.FindAsync(idDrawer);
@@ -56,7 +56,7 @@ namespace CaveManager.Repository
         {
             int date = DateTime.Now.Year;
             var wines = await context.Wine.Include(w => w.Drawer).ThenInclude(d => d.Cave).ThenInclude(o => o.Owner)
-                .Where(w => w.Drawer.Cave.OwnerId == idOwner && w.Bottling + w.MinVintageRecommended <= date && w.Bottling 
+                .Where(w => w.Drawer.Cave.OwnerId == idOwner && w.Bottling + w.MinVintageRecommended <= date && w.Bottling
                 + w.MaxVintageRecommended >= date).ToListAsync();
             return wines;
         }
@@ -67,33 +67,33 @@ namespace CaveManager.Repository
         /// <param name=""></param>
         /// <returns></returns>
         public async Task<Drawer> UpdateDrawerAsync(int Id, string Name, int MaxPlace, int PlaceUsed)
-            {
-                Drawer drawerUpdate = await context.Drawer.FindAsync(Id);  
-                drawerUpdate.Name = Name;
-                drawerUpdate.MaxPlace = MaxPlace;
-                drawerUpdate.PlaceUsed = PlaceUsed;
+        {
+            Drawer drawerUpdate = await context.Drawer.FindAsync(Id);
+            drawerUpdate.Name = Name;
+            drawerUpdate.MaxPlace = MaxPlace;
+            drawerUpdate.PlaceUsed = PlaceUsed;
             //drawerUpdate.
 
             await context.SaveChangesAsync();
-                return drawerUpdate;
-            }
+            return drawerUpdate;
+        }
 
-            /// <summary>
-            /// Remove an drawer with his id
-            /// </summary>
-            /// <param name="iddrawer"></param>
-            /// <returns></returns>
-            public async Task<bool> RemoveDrawerAsync(int idDrawer)
-            {
-                var deleteDrawer = await context.Drawer.Where(w => w.Id == idDrawer).SingleOrDefaultAsync();
-                await RemoveAllWineAsync(idDrawer);
-                context.Drawer.Remove(deleteDrawer);
-                await context.SaveChangesAsync();
-                return true;
-            }
+        /// <summary>
+        /// Remove an drawer with his id
+        /// </summary>
+        /// <param name="iddrawer"></param>
+        /// <returns></returns>
+        public async Task<bool> RemoveDrawerAsync(int idDrawer)
+        {
+            var deleteDrawer = await context.Drawer.Where(w => w.Id == idDrawer).SingleOrDefaultAsync();
+            await RemoveAllWineAsync(idDrawer);
+            context.Drawer.Remove(deleteDrawer);
+            await context.SaveChangesAsync();
+            return true;
+        }
 
-         public async Task<bool> RemoveAllWineAsync(int idDrawer)
-         {
+        public async Task<bool> RemoveAllWineAsync(int idDrawer)
+        {
             var deleteWines = await context.Wine.Where(w => w.DrawerId == idDrawer).ToListAsync();
             foreach (var item in deleteWines)
             {

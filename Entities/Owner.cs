@@ -24,13 +24,13 @@ namespace CaveManager.Entities
         public string? PhoneNumber3 { get; set; }
 
         public List<Cave>? Caves { get; set; }
-        
+
         public Owner()
         {
 
         }
 
-        public static bool IsPasswordValidated (string password)
+        public static bool IsPasswordValidated(string password)
         {
             var hasNumber = new Regex(@"[0-9]+");
             var hasUpperChar = new Regex(@"[A-Z]+");
@@ -41,7 +41,7 @@ namespace CaveManager.Entities
 
             if (isValidated)
                 return true;
-            else 
+            else
                 return false;
         }
     }

@@ -26,7 +26,7 @@ namespace CaveManager.Repository
         public async Task<Wine> AddWineAsync(Wine wine, int idDrawer)
         {
             wine.DrawerId = idDrawer;
-            var addWine =await context.Wine.AddAsync(wine);
+            var addWine = await context.Wine.AddAsync(wine);
             await context.SaveChangesAsync();
             return wine;
         }
@@ -57,7 +57,7 @@ namespace CaveManager.Repository
         /// <param name=""></param>
         /// <returns></returns>
         public async Task<Wine> PutWineAsync(int idWine, string name, string type, string designation, int minVintageRecommended, int maxVintageRecommended)
-        { 
+        {
             Wine wineUpdate = await context.Wine.FirstOrDefaultAsync(w => w.Id == idWine);
             wineUpdate.Name = name;
             wineUpdate.Type = type;
@@ -92,7 +92,7 @@ namespace CaveManager.Repository
         public async Task<bool> DuplicateWineAsync(int idWine, int idDrawer)
         {
             var duplicateWine = await context.Wine.Where(w => w.Id == idWine).SingleOrDefaultAsync();
-            var name = duplicateWine.Name ;
+            var name = duplicateWine.Name;
             var type = duplicateWine.Type;
             var designation = duplicateWine.Designation;
             var minVintageRecommended = duplicateWine.MinVintageRecommended;

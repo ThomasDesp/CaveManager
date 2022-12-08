@@ -14,7 +14,7 @@ namespace CaveManager.Controllers
         private readonly ILogger<DrawerController> _logger;
         public DrawerController(IDrawer drawerRepository, ILogger<DrawerController> logger, IWebHostEnvironment environment)
         {
-            
+
             this.drawerRepository = drawerRepository;
             this.environment = environment;
             _logger = logger;
@@ -44,7 +44,7 @@ namespace CaveManager.Controllers
         [HttpPut]
         public async Task<ActionResult<Drawer>> UpdateDrawer(int Id, string Name, int MaxPlace, int PlaceUsed)
         {
-            return Ok(drawerRepository.UpdateDrawerAsync(Id,Name,MaxPlace,PlaceUsed));
+            return Ok(drawerRepository.UpdateDrawerAsync(Id, Name, MaxPlace, PlaceUsed));
         }
 
         [HttpDelete]

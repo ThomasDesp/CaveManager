@@ -64,7 +64,7 @@ namespace CaveManager.Controllers
         [HttpDelete("{idWine}")]
         public async Task<ActionResult<bool>> DeleteWine(int idWine)
         {
-            
+
             await wineRepository.DeleteWineAsync(idWine);
             return Ok(true);
         }
@@ -82,7 +82,7 @@ namespace CaveManager.Controllers
         [HttpPut]
         public async Task<ActionResult<Wine>> PutWine(int idWine, string name, string type, string designation, int minVintageRecommended, int maxVintageRecommended)
         {
-            return Ok(await wineRepository.PutWineAsync(idWine,name,type,designation,minVintageRecommended, maxVintageRecommended));
+            return Ok(await wineRepository.PutWineAsync(idWine, name, type, designation, minVintageRecommended, maxVintageRecommended));
         }
 
         /// <summary>

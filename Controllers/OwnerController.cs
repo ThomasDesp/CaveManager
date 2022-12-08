@@ -28,7 +28,7 @@ namespace CaveManager.Controllers
         [HttpPost]
         public async Task<ActionResult<bool>> PostAddOwner(Owner owner, DateTime birthday)
         {
-            var ownerCreated = await ownerRepository.AddOwnerAsync(owner,birthday);
+            var ownerCreated = await ownerRepository.AddOwnerAsync(owner, birthday);
 
             if (ownerCreated != null)
                 return Ok(ownerCreated);
@@ -60,9 +60,9 @@ namespace CaveManager.Controllers
         /// <param name="phoneNumber3"></param>
         /// <returns></returns>
         [HttpPut("{idOwner}")]
-        public async Task<ActionResult<Owner>> PutOwner(int idOwner,string firstname, string lastname, string email, string adress, string phoneNumber1, string phoneNumber2, string phoneNumber3)
+        public async Task<ActionResult<Owner>> PutOwner(int idOwner, string firstname, string lastname, string email, string adress, string phoneNumber1, string phoneNumber2, string phoneNumber3)
         {
-            return Ok(await ownerRepository.UpdateOwnerAsync(idOwner,firstname, lastname, email, adress, phoneNumber1, phoneNumber2, phoneNumber3));
+            return Ok(await ownerRepository.UpdateOwnerAsync(idOwner, firstname, lastname, email, adress, phoneNumber1, phoneNumber2, phoneNumber3));
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace CaveManager.Controllers
             [DefaultValue("moi@ho.com")] string email,
             [DefaultValue("toto")] string pwd)
         {
-            var ownerCreated = await ownerRepository.RetrieveOwnerByPasswordAndLoginAsync(email,pwd);
+            var ownerCreated = await ownerRepository.RetrieveOwnerByPasswordAndLoginAsync(email, pwd);
             if (ownerCreated == null)
                 return Problem($"Erreur");
 
