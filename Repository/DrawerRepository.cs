@@ -55,7 +55,9 @@ namespace CaveManager.Repository
         public async Task<List<Wine>> GetAllPeakWineFromOwnerAsync(int idOwner)
         {
             int date = DateTime.Now.Year;
-            var wines = await context.Wine.Include(w => w.Drawer).ThenInclude(d => d.Cave).ThenInclude(o => o.Owner).Where(w => w.Drawer.Cave.OwnerId == idOwner && w.Bottling + w.MinVintageRecommended <= date && w.Bottling + w.MaxVintageRecommended >= date).ToListAsync();
+            var wines = await context.Wine.Include(w => w.Drawer).ThenInclude(d => d.Cave).ThenInclude(o => o.Owner)
+                .Where(w => w.Drawer.Cave.OwnerId == idOwner && w.Bottling + w.MinVintageRecommended <= date && w.Bottling 
+                + w.MaxVintageRecommended >= date).ToListAsync();
             return wines;
         }
 

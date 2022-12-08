@@ -79,7 +79,7 @@ namespace CaveManager.Controllers
         /// <param name="minVintageRecommended"></param>
         /// <param name="maxVintageRecommended"></param>
         /// <returns></returns>
-        [HttpPut("{idWine}")]
+        [HttpPut]
         public async Task<ActionResult<Wine>> PutWine(int idWine, string name, string type, string designation, int minVintageRecommended, int maxVintageRecommended)
         {
             return Ok(await wineRepository.PutWineAsync(idWine,name,type,designation,minVintageRecommended, maxVintageRecommended));
@@ -91,6 +91,7 @@ namespace CaveManager.Controllers
         /// <param name="idWine"></param>
         /// <param name="idDrawer"></param>
         /// <returns></returns>
+        [HttpPost]
         public async Task<ActionResult<bool>> DuplicateWine(int idWine, int idDrawer)
         {
             await wineRepository.DuplicateWineAsync(idWine, idDrawer);

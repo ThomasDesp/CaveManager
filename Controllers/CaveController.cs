@@ -19,60 +19,66 @@ namespace CaveManager.Controllers
             _logger = logger;
         }
 
-        
+
+        [HttpGet]
+        public async Task<ActionResult<Cave>> GetCave(int idCave)
+        {
+            var cave = await caveRepository.SelectCaveAsync(idCave);
+            if (cave != null)
+                return Ok(cave);
+            else
+                return BadRequest("Cave not found");
+        }
+        [HttpGet]
+        public async Task<ActionResult<List<Cave>>> GetAllCaveFromOwner(int idOwner)
+        {
+            var caves = await caveRepository.GetAllCaveFromAOwner(idOwner);
+            if (caves != null)
+                return Ok(caves);
+            else
+                return BadRequest("This owner don't have any cave");
+        }
+
         [HttpPost]
-        public async Task<ActionResult<Cave>> PostAddCave(Cave cave,int idOwner)
+        public async Task<ActionResult<Cave>> PostAddCave(Cave cave, int idOwner)
         {
             cave.OwnerId = idOwner;
             var caveCreated = await caveRepository.AddCaveAsync(cave);
-
             if (caveCreated != null)
                 return Ok(caveCreated);
             else
-                return BadRequest("Cave non crée");
+                return BadRequest("Cave not found");
         }
 
-        [HttpGet]
-        public async Task<ActionResult<Cave>> GetAddCave(Cave cave)
-        {
-            var caves = new List<Cave>();
-            {
-                new Cave
-                {
-                    Id = 1,
-                    Name = "BatCave",
-                    OwnerId = cave.OwnerId,
-
-                };
-
-                new Cave
-                {
-                    Id = 2,
-                    Name = "PouCave",
-                    OwnerId = cave.OwnerId,
-
-                };
-            }
-            return Ok(cave);
-        }
+        
         [HttpPut("{id}")]
         public async Task<ActionResult<Cave>> UpdateCave( int id,string name ) 
         { 
             var portedevoiture = await caveRepository.UpdateCaveAsync(id , name);
-            return Ok(portedevoiture);
+            
+            if (portedevoiture != null)
+                return Ok(portedevoiture);
+            else
+                return BadRequest("Cave not found");
 
         }
        
         
         
         [HttpDelete("{idCave}")]
-        public async Task<ActionResult<bool>> RemoveCave(int idCave)
+        public async Task<ActionResult<Cave>> RemoveCave(int idCave)
         {
-            await caveRepository.RemoveCaveAsync(idCave);
-           
-                
-            return Ok(true);
+            var deleteCave= await caveRepository.RemoveCaveAsync(idCave);   
+            if (deleteCave!=null)
+            {
+                return Ok(deleteCave);
+
+            }
+            return BadRequest("Cave not found");
+            
         }
+
+
 
     }
 }
