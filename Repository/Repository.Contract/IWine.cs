@@ -1,4 +1,5 @@
 ﻿using CaveManager.Entities;
+using System.Threading.Tasks;
 
 namespace CaveManager.Repository.Repository.Contract
 {
@@ -9,5 +10,6 @@ namespace CaveManager.Repository.Repository.Contract
         Task<List<Wine>> GetAllWinesFromADrawerAsync(int idDrawer);
         Task<Wine> PutWineAsync(int idWine, string name, string type, string designation, int minVintageRecommended, int maxVintageRecommended);
         Task<bool> DeleteWineAsync(int idWine);
+        Task<bool> DuplicateWineAsync(int idWine, int idDrawer);
     }
 }

@@ -2,6 +2,7 @@
 using CaveManager.Repository.Repository.Contract;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
+using System.Text.Json;
 
 namespace CaveManager.Repository
 {
@@ -138,10 +139,25 @@ namespace CaveManager.Repository
         }
 
         /// <summary>
-        /// 
+        /// Get data from an owner in a json file
         /// </summary>
         /// <param name="idOwner"></param>
         /// <returns></returns>
+        //public async Task<bool> AllDataForOwnerAsync(int idOwner) //Task<List<Cave>>
+        //{
+        //    //var getAll = await context.Cave.Where(c => c.IdOwner == idOwner).ToListAsync();
+        //    var getAllCaves = caveRepository.GetAllCaveFromAOwner(idOwner);
+        //    IEnumerable<Cave> test = new (getAllCaves);
+        //    //var getAllDrawers = drawerRepository.GetAllDrawerFromACave(idOwner);//idCave);
+        //    //var getAllWines = wineRepository.GetAllWinesFromADrawerAsync(idOwner);
+
+        //    string fileName = "C:\\Users\\toush\\OneDrive\\Bureau\\Cave\\wwwroot\\Resources\\Data.json";
+        //    using FileStream createStream = File.Create(fileName);
+        //    await JsonSerializer.SerializeAsync(createStream, (getAllCaves, getAllCaves));
+        //    await createStream.DisposeAsync();
+
+        //    return true;
+        //}
         public async Task<List<Cave>> AllDataForOwner(int idOwner)
         {
             var getAll = await context.Cave.Where(c => c.OwnerId == idOwner).ToListAsync();

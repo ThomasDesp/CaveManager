@@ -125,5 +125,17 @@ namespace CaveManager.Controllers
             await ownerRepository.DeleteCaveAsync(idOwner);
             return Ok(true);
         }
+
+        /// <summary>
+        /// Save data as a json file
+        /// </summary>
+        /// <param name="idOwner"></param>
+        /// <returns></returns>
+        //[HttpGet]
+        //public async Task<ActionResult<bool>> AllDataForOwner(int idOwner)
+        //{
+        //    var test = await ownerRepository.AllDataForOwnerAsync(idOwner);
+        //    return Ok(test);
+        //}
     }
 }

@@ -8,4 +8,5 @@ public interface ICave
     Task<Cave> UpdateCaveAsync(int idCave, string name);
     Task<bool> RemoveCaveAsync(int idCave);
     Task<bool> RemoveAllDrawerAsync(int idCave);
+    Task<List<Cave>> GetAllCaveFromAOwner(int idOwner);
 }

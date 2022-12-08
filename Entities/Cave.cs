@@ -2,7 +2,8 @@
 namespace CaveManager.Entities
 {
     
-   [Table("Cave")]
+    [Table("Cave")]
+    [Serializable]
     public class Cave
     {
 
