@@ -1,4 +1,5 @@
 ﻿using CaveManager.Entities;
+using CaveManager.Entities.DTO;
 using CaveManager.Repository.Repository.Contract;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,9 +38,9 @@ namespace CaveManager.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<Drawer>> UpdateDrawer(int Id, string Name, int MaxPlace, int PlaceUsed)
+        public async Task<ActionResult<Drawer>> UpdateDrawer(DTODrawer dTODrawer)
         {
-            return Ok(drawerRepository.UpdateDrawerAsync(Id, Name, MaxPlace, PlaceUsed));
+            return Ok(drawerRepository.UpdateDrawerAsync(dTODrawer));
         }
 
         [HttpDelete]

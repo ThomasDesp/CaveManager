@@ -1,4 +1,5 @@
 ﻿using CaveManager.Entities;
+using CaveManager.Entities.DTO;
 using CaveManager.Repository.Repository.Contract;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +21,7 @@ namespace CaveManager.Repository
         /// <summary>
         /// Add an cave
         /// </summary>
-        /// <param name="Drawer"></param>
+        /// <param name="drawer"></param>
         /// <returns></returns>
         public async Task<Drawer> AddDrawerAsync(Drawer drawer)
         {
@@ -32,7 +33,7 @@ namespace CaveManager.Repository
         /// <summary>
         /// Get an drawer by his id 
         /// </summary>
-        /// <param name="iddrawer"></param>
+        /// <param name="idDrawer"></param>
         /// <returns></returns>
         public async Task<Drawer> SelectDrawerAsync(int idDrawer)
         {
@@ -47,16 +48,14 @@ namespace CaveManager.Repository
         /// <summary>
         /// Update an Drawer by his id
         /// </summary>
-        /// <param name=""></param>
+        /// <param name="dTODrawer"></param>
         /// <returns></returns>
-        public async Task<Drawer> UpdateDrawerAsync(int Id, string Name, int MaxPlace, int PlaceUsed)
+        public async Task<Drawer> UpdateDrawerAsync(DTODrawer dTODrawer)
         {
-            Drawer drawerUpdate = await context.Drawer.FindAsync(Id);
-            drawerUpdate.Name = Name;
-            drawerUpdate.MaxPlace = MaxPlace;
-            drawerUpdate.PlaceUsed = PlaceUsed;
-            //drawerUpdate.
-
+            Drawer drawerUpdate = await context.Drawer.FindAsync(dTODrawer.Id);
+            drawerUpdate.Name = dTODrawer.Name;
+            drawerUpdate.MaxPlace = dTODrawer.MaxPlace;
+            drawerUpdate.PlaceUsed = dTODrawer.PlaceUsed;
             await context.SaveChangesAsync();
             return drawerUpdate;
         }
@@ -64,7 +63,7 @@ namespace CaveManager.Repository
         /// <summary>
         /// Remove an drawer with his id
         /// </summary>
-        /// <param name="iddrawer"></param>
+        /// <param name="idDrawer"></param>
         /// <returns></returns>
         public async Task<bool> RemoveDrawerAsync(int idDrawer)
         {
@@ -74,7 +73,11 @@ namespace CaveManager.Repository
             await context.SaveChangesAsync();
             return true;
         }
-
+        /// <summary>
+        /// Remove all wine of the drawer selected
+        /// </summary>
+        /// <param name="idDrawer"></param>
+        /// <returns></returns>
         public async Task<bool> RemoveAllWineAsync(int idDrawer)
         {
             var deleteWines = await context.Wine.Where(w => w.DrawerId == idDrawer).ToListAsync();

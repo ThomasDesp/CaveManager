@@ -1,4 +1,5 @@
 ﻿using CaveManager.Entities;
+using CaveManager.Entities.DTO;
 
 namespace CaveManager.Repository.Repository.Contract
 {
@@ -7,11 +8,9 @@ namespace CaveManager.Repository.Repository.Contract
         Task<Drawer> AddDrawerAsync(Drawer drawer);
         Task<Drawer> SelectDrawerAsync(int idDrawer);
         Task<List<Drawer>> GetAllDrawerFromACave(int idCave);
-        Task<Drawer> UpdateDrawerAsync(int idDrawer, string Name, int MaxPlace, int PlaceUsed);
+        Task<Drawer> UpdateDrawerAsync(DTODrawer dTODrawer);
         Task<bool> RemoveDrawerAsync(int idDrawer);
         Task<bool> RemoveAllWineAsync(int idDrawer);
-        Task<List<Wine>> GetAllPeakWineFromOwnerAsync(int idOwner);
-        Task<List<Wine>> GetAllWineFromOwnerAsync(int idOwner);
 
     }
 }
