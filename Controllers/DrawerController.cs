@@ -41,9 +41,25 @@ namespace CaveManager.Controllers
         [HttpGet("{idDrawer}")]
         public async Task<ActionResult<List<Wine>>> GetAllWinesFromADrawer(int idDrawer)
         {
-            return Ok(await drawerRepository.GetAllWinesFromADrawerAsync(idDrawer));
+            var wines = await drawerRepository.GetAllWinesFromADrawerAsync(idDrawer);
+            if (wines != null)
+            {
+                return Ok(wines);
+            }
+            return BadRequest("Drawers not found");
+
         }
-        
+        [HttpGet("{idDrawer}")]
+        public async Task<ActionResult<DTODrawer>> AddDrawer(DTODrawer dTODrawer)
+        {
+            var nouveauDrawer = new Drawer { Name = dTODrawer.Name, MaxPlace = dTODrawer.MaxPlace, PlaceUsed = dTODrawer.PlaceUsed };
+            var drawer = await drawerRepository.AddDrawerAsync(nouveauDrawer);
+            if (drawer != null)
+            {
+                return Ok(dTODrawer);
+            }
+            return BadRequest();
+        }
         /// <summary>
         /// Update a Drawer with his id, change all the data
         /// </summary>
@@ -53,7 +69,8 @@ namespace CaveManager.Controllers
         [HttpPut]
         public async Task<ActionResult<Drawer>> UpdateDrawer(int idDrawer, DTODrawer dTODrawer)
         {
-            var drawer = await drawerRepository.UpdateDrawerAsync(idDrawer,dTODrawer);
+            var nouveauDrawer = new Drawer {Name=dTODrawer.Name, MaxPlace=dTODrawer.MaxPlace, PlaceUsed=dTODrawer.PlaceUsed };
+            var drawer = await drawerRepository.UpdateDrawerAsync(idDrawer, nouveauDrawer);
             if (drawer != null)
             {
                 return Ok(drawer);
@@ -66,9 +83,14 @@ namespace CaveManager.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpDelete]
-        public async Task<ActionResult<Drawer>> DeleteDrawer(int Id)
+        public async Task<ActionResult<Drawer>> DeleteDrawer(int drawerId)
         {
-            return Ok(drawerRepository.RemoveDrawerAsync(Id));
+            var drawer = await drawerRepository.RemoveDrawerAsync(drawerId);
+            if (drawer != null)
+            {
+                return Ok(drawer);
+            }
+            return BadRequest("Drawer not found");
         }
 
     }

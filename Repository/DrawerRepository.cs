@@ -25,6 +25,7 @@ namespace CaveManager.Repository
         /// <returns></returns>
         public async Task<Drawer> AddDrawerAsync(Drawer drawer)
         {
+
             var addDrawer = context.Drawer.Add(drawer);
             await context.SaveChangesAsync();
             return drawer;
@@ -54,14 +55,14 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="dTODrawer"></param>
         /// <returns></returns>
-        public async Task<Drawer> UpdateDrawerAsync(int idDrawer, DTODrawer dTODrawer)
+        public async Task<Drawer> UpdateDrawerAsync(int idDrawer, Drawer drawer)
         {
             Drawer drawerUpdate = await context.Drawer.FindAsync(idDrawer);
             if (drawerUpdate != null)
             {
-                drawerUpdate.Name = dTODrawer.Name;
-                drawerUpdate.MaxPlace = dTODrawer.MaxPlace;
-                drawerUpdate.PlaceUsed = dTODrawer.PlaceUsed;
+                drawerUpdate.Name = drawer.Name;
+                drawerUpdate.MaxPlace = drawer.MaxPlace;
+                drawerUpdate.PlaceUsed = drawer.PlaceUsed;
                 await context.SaveChangesAsync();
                 return drawerUpdate;
             }
