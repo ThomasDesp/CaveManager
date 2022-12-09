@@ -1,7 +1,7 @@
 ﻿namespace CaveManager.Repository.Repository.Contract;
 using CaveManager.Entities;
 
-public interface ICave
+public interface ICaveRepository
 {
     Task<Cave> AddCaveAsync(Cave cave);
     Task<Cave> SelectCaveAsync(int idCave);

@@ -11,14 +11,14 @@ using System.Text.Unicode;
 
 namespace CaveManager.Repository
 {
-    public class OwnerRepository : IOwner
+    public class OwnerRepository : IOwnerRepository
     {
-        ICave caveRepository;
-        IDrawer drawerRepository;
-        IWine wineRepository;
+        IOwnerRepository caveRepository;
+        IDrawerRepository drawerRepository;
+        IWineRepository wineRepository;
         CaveManagerContext context;
         ILogger<OwnerRepository> logger;
-        public OwnerRepository(CaveManagerContext context, ILogger<OwnerRepository> logger, ICave caveRepository, IDrawer drawerRepository, IWine wineRepository)
+        public OwnerRepository(CaveManagerContext context, ILogger<OwnerRepository> logger, ICaveRepository caveRepository, IDrawerRepository drawerRepository, IWineRepository wineRepository)
         {
             this.context = context;
             this.logger = logger;

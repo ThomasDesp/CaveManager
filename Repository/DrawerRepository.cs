@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CaveManager.Repository
 {
-    public class DrawerRepository : IDrawer
+    public class DrawerRepository : IDrawerRepository
     {
 
 

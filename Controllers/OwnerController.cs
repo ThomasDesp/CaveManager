@@ -13,9 +13,9 @@ namespace CaveManager.Controllers
     [ApiController]
     public class OwnerController : ControllerBase
     {
-        IOwner ownerRepository;
+        IOwnerRepository ownerRepository;
         ILogger<OwnerRepository> logger;
-        public OwnerController(IOwner ownerRepository, ILogger<OwnerRepository> logger)
+        public OwnerController(IOwnerRepository ownerRepository, ILogger<OwnerRepository> logger)
         {
             this.ownerRepository = ownerRepository;
             this.logger = logger;

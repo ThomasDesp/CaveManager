@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace CaveManager.Repository.Repository.Contract
 {
-    public interface IWine
+    public interface IWineRepository
     {
         Task<Wine> AddWineAsync(Wine wine, int idDrawer);
         Task<Wine> GetWineAsync(int idWine);
