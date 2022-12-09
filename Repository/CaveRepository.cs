@@ -38,10 +38,21 @@ namespace CaveManager.Repository
             return await context.Cave.FindAsync(idCave);
         }
 
+        /// <summary>
+        /// Select All Cave of a Owner with his id
+        /// </summary>
+        /// <param name="idOwner"></param>
+        /// <returns></returns>
         public async Task<List<Cave>> GetAllCaveFromAOwner(int ownerId)
         {
             return await context.Cave.Include(c => c.Drawer).ThenInclude(c => c.Wines).Where(w => w.OwnerId == ownerId).ToListAsync();
         }
+
+        /// <summary>
+        /// Select all Drawer of a Cave with his id
+        /// </summary>
+        /// <param name="idCave"></param>
+        /// <returns></returns>
         public async Task<List<Drawer>> GetAllDrawerFromACave(int idCave)
         {
             return await context.Drawer.Where(w => w.CaveId == idCave).ToListAsync();
@@ -80,8 +91,12 @@ namespace CaveManager.Repository
             else
                 return deleteCave;
 
-
         }
+        /// <summary>
+        /// Remove all Drawer with an idCave
+        /// </summary>
+        /// <param name="idCave"></param>
+        /// <returns></returns>
         public async Task<bool> RemoveAllDrawerAsync(int idCave)
         {
             var deleteDrawer = await context.Drawer.Where(w => w.CaveId == idCave).ToListAsync();

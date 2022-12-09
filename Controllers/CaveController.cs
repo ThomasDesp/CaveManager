@@ -19,7 +19,11 @@ namespace CaveManager.Controllers
             _logger = logger;
         }
 
-
+        /// <summary>
+        /// select Cave with his id
+        /// </summary>
+        /// <param name="idCave"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<Cave>> GetCave(int idCave)
         {
@@ -29,6 +33,11 @@ namespace CaveManager.Controllers
             else
                 return BadRequest("Cave not found");
         }
+        /// <summary>
+        /// Select All Cave of a Owner with his id
+        /// </summary>
+        /// <param name="idOwner"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<Cave>>> GetAllCaveFromOwner(int idOwner)
         {
@@ -55,6 +64,12 @@ namespace CaveManager.Controllers
             
         }
 
+        /// <summary>
+        /// Add a cave
+        /// </summary>
+        /// <param name="cave"></param>
+        /// <param name="idOwner"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<Cave>> PostAddCave(Cave cave, int idOwner)
         {
@@ -66,7 +81,13 @@ namespace CaveManager.Controllers
                 return BadRequest("Owner not found");
         }
 
-
+        /// <summary>
+        /// Modify a cave
+        /// </summary> 
+        /// <param name="idCave"></param>
+        /// <param name="name"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<ActionResult<Cave>> UpdateCave(int id, string name)
         {
@@ -80,7 +101,11 @@ namespace CaveManager.Controllers
         }
 
 
-
+        /// <summary>
+        /// Delete a Cave
+        /// </summary>
+        /// <param name="idCave></param>
+        /// <returns></returns>
         [HttpDelete("{idCave}")]
         public async Task<ActionResult<Cave>> RemoveCave(int idCave)
         {
