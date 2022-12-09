@@ -34,16 +34,6 @@ namespace CaveManager.Controllers
                 return BadRequest("Wine is not added, please retry");
         }
 
-        /// <summary>
-        /// Get wines from a drawer
-        /// </summary>
-        /// <param name="idDrawer"></param>
-        /// <returns></returns>
-        [HttpGet("{idDrawer}")]
-        public async Task<ActionResult<List<Wine>>> GetAllWinesFromADrawer(int idDrawer)
-        {
-            return Ok(await wineRepository.GetAllWinesFromADrawerAsync(idDrawer));
-        }
 
         /// <summary>
         /// Get a wine by his id

@@ -36,7 +36,23 @@ namespace CaveManager.Controllers
             if (caves != null)
                 return Ok(caves);
             else
-                return BadRequest("This owner don't have any cave");
+                return BadRequest("Owner not found");
+        }
+        /// <summary>
+        /// Select all Drawer of a Cave with his id
+        /// </summary>
+        /// <param name="idCave"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<List<Drawer>>> GetAllDrawer(int idCave)
+        {
+            var drawers = await caveRepository.GetAllDrawerFromACave(idCave);
+            if (drawers!= null)
+            {
+                return Ok(drawers);
+            }
+            return BadRequest("No Cave found");
+            
         }
 
         [HttpPost]
@@ -47,7 +63,7 @@ namespace CaveManager.Controllers
             if (caveCreated != null)
                 return Ok(caveCreated);
             else
-                return BadRequest("Cave not found");
+                return BadRequest("Owner not found");
         }
 
 

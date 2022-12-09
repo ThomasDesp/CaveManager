@@ -42,6 +42,10 @@ namespace CaveManager.Repository
         {
             return await context.Cave.Include(c => c.Drawer).ThenInclude(c => c.Wines).Where(w => w.OwnerId == ownerId).ToListAsync();
         }
+        public async Task<List<Drawer>> GetAllDrawerFromACave(int idCave)
+        {
+            return await context.Drawer.Where(w => w.CaveId == idCave).ToListAsync();
+        }
 
         /// <summary>
         /// Update an owner by his id 
