@@ -14,27 +14,28 @@ namespace CaveManager.Controllers
     public class OwnerController : ControllerBase
     {
         IOwner ownerRepository;
-        public OwnerController(IOwner ownerRepository)
+        ILogger<OwnerRepository> logger;
+        public OwnerController(IOwner ownerRepository, ILogger<OwnerRepository> logger)
         {
             this.ownerRepository = ownerRepository;
+            this.logger = logger;
         }
 
         /// <summary>
         /// Add Owner to Db
         /// </summary>
         /// <param name="owner"></param>
-        /// <param name="birthday"></param>
         /// <returns></returns>
-        [HttpPost]
-        public async Task<ActionResult<bool>> PostAddOwner(Owner owner, DateTime birthday)
-        {
-            var ownerCreated = await ownerRepository.AddOwnerAsync(owner, birthday);
+        //[HttpPost]
+        //public async Task<ActionResult<Owner>> PostAddOwner(Owner owner)
+        //{
+        //    var ownerCreated = await ownerRepository.AddOwnerAsync(owner);
 
-            if (ownerCreated != null)
-                return Ok(ownerCreated);
-            else
-                return BadRequest("Compte non créé, regardez les logs");
-        }
+        //    if (ownerCreated != null)
+        //        return Ok(ownerCreated);
+        //    else
+        //        return BadRequest("Account not created, please check the logs !");
+        //}
 
         /// <summary>
         /// Get an owner by his id
@@ -145,12 +146,12 @@ namespace CaveManager.Controllers
         /// </summary>
         /// <param name="idOwner"></param>
         /// <returns></returns>
-        //[HttpGet]
-        //public async Task<ActionResult<bool>> AllDataForOwner(int idOwner)
-        //{
-        //    var test = await ownerRepository.AllDataForOwnerAsync(idOwner);
-        //    return Ok(test);
-        //}
+        [HttpGet]
+        public async Task<ActionResult<bool>> AllDataForOwner(int idOwner)
+        {
+            var test = await ownerRepository.AllDataForOwnerAsync(idOwner);
+            return Ok(test);
+        }
 
         /// <summary>
         /// List for all caves with theirs drawers and wines and only peak wine

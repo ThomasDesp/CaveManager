@@ -1,9 +1,13 @@
 ﻿using CaveManager.Entities;
+using CaveManager.Entities.DTO;
 using CaveManager.Repository.Repository.Contract;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.Unicode;
 
 namespace CaveManager.Repository
 {
@@ -28,21 +32,20 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public async Task<bool> AddOwnerAsync(Owner owner, DateTime birthday)
-        {
-            var checkAge = await CheckAgeAsync(birthday);
-            if (checkAge)
-            {
-                var addOwner = context.Owner.Add(owner);
-                await context.SaveChangesAsync();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+        //public async Task<Owner> AddOwnerAsync(DTOOwnerCreation dTOOwnerCreation, string password)
+        //{
+        //    password = Password;
+        //    var passwordValidated = Password.IsPasswordValidated(password);
+        //    if (passwordValidated)
+        //    {
+        //        Password.HashPassword(password);
+        //        var addOwner = context.Owner.Add(dTOOwnerCreation,password);
+        //        await context.SaveChangesAsync();
+        //    }
+        //    return owner;
 
-        }
+
+        //}
 
         /// <summary>
         /// Get an owner by his id 
@@ -84,17 +87,15 @@ namespace CaveManager.Repository
             Owner ownerUpdate = await context.Owner.FirstOrDefaultAsync(o => o.Id == idOwner);
             if (ownerUpdate == null)
                 return new Tuple<string, bool>("Owner Id dont exist", false);
-            var passwordChecked = Owner.IsPasswordValidated(password);
+            var passwordChecked = Password.IsPasswordValidated(password);
             if (passwordChecked)
                 ownerUpdate.Password = password;
             else
-                return new Tuple<string, bool>("Password incorrect please retry", false);
+                return new Tuple<string, bool>("Password is incorrect please retry", false);
 
             await context.SaveChangesAsync();
-            return new Tuple<string, bool>("test", true);
+            return new Tuple<string, bool>("Updated", true);
         }
-
-
 
         /// <summary>
         /// Remove an owner with his id
@@ -149,7 +150,7 @@ namespace CaveManager.Repository
         }
 
         /// <summary>
-        /// Check if user have 18 years. If true => Creation Owner's account, false => Accont is not created
+        /// Check if user have 18 years. If true => Creation of Owner's account, false => Accont is not created
         /// </summary>
         /// <param name="birthDate"></param>
         /// <returns></returns>
@@ -159,10 +160,23 @@ namespace CaveManager.Repository
             //6570 days is the number of days for 18 years
             if (ageSub.TotalDays >= 6570)
             {
-                //Appel création compte (dans créa compte appel first connection)
+                //Appel création compte (dans créa compte appel check cgu)
 
                 return true;
             }
+            else
+                return false;
+        }
+
+        /// <summary>
+        /// Check if CGU are accepted or not. If Owner don't accept the CGU, he can't continue
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <returns></returns>
+        public async Task<bool> CheckCguAsync(Owner owner)
+        {
+            if (owner.IsCGUAccepted)
+                return true;
             else
                 return false;
         }
@@ -174,24 +188,31 @@ namespace CaveManager.Repository
         /// <returns></returns>
         public async Task<bool> AllDataForOwnerAsync(int idOwner) //Task<List<Cave>>
         {
-            //var getAll = await context.Cave.Where(c => c.IdOwner == idOwner).ToListAsync();
-            var getAllCaves = caveRepository.GetAllCaveFromAOwner(idOwner);
-            
-            //var getAllDrawers = drawerRepository.GetAllDrawerFromACave(idOwner);//idCave);
-            //var getAllWines = wineRepository.GetAllWinesFromADrawerAsync(idOwner);
-
+            var getAllCaves = GetAllWineFromOwnerAsync(idOwner);
             string fileName = "C:\\Users\\toush\\OneDrive\\Bureau\\Cave\\wwwroot\\Resources\\Data.json";
             using FileStream createStream = File.Create(fileName);
-            await JsonSerializer.SerializeAsync(createStream, (getAllCaves, getAllCaves));
+            await JsonSerializer.SerializeAsync(createStream, getAllCaves,
+                new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                    //Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Utf),
+                    WriteIndented = true
+                });
             await createStream.DisposeAsync();
-
             return true;
         }
-        public async Task<List<Cave>> AllDataForOwner(int idOwner)
-        {
-            var getAll = await context.Cave.Where(c => c.OwnerId == idOwner).ToListAsync();
-            return getAll;
-        }
+
+        //public async Task<List<Cave>> AllDataForOwner(int idOwner)
+        //{
+        //    var getAll = await context.Cave.Where(c => c.OwnerId == idOwner).ToListAsync();
+        //    return getAll;
+        //}
+
+        /// <summary>
+        /// List for all caves with theirs drawers and wines
+        /// </summary>
+        /// <param name="idOwner"></param>
+        /// <returns></returns>
         public async Task<List<Wine>> GetAllWineFromOwnerAsync(int idOwner)
         {
             //var wines = await context.Wine.Include(w => w.Drawer).ThenInclude(d => d.Cave).Where(w => w.Drawer.IdCave == idCave && w.Bottling+w.MinVintageRecommended <= date && w.Bottling + w.MaxVintageRecommended >= date ).ToListAsync();
@@ -200,6 +221,11 @@ namespace CaveManager.Repository
             return wines;
         }
 
+        /// <summary>
+        /// List for all caves with theirs drawers and wines and only peak wine
+        /// </summary>
+        /// <param name="idOwner"></param>
+        /// <returns></returns>
         public async Task<List<Wine>> GetAllPeakWineFromOwnerAsync(int idOwner)
         {
             int date = DateTime.Now.Year;
