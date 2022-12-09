@@ -1,4 +1,5 @@
 ﻿using CaveManager.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CaveManager.Repository.Repository.Contract
 {
@@ -12,6 +13,8 @@ namespace CaveManager.Repository.Repository.Contract
         Task<Owner> RetrieveOwnerByPasswordAndLoginAsync(string email, string password);
         Task<bool> DeleteCaveAsync(int idOwner);
         Task<bool> CheckAgeAsync(DateTime birthDate);
+        Task<List<Wine>> GetAllWineFromOwnerAsync(int idOwner);
+        Task<List<Wine>> GetAllPeakWineFromOwnerAsync(int idOwner);
         //Task<bool> AllDataForOwnerAsync(int idOwner);
     }
 }

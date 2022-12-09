@@ -1,5 +1,6 @@
 ﻿using CaveManager.Entities;
 using CaveManager.Repository.Repository.Contract;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
@@ -171,25 +172,41 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="idOwner"></param>
         /// <returns></returns>
-        //public async Task<bool> AllDataForOwnerAsync(int idOwner) //Task<List<Cave>>
-        //{
-        //    //var getAll = await context.Cave.Where(c => c.IdOwner == idOwner).ToListAsync();
-        //    var getAllCaves = caveRepository.GetAllCaveFromAOwner(idOwner);
-        //    IEnumerable<Cave> test = new (getAllCaves);
-        //    //var getAllDrawers = drawerRepository.GetAllDrawerFromACave(idOwner);//idCave);
-        //    //var getAllWines = wineRepository.GetAllWinesFromADrawerAsync(idOwner);
+        public async Task<bool> AllDataForOwnerAsync(int idOwner) //Task<List<Cave>>
+        {
+            //var getAll = await context.Cave.Where(c => c.IdOwner == idOwner).ToListAsync();
+            var getAllCaves = caveRepository.GetAllCaveFromAOwner(idOwner);
+            
+            //var getAllDrawers = drawerRepository.GetAllDrawerFromACave(idOwner);//idCave);
+            //var getAllWines = wineRepository.GetAllWinesFromADrawerAsync(idOwner);
 
-        //    string fileName = "C:\\Users\\toush\\OneDrive\\Bureau\\Cave\\wwwroot\\Resources\\Data.json";
-        //    using FileStream createStream = File.Create(fileName);
-        //    await JsonSerializer.SerializeAsync(createStream, (getAllCaves, getAllCaves));
-        //    await createStream.DisposeAsync();
+            string fileName = "C:\\Users\\toush\\OneDrive\\Bureau\\Cave\\wwwroot\\Resources\\Data.json";
+            using FileStream createStream = File.Create(fileName);
+            await JsonSerializer.SerializeAsync(createStream, (getAllCaves, getAllCaves));
+            await createStream.DisposeAsync();
 
-        //    return true;
-        //}
+            return true;
+        }
         public async Task<List<Cave>> AllDataForOwner(int idOwner)
         {
             var getAll = await context.Cave.Where(c => c.OwnerId == idOwner).ToListAsync();
             return getAll;
+        }
+        public async Task<List<Wine>> GetAllWineFromOwnerAsync(int idOwner)
+        {
+            //var wines = await context.Wine.Include(w => w.Drawer).ThenInclude(d => d.Cave).Where(w => w.Drawer.IdCave == idCave && w.Bottling+w.MinVintageRecommended <= date && w.Bottling + w.MaxVintageRecommended >= date ).ToListAsync();
+            var wines = await context.Wine.Include(w => w.Drawer).ThenInclude(d => d.Cave).ThenInclude(o => o.Owner)
+                .Where(w => w.Drawer.Cave.OwnerId == idOwner).ToListAsync();
+            return wines;
+        }
+
+        public async Task<List<Wine>> GetAllPeakWineFromOwnerAsync(int idOwner)
+        {
+            int date = DateTime.Now.Year;
+            var wines = await context.Wine.Include(w => w.Drawer).ThenInclude(d => d.Cave).ThenInclude(o => o.Owner)
+                .Where(w => w.Drawer.Cave.OwnerId == idOwner && w.Bottling + w.MinVintageRecommended <= date && w.Bottling
+                + w.MaxVintageRecommended >= date).ToListAsync();
+            return wines;
         }
     }
 }

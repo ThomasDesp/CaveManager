@@ -44,23 +44,6 @@ namespace CaveManager.Repository
             return await context.Drawer.Where(w => w.CaveId == idCave).ToListAsync();
         }
 
-        public async Task<List<Wine>> GetAllWineFromOwnerAsync(int idOwner)
-        {
-            //var wines = await context.Wine.Include(w => w.Drawer).ThenInclude(d => d.Cave).Where(w => w.Drawer.IdCave == idCave && w.Bottling+w.MinVintageRecommended <= date && w.Bottling + w.MaxVintageRecommended >= date ).ToListAsync();
-            var wines = await context.Wine.Include(w => w.Drawer).ThenInclude(d => d.Cave).ThenInclude(o => o.Owner)
-                .Where(w => w.Drawer.Cave.OwnerId == idOwner).ToListAsync();
-            return wines;
-        }
-
-        public async Task<List<Wine>> GetAllPeakWineFromOwnerAsync(int idOwner)
-        {
-            int date = DateTime.Now.Year;
-            var wines = await context.Wine.Include(w => w.Drawer).ThenInclude(d => d.Cave).ThenInclude(o => o.Owner)
-                .Where(w => w.Drawer.Cave.OwnerId == idOwner && w.Bottling + w.MinVintageRecommended <= date && w.Bottling
-                + w.MaxVintageRecommended >= date).ToListAsync();
-            return wines;
-        }
-
         /// <summary>
         /// Update an Drawer by his id
         /// </summary>

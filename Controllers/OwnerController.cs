@@ -151,5 +151,29 @@ namespace CaveManager.Controllers
         //    var test = await ownerRepository.AllDataForOwnerAsync(idOwner);
         //    return Ok(test);
         //}
+
+        /// <summary>
+        /// List for all caves with theirs drawers and wines and only peak wine
+        /// </summary>
+        /// <param name="idOwner"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<List<Wine>>> GetAllPeakWineFromOwner(int idOwner)
+        {
+            var wines = await ownerRepository.GetAllPeakWineFromOwnerAsync(idOwner);
+            return Ok(wines);
+        }
+
+        /// <summary>
+        /// List for all caves with theirs drawers and wines
+        /// </summary>
+        /// <param name="idOwner"></param>
+        /// <returns></returns>
+        [HttpGet("{idOwner}")]
+        public async Task<ActionResult<List<Wine>>> GetAllWineFromOwner(int idOwner)
+        {
+            var wines = await ownerRepository.GetAllWineFromOwnerAsync(idOwner);
+            return Ok(wines);
+        }
     }
 }
