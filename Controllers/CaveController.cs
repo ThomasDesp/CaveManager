@@ -1,4 +1,5 @@
 ﻿using CaveManager.Entities;
+using CaveManager.Entities.DTO;
 using CaveManager.Repository;
 using CaveManager.Repository.Repository.Contract;
 using Microsoft.AspNetCore.Mvc;
@@ -71,9 +72,9 @@ namespace CaveManager.Controllers
         /// <param name="idOwner"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Cave>> PostAddCave(Cave cave, int idOwner)
+        public async Task<ActionResult<Cave>> AddCave(DTOCave dtoCave, int idOwner)
         {
-            cave.OwnerId = idOwner;
+            var cave = new Cave { Name = dtoCave.Name, OwnerId = idOwner};
             var caveCreated = await caveRepository.AddCaveAsync(cave);
             if (caveCreated != null)
                 return Ok(caveCreated);
