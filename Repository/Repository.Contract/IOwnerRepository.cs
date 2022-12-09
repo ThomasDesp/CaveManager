@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CaveManager.Repository.Repository.Contract
 {
-    public interface IOwner
+    public interface IOwnerRepository
     {
         //Task<Owner> AddOwnerAsync(Owner owner);
         Task<Owner> SelectOwnerAsync(int idOwner);

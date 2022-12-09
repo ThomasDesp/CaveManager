@@ -11,10 +11,10 @@ namespace CaveManager.Controllers
     [ApiController]
     public class DrawerController : ControllerBase
     {
-        IDrawer drawerRepository;
+        IDrawerRepository drawerRepository;
         IWebHostEnvironment environment;
         private readonly ILogger<DrawerController> _logger;
-        public DrawerController(IDrawer drawerRepository, ILogger<DrawerController> logger, IWebHostEnvironment environment)
+        public DrawerController(IDrawerRepository drawerRepository, ILogger<DrawerController> logger, IWebHostEnvironment environment)
         {
 
             this.drawerRepository = drawerRepository;

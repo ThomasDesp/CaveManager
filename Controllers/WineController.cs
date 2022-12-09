@@ -9,9 +9,9 @@ namespace CaveManager.Controllers
     [ApiController]
     public class WineController : ControllerBase
     {
-        IWine wineRepository;
+        IWineRepository wineRepository;
         private readonly ILogger<WineController> _logger;
-        public WineController(IWine wineRepository, ILogger<WineController> logger)
+        public WineController(IWineRepository wineRepository, ILogger<WineController> logger)
         {
             this.wineRepository = wineRepository;
             _logger = logger;

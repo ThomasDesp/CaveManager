@@ -3,7 +3,7 @@ using CaveManager.Entities.DTO;
 
 namespace CaveManager.Repository.Repository.Contract
 {
-    public interface IDrawer
+    public interface IDrawerRepository
     {
         Task<Drawer> AddDrawerAsync(Drawer drawer);
         Task<Drawer> SelectDrawerAsync(int idDrawer);

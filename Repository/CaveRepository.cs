@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CaveManager.Repository
 {
-    public class CaveRepository : ICave
+    public class CaveRepository : ICaveRepository
     {
-        IDrawer drawerRepository;
+        IDrawerRepository drawerRepository;
         CaveManagerContext context;
         ILogger<CaveRepository> logger;
-        public CaveRepository(CaveManagerContext context, ILogger<CaveRepository> logger, IDrawer drawerRepository)
+        public CaveRepository(CaveManagerContext context, ILogger<CaveRepository> logger, IDrawerRepository drawerRepository)
         {
             this.context = context;
             this.logger = logger;

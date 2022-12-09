@@ -11,10 +11,10 @@ builder.Services.AddControllers().AddJsonOptions(o =>
 {
     o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
-builder.Services.AddScoped<ICave, CaveRepository>();
-builder.Services.AddScoped<IDrawer, DrawerRepository>();
-builder.Services.AddScoped<IWine, WineRepository>();
-builder.Services.AddScoped<IOwner, OwnerRepository>();
+builder.Services.AddScoped<ICaveRepository, CaveRepository>();
+builder.Services.AddScoped<IDrawerRepository, DrawerRepository>();
+builder.Services.AddScoped<IWineRepository, WineRepository>();
+builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
