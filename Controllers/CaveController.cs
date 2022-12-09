@@ -11,10 +11,10 @@ namespace CaveManager.Controllers
 
     public class CaveController : ControllerBase
     {
-        ICave caveRepository;
+        ICaveRepository caveRepository;
         IWebHostEnvironment environment;
         private readonly ILogger<CaveController> _logger;
-        public CaveController(ICave caveRepository, ILogger<CaveController> logger, IWebHostEnvironment environment)
+        public CaveController(ICaveRepository caveRepository, ILogger<CaveController> logger, IWebHostEnvironment environment)
         {
             this.caveRepository = caveRepository;
             _logger = logger;

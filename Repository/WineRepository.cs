@@ -7,7 +7,7 @@ using static Azure.Core.HttpHeader;
 
 namespace CaveManager.Repository
 {
-    public class WineRepository : IWine
+    public class WineRepository : IWineRepository
     {
         CaveManagerContext context;
         ILogger<WineRepository> logger;
