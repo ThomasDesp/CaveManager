@@ -146,7 +146,7 @@ namespace CaveManager.Controllers
         /// </summary>
         /// <param name="idOwner"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("{idOwner}")]
         public async Task<ActionResult<bool>> AllDataForOwner(int idOwner)
         {
             var test = await ownerRepository.AllDataForOwnerAsync(idOwner);
@@ -158,7 +158,7 @@ namespace CaveManager.Controllers
         /// </summary>
         /// <param name="idOwner"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("{idOwner}")]
         public async Task<ActionResult<List<Wine>>> GetAllPeakWineFromOwner(int idOwner)
         {
             var wines = await ownerRepository.GetAllPeakWineFromOwnerAsync(idOwner);

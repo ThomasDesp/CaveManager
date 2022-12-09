@@ -25,7 +25,7 @@ namespace CaveManager.Controllers
         /// </summary>
         /// <param name="idCave"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("{idCave}")]
         public async Task<ActionResult<Cave>> GetCave(int idCave)
         {
             var cave = await caveRepository.SelectCaveAsync(idCave);
@@ -39,7 +39,7 @@ namespace CaveManager.Controllers
         /// </summary>
         /// <param name="idOwner"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("{idOwner}")]
         public async Task<ActionResult<List<Cave>>> GetAllCaveFromOwner(int idOwner)
         {
             var caves = await caveRepository.GetAllCaveFromAOwner(idOwner);
@@ -53,7 +53,7 @@ namespace CaveManager.Controllers
         /// </summary>
         /// <param name="idCave"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("{idCave}")]
         public async Task<ActionResult<List<Drawer>>> GetAllDrawer(int idCave)
         {
             var drawers = await caveRepository.GetAllDrawerFromACave(idCave);
@@ -71,7 +71,7 @@ namespace CaveManager.Controllers
         /// <param name="cave"></param>
         /// <param name="idOwner"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("{idOwner}")]
         public async Task<ActionResult<Cave>> AddCave(DTOCave dtoCave, int idOwner)
         {
             var cave = new Cave { Name = dtoCave.Name, OwnerId = idOwner};
