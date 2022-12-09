@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 namespace CaveManager.Entities
 {
-
-    [Table("Cave")]
     [Serializable]
     public class Cave
     {

@@ -68,7 +68,7 @@ namespace CaveManager.Repository
             ownerUpdate.FirstName = firstname;
             ownerUpdate.FullName = firstname + lastname;
             ownerUpdate.Email = email;
-            ownerUpdate.Adress = adress;
+            ownerUpdate.Address = adress;
             ownerUpdate.PhoneNumber1 = phoneNumber1;
             ownerUpdate.PhoneNumber2 = phoneNumber2;
             ownerUpdate.PhoneNumber3 = phoneNumber3;

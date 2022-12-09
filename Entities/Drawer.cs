@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 namespace CaveManager.Entities
 {
-    [Table("Drawer")]
     [Serializable]
     public class Drawer
     {

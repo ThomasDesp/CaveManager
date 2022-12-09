@@ -2,7 +2,6 @@
 
 namespace CaveManager.Entities
 {
-    [Table("Wine")]
     [Serializable]
     public class Wine
     {
