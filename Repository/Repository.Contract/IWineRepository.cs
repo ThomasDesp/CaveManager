@@ -7,8 +7,8 @@ namespace CaveManager.Repository.Repository.Contract
     {
         Task<Wine> AddWineAsync(Wine wine, int idDrawer);
         Task<Wine> GetWineAsync(int idWine);
-        Task<Wine> PutWineAsync(int idWine, string name, string type, string designation, int minVintageRecommended, int maxVintageRecommended);
-        Task<bool> DeleteWineAsync(int idWine);
-        Task<bool> DuplicateWineAsync(int idWine, int idDrawer);
+        Task<Wine> PutWineAsync(Wine wine , int idWine);
+        Task<Wine> DeleteWineAsync(int idWine);
+        Task<Wine> DuplicateWineAsync(int idWine, int idDrawer);
     }
 }

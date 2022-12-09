@@ -1,4 +1,5 @@
 ﻿using CaveManager.Entities;
+using CaveManager.Entities.DTO;
 using CaveManager.Repository;
 using CaveManager.Repository.Repository.Contract;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,7 @@ namespace CaveManager.Controllers
             if (wineAdded != null)
                 return Ok(wineAdded);
             else
-                return BadRequest("Wine is not added, please retry");
+                return BadRequest("Wine is not added, please retry with a correct Id");
         }
 
 
@@ -43,7 +44,9 @@ namespace CaveManager.Controllers
         [HttpGet("{idWine}")]
         public async Task<ActionResult<Wine>> GetWine(int idWine)
         {
-            return Ok(await wineRepository.GetWineAsync(idWine));
+            var wine = await wineRepository.GetWineAsync(idWine);
+            if (wine != null) return Ok(wine);
+            return BadRequest("Wine not found");
         }
 
         /// <summary>
@@ -52,11 +55,11 @@ namespace CaveManager.Controllers
         /// <param name="idWine></param>
         /// <returns></returns>
         [HttpDelete("{idWine}")]
-        public async Task<ActionResult<bool>> DeleteWine(int idWine)
+        public async Task<ActionResult<Wine>> DeleteWine(int idWine)
         {
-
-            await wineRepository.DeleteWineAsync(idWine);
-            return Ok(true);
+            var wine = await wineRepository.DeleteWineAsync(idWine);
+            if(wine != null) return Ok(wine);
+            return BadRequest("Wine not found, try with a correct id");
         }
 
         /// <summary>
@@ -70,9 +73,16 @@ namespace CaveManager.Controllers
         /// <param name="maxVintageRecommended"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<ActionResult<Wine>> PutWine(int idWine, string name, string type, string designation, int minVintageRecommended, int maxVintageRecommended)
+        public async Task<ActionResult<Wine>> PutWine(int idWine, DTOWine dTOWine)
         {
-            return Ok(await wineRepository.PutWineAsync(idWine, name, type, designation, minVintageRecommended, maxVintageRecommended));
+            var nouveauDrawer = new Wine { Name = dTOWine.Name, Type = dTOWine.Type, Designation = dTOWine.Designation , Bottling=dTOWine.Bottling,MaxVintageRecommended=dTOWine.MaxVintageRecommended, MinVintageRecommended=dTOWine.MinVintageRecommended};
+            var wine = await wineRepository.PutWineAsync(nouveauDrawer, idWine);
+            if (wine != null)
+            {
+                return Ok(wine);
+            }
+            return BadRequest("Wine not found, try with a correct id");
+            
         }
 
         /// <summary>
@@ -82,10 +92,11 @@ namespace CaveManager.Controllers
         /// <param name="idDrawer"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<bool>> DuplicateWine(int idWine, int idDrawer)
+        public async Task<ActionResult<Wine>> DuplicateWine(int idWine, int idDrawer)
         {
-            await wineRepository.DuplicateWineAsync(idWine, idDrawer);
-            return Ok(true);
+            var wine = await wineRepository.DuplicateWineAsync(idWine, idDrawer);
+            if (wine != null) return Ok(wine);
+            return BadRequest("Wine not duplicated, try with a correct id");
         }
     }
 }
