@@ -10,5 +10,7 @@ namespace CaveManager.Repository.Repository.Contract
         Task<Wine> PutWineAsync(Wine wine , int idWine);
         Task<Wine> DeleteWineAsync(int idWine);
         Task<(Wine wine, string error)> DuplicateWineAsync(int idWine, int idDrawer);
+        Task<Owner> RetrieveUserByPasswordAndLogin(string password, string email);
+
     }
 }

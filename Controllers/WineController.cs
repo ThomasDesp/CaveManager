@@ -2,7 +2,11 @@
 using CaveManager.Entities.DTO;
 using CaveManager.Repository;
 using CaveManager.Repository.Repository.Contract;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
+using System.Security.Claims;
 
 namespace CaveManager.Controllers
 {
@@ -12,6 +16,7 @@ namespace CaveManager.Controllers
     {
         IWineRepository wineRepository;
         private readonly ILogger<WineController> _logger;
+
         public WineController(IWineRepository wineRepository, ILogger<WineController> logger)
         {
             this.wineRepository = wineRepository;
@@ -25,14 +30,25 @@ namespace CaveManager.Controllers
         /// <param name="idDrawer"></param>
         /// <returns></returns>
         [HttpPost("{idDrawer}")]
-        public async Task<ActionResult<Wine>> AddWine(Wine wine, int idDrawer)
+        public async Task<ActionResult<Wine>> AddWine(int idDrawer, [FromForm] DTOWine dTOwine)
         {
+            var wine = new Wine
+            {
+                Name = dTOwine.Name,
+                Type = dTOwine.Type,
+                Designation = dTOwine.Designation,
+                Bottling = dTOwine.Bottling,
+                MaxVintageRecommended = dTOwine.MaxVintageRecommended,
+                MinVintageRecommended = dTOwine.MinVintageRecommended
+            };
             var wineAdded = await wineRepository.AddWineAsync(wine, idDrawer);
 
-            if (wineAdded.error != "ok")
+            if (wineAdded.error == "ok")
                 return Ok(wineAdded.wine);
             else
                 return BadRequest(wineAdded.error);
+
+            return BadRequest("not logged");
         }
 
 
@@ -58,7 +74,7 @@ namespace CaveManager.Controllers
         public async Task<ActionResult<Wine>> DeleteWine(int idWine)
         {
             var wine = await wineRepository.DeleteWineAsync(idWine);
-            if(wine != null) return Ok(wine);
+            if (wine != null) return Ok(wine);
             return BadRequest("Wine not found, try with a correct id");
         }
 
@@ -75,14 +91,14 @@ namespace CaveManager.Controllers
         [HttpPut("{idWine}")]
         public async Task<ActionResult<Wine>> PutWine(int idWine, DTOWine dTOWine)
         {
-            var nouveauDrawer = new Wine { Name = dTOWine.Name, Type = dTOWine.Type, Designation = dTOWine.Designation , Bottling=dTOWine.Bottling,MaxVintageRecommended=dTOWine.MaxVintageRecommended, MinVintageRecommended=dTOWine.MinVintageRecommended};
-            var wine = await wineRepository.PutWineAsync(nouveauDrawer, idWine);
+            var newDrawer = new Wine { Name = dTOWine.Name, Type = dTOWine.Type, Designation = dTOWine.Designation, Bottling = dTOWine.Bottling, MaxVintageRecommended = dTOWine.MaxVintageRecommended, MinVintageRecommended = dTOWine.MinVintageRecommended };
+            var wine = await wineRepository.PutWineAsync(newDrawer, idWine);
             if (wine != null)
             {
                 return Ok(wine);
             }
             return BadRequest("Wine not found, try with a correct id");
-            
+
         }
 
         /// <summary>

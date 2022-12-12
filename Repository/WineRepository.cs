@@ -120,12 +120,14 @@ namespace CaveManager.Repository
             
         }
 
-        //public async Task<bool> ChangeWinePlaceAsync(Wine wine, int idDrawer)
-        //{
+        public async Task<Owner> RetrieveUserByPasswordAndLogin(string password, string email)
+        {
+            var zo = context.Owner.Where(u => u.Password == password && u.Email == email).FirstOrDefault();
+            return zo;
+        }
 
 
 
-        //}
 
     }
 }
