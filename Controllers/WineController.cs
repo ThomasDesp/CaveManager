@@ -29,10 +29,10 @@ namespace CaveManager.Controllers
         {
             var wineAdded = await wineRepository.AddWineAsync(wine, idDrawer);
 
-            if (wineAdded != null)
-                return Ok(wineAdded);
+            if (wineAdded.error != "ok")
+                return Ok(wineAdded.wine);
             else
-                return BadRequest("Wine is not added, please retry with a correct Id");
+                return BadRequest(wineAdded.error);
         }
 
 
@@ -95,8 +95,10 @@ namespace CaveManager.Controllers
         public async Task<ActionResult<Wine>> DuplicateWine(int idWine, int idDrawer)
         {
             var wine = await wineRepository.DuplicateWineAsync(idWine, idDrawer);
-            if (wine != null) return Ok(wine);
-            return BadRequest("Wine not duplicated, try with a correct id");
+            if (wine.error != "ok")
+                return Ok(wine.wine);
+            else
+                return BadRequest(wine.error);
         }
     }
 }
