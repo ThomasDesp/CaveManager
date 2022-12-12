@@ -17,7 +17,7 @@ namespace CaveManager.Repository
         }
 
         /// <summary>
-        /// Add an cave
+        /// Add a cave
         /// </summary>
         /// <param name="cave"></param>
         /// <returns></returns>
@@ -29,7 +29,7 @@ namespace CaveManager.Repository
         }
 
         /// <summary>
-        /// Get an cave by his id 
+        /// Get a cave by his id 
         /// </summary>
         /// <param name="idcave"></param>
         /// <returns></returns>
@@ -59,7 +59,7 @@ namespace CaveManager.Repository
         }
 
         /// <summary>
-        /// Update an owner by his id 
+        /// Update a owner by his id 
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
@@ -74,7 +74,7 @@ namespace CaveManager.Repository
         }
 
         /// <summary>
-        /// Remove an cave with his id
+        /// Remove a cave with his id
         /// </summary>
         /// <param name="idcave"></param>
         /// <returns></returns>
