@@ -23,17 +23,25 @@ namespace CaveManager.Repository
         /// <param name="wine"></param>
         /// <param name="idDrawer"></param>
         /// <returns></returns>
-        public async Task<Wine> AddWineAsync(Wine wine, int idDrawer)
+        public async Task<(Wine wine, string error)> AddWineAsync(Wine wine, int idDrawer)
         {
-            wine.DrawerId = idDrawer;
-            
-            var addWine = await context.Wine.AddAsync(wine);
-            if (addWine != null)
+            var drawer = await context.Drawer.FindAsync(idDrawer);
+            if (drawer != null)
             {
-                await context.SaveChangesAsync();
+                if (drawer.PlaceUsed < drawer.MaxPlace)
+                {
+                    wine.DrawerId = idDrawer;
+                    var addWine = await context.Wine.AddAsync(wine);
+                    if (addWine != null)
+                    {
+                        await context.SaveChangesAsync();
+                        return (wine,"ok");
+                    }
+                    return (wine, "Incorect wine's data");
+                }
+                return (wine, "Drawer is full");
             }
-            return wine;
-            
+            return (wine, "Drawer can't be found");
         }
 
         /// <summary>
@@ -46,14 +54,14 @@ namespace CaveManager.Repository
             return await context.Wine.FindAsync(idWine);
         }
 
-        
+
 
         /// <summary>
         /// Update a wine by his id
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
-        public async Task<Wine> PutWineAsync(Wine wine,int idWine)
+        public async Task<Wine> PutWineAsync(Wine wine, int idWine)
         {
             Wine wineUpdate = await context.Wine.FirstOrDefaultAsync(w => w.Id == idWine);
             if (wineUpdate != null)
@@ -81,7 +89,7 @@ namespace CaveManager.Repository
                 context.Wine.Remove(deleteWine);
                 await context.SaveChangesAsync();
             }
-            
+
             return deleteWine;
         }
 
@@ -91,11 +99,12 @@ namespace CaveManager.Repository
         /// <param name="idWine"></param>
         /// <param name="idDrawer"></param>
         /// <returns></returns>
-        public async Task<Wine> DuplicateWineAsync(int idWine, int idDrawer)
+        public async Task<(Wine wine, string error)> DuplicateWineAsync(int idWine, int idDrawer)
         {
             var duplicateWine = await context.Wine.Where(w => w.Id == idWine).SingleOrDefaultAsync();
             if (duplicateWine != null)
             {
+
                 var name = duplicateWine.Name;
                 var type = duplicateWine.Type;
                 var designation = duplicateWine.Designation;
@@ -103,12 +112,12 @@ namespace CaveManager.Repository
                 var maxVintageRecommended = duplicateWine.MaxVintageRecommended;
                 Wine wine = new Wine { Name = name, Type = type, Designation = designation, MinVintageRecommended = minVintageRecommended, MaxVintageRecommended = maxVintageRecommended };
 
-                await AddWineAsync(wine, idDrawer);
+                var res =await AddWineAsync(wine, idDrawer);
                 await context.SaveChangesAsync();
-                return duplicateWine;
+                return (res.wine, res.error);
             }
-          
-            return duplicateWine;
+            return(duplicateWine,"Wine not found");
+            
         }
 
         //public async Task<bool> ChangeWinePlaceAsync(Wine wine, int idDrawer)
