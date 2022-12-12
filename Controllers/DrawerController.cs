@@ -26,7 +26,7 @@ namespace CaveManager.Controllers
         /// </summary>
         /// <param name="idDrawer"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("{idDrawer}")]
         public async Task<ActionResult<Drawer>> GetDrawer(int idDrawer)
         {
             var drawers = await drawerRepository.SelectDrawerAsync(idDrawer);
@@ -66,7 +66,7 @@ namespace CaveManager.Controllers
         /// <param name="idDrawer"></param>
         /// <param name="dTODrawer"></param>
         /// <returns></returns>
-        [HttpPut]
+        [HttpPut("{idDrawer}")]
         public async Task<ActionResult<Drawer>> UpdateDrawer(int idDrawer, DTODrawer dTODrawer)
         {
             var nouveauDrawer = new Drawer {Name=dTODrawer.Name, MaxPlace=dTODrawer.MaxPlace, PlaceUsed=dTODrawer.PlaceUsed };
@@ -82,7 +82,7 @@ namespace CaveManager.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [HttpDelete]
+        [HttpDelete("{idCave}")]
         public async Task<ActionResult<Drawer>> DeleteDrawer(int drawerId)
         {
             var drawer = await drawerRepository.RemoveDrawerAsync(drawerId);
