@@ -104,8 +104,8 @@ namespace CaveManager.Repository
             var passwordChecked = Password.IsPasswordValidated(password);
             if (passwordChecked)
             {
-                Password.HashPassword(password);
-                ownerUpdate.Password = password;
+                var passwordHashed = Password.HashPassword(password);
+                ownerUpdate.Password = passwordHashed;
             }
             else
                 return ("Password is incorrect please retry", false);

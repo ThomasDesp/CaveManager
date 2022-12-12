@@ -99,17 +99,12 @@ namespace CaveManager.Controllers
                 return BadRequest("Owner was not modified !");
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="password"></param>
-        /// <returns></returns>
         [HttpPut("{idOwner}")]
-        public async Task<ActionResult<Owner>> PutOwnerPassword(string password)
+        public async Task<ActionResult<Owner>> PutOwnerPassword(int idOwner,string password)
         {
-            var putOwner = Ok(await ownerRepository.UpdateOwnerPasswordAsync(idOwner, firstname, lastname, email, address, phoneNumber1, phoneNumber2, phoneNumber3));
-            if (putOwner != null)
-                return Ok(putOwner);
+            var putOwnerPassword = Ok(await ownerRepository.UpdateOwnerPasswordAsync(idOwner, password));
+            if (putOwnerPassword != null)
+                return Ok(putOwnerPassword);
             else
                 return BadRequest("Owner was not modified !");
         }
