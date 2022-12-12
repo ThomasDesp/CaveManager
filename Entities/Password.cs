@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text.RegularExpressions;
 
 namespace CaveManager.Entities
@@ -36,5 +38,15 @@ namespace CaveManager.Entities
 
             return passwordHashed;
         }
+
+        //public static bool Isconnected(Owner owner)
+        //{
+        //    var identity = Owner?.Identity as ClaimsIdentity; 
+        //    var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier); 
+        //    if (idCurrentUser == null) 
+        //        return true;
+        //    else 
+        //        return false;
+        //}
     }
 }
