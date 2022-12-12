@@ -22,6 +22,17 @@ namespace CaveManager.Controllers
             this.logger = logger;
         }
 
+        [NonAction]
+        public bool IsConnected()
+        {
+            var identity = User?.Identity as ClaimsIdentity;
+            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
+            if (idCurrentUser == null)
+                return true;
+            else
+                return false;
+        }
+
         /// <summary>
         /// Add Owner to Database
         /// </summary>
@@ -59,6 +70,12 @@ namespace CaveManager.Controllers
             else
                 return BadRequest("Owner was not found !");
         }
+
+
+
+
+
+
 
         /// <summary>
         /// Modify an owner
@@ -211,4 +228,12 @@ namespace CaveManager.Controllers
 
         }
     }
-}
+} //            HttpContext.IsConnected(owner);
+
+
+//bool checkIsConnected = IsConnected();
+//if (checkIsConnected)
+//{
+
+//}
+//retrun BadRequest("Not logged");
