@@ -119,12 +119,12 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="idOwner"></param>
         /// <returns></returns>
-        public async Task<bool> DeleteOwnerAsync(int idOwner)
+        public async Task<Owner> DeleteOwnerAsync(int idOwner)
         {
             var deleteOwner = await context.Owner.Where(o => o.Id == idOwner).SingleOrDefaultAsync();
             context.Owner.Remove(deleteOwner);
             await context.SaveChangesAsync();
-            return true;
+            return deleteOwner;
         }
         /// <summary>
         /// Looking for an owner with email and password
@@ -143,13 +143,13 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="idOwner"></param>
         /// <returns></returns>
-        public async Task<bool> DeleteCaveAsync(int idOwner)
+        public async Task<List<Cave>> DeleteCaveAsync(int idOwner)
         {
-            var deleteCave = await context.Cave.Where(c => c.OwnerId == idOwner).SingleOrDefaultAsync();
-            RemoveAllCaves(idOwner);
-            context.Cave.Remove(deleteCave);
+            var owner = await context.Cave.Where(c => c.OwnerId == idOwner).SingleOrDefaultAsync();
+            var deleteCave = await RemoveAllCaves(idOwner);
+            context.Cave.Remove(owner);
             await context.SaveChangesAsync();
-            return true;
+            return deleteCave;
         }
 
         /// <summary>
@@ -157,14 +157,14 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="idCave"></param>
         /// <returns></returns>
-        public async Task<bool> RemoveAllCaves(int idCave)
+        public async Task<List<Cave>> RemoveAllCaves(int idCave)
         {
             var deleteCave = await context.Cave.Where(c => c.Id == idCave).ToListAsync();
             foreach (var item in deleteCave)
             {
-                caveRepository.RemoveCaveAsync(item.Id);
+               await caveRepository.RemoveCaveAsync(item.Id);
             }
-            return true;
+            return deleteCave;
         }
 
         /// <summary>
@@ -205,14 +205,14 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="idOwner"></param>
         /// <returns></returns>
-        public async Task<bool> AllDataForOwnerAsync(int idOwner) //Task<List<Cave>>
+        public async Task<List<Wine>> AllDataForOwnerAsync(int idOwner) //Task<List<Cave>>
         {
-            try
+            var winesList = await GetAllWineFromOwnerAsync(idOwner);
+            try 
             {
-                var getAllCaves = GetAllWineFromOwnerAsync(idOwner);
-                string fileName = "C:\\Users\\toush\\OneDrive\\Bureau\\Cave\\wwwroot\\Resources\\Data.json";
+                string fileName = $"wwwroot\\Ressources\\Data.json";
                 using FileStream createStream = File.Create(fileName);
-                await JsonSerializer.SerializeAsync(createStream, getAllCaves,
+                await JsonSerializer.SerializeAsync(createStream, winesList,
                     new JsonSerializerOptions
                     {
                         ReferenceHandler = ReferenceHandler.IgnoreCycles,
@@ -220,13 +220,12 @@ namespace CaveManager.Repository
                         WriteIndented = true
                     });
                 await createStream.DisposeAsync();
-                return true;
+                return winesList;
             }
             catch (Exception e)
             {
                 logger.LogError(e?.InnerException?.ToString());
-
-                return false;
+                return winesList;
             }
 
         }

@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Specification\" />
-    <Folder Include="wwwroot\Resources\" />
+    <Folder Include="wwwroot\Ressources\" />
     <Folder Include="wwwroot\Pictures\" />
   </ItemGroup>
 

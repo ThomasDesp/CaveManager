@@ -105,13 +105,13 @@ namespace CaveManager.Controllers
         /// <param name="idOwner></param>
         /// <returns></returns>
         [HttpDelete("{idOwner}")]
-        public async Task<ActionResult<bool>> DeleteOwner(int idOwner)
+        public async Task<ActionResult<Owner>> DeleteOwner(int idOwner)
         {
             // Delete Wine, Drawner and Cave associated with idOwner
             var caveDelete = await ownerRepository.DeleteCaveAsync(idOwner);
             var ownerDelete = await ownerRepository.DeleteOwnerAsync(idOwner);
             if (caveDelete != null && ownerDelete != null)
-                return Ok(true);
+                return Ok("Owner deleted");
             else
                 return BadRequest("Cave(s) and Owner was not deleted !");
         }
@@ -158,7 +158,7 @@ namespace CaveManager.Controllers
         /// <param name="idOwner"></param>
         /// <returns></returns>
         [HttpDelete("{idOwner}")]
-        public async Task<ActionResult<bool>> DeleteCaves(int idOwner)
+        public async Task<ActionResult<List<Cave>>> DeleteCaves(int idOwner)
         {
             var caveDelete = await ownerRepository.DeleteCaveAsync(idOwner);
             if (caveDelete != null)
@@ -188,13 +188,13 @@ namespace CaveManager.Controllers
         /// <param name="idOwner"></param>
         /// <returns></returns>
         [HttpGet("{idOwner}")]
-        public async Task<ActionResult<bool>> AllDataForOwner(int idOwner)
+        public async Task<ActionResult<List<Wine>>> AllDataForOwner(int idOwner)
         {
             var jsonCreate = await ownerRepository.AllDataForOwnerAsync(idOwner);
             if (jsonCreate != null)
                 return Ok(jsonCreate);
             else
-                return BadRequest("Json file was not created");
+                return BadRequest("Json file was not created, this owner do not exist");
         }
 
         /// <summary>
@@ -228,7 +228,7 @@ namespace CaveManager.Controllers
 
         }
     }
-} //            HttpContext.IsConnected(owner);
+} 
 
 
 //bool checkIsConnected = IsConnected();
