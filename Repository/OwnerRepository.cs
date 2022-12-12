@@ -134,10 +134,8 @@ namespace CaveManager.Repository
         /// <returns></returns>
         public async Task<Owner> RetrieveOwnerByPasswordAndLoginAsync(string email, string password)
         {
-            //var passwordHashed = Password.HashPassword(password);
-            //var result = passwordHashed.VerifyHashedPassword(email,password);
-            //if (result == PasswordVerificationResult.Success)
-            return context.Owner.Where(o => o.Email == email && o.Password == password).FirstOrDefault();
+            var t = Password.HashPassword(password);
+            return await context.Owner.Where(o => o.Email == email && o.Password == t).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -193,7 +191,7 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public async Task<bool> CheckCguAsync(Owner owner)
+        public async Task<bool> CheckCgu(Owner owner)
         {
             if (owner.IsCGUAccepted)
                 //Method to add his first cave

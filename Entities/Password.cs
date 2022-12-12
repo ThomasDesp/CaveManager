@@ -2,11 +2,14 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Security.Principal;
+using System.Text;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 namespace CaveManager.Entities
 {
-    public class Password
+    public static class Password
     {
         public static bool IsPasswordValidated(string password)
         {
@@ -25,7 +28,7 @@ namespace CaveManager.Entities
 
         public static string HashPassword(string password)
         {
-            byte[] salt = RandomNumberGenerator.GetBytes(128 / 8); // divide by 8 to convert bits to bytes
+            byte[] salt = Encoding.ASCII.GetBytes("toto"); // divide by 8 to convert bits to bytes
             //Convert.ToBase64String(salt);
 
             // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
@@ -38,15 +41,5 @@ namespace CaveManager.Entities
 
             return passwordHashed;
         }
-
-        //public static bool Isconnected(Owner owner)
-        //{
-        //    var identity = Owner?.Identity as ClaimsIdentity; 
-        //    var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier); 
-        //    if (idCurrentUser == null) 
-        //        return true;
-        //    else 
-        //        return false;
-        //}
     }
 }
