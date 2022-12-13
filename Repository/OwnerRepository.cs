@@ -5,6 +5,7 @@ using CaveManager.Repository.Repository.Contract;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -121,18 +122,6 @@ namespace CaveManager.Repository
         }
 
         /// <summary>
-        /// Remove an owner with his id
-        /// </summary>
-        /// <param name="idOwner"></param>
-        /// <returns></returns>
-        public async Task<Owner> DeleteOwnerAsync(int idOwner)
-        {
-            var deleteOwner = await context.Owner.Where(o => o.Id == idOwner).SingleOrDefaultAsync();
-            context.Owner.Remove(deleteOwner);
-            await context.SaveChangesAsync();
-            return deleteOwner;
-        }
-        /// <summary>
         /// Looking for an owner with email and password
         /// </summary>
         /// <param name="email"></param>
@@ -149,13 +138,13 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="idOwner"></param>
         /// <returns></returns>
-        public async Task<List<Cave>> DeleteCaveAsync(int idOwner)
+        public async Task<Owner> DeleteOwnerAsync(int idOwner)
         {
-            var owner = await context.Cave.Where(c => c.OwnerId == idOwner).SingleOrDefaultAsync();
-            var deleteCave = await RemoveAllCaves(idOwner);
-            context.Cave.Remove(owner);
+            var owner = await context.Owner.Where(c => c.Id == idOwner).SingleOrDefaultAsync();
+            var deleteCave = await RemoveAllCavesAsync(idOwner);
+            context.Owner.Remove(owner);
             await context.SaveChangesAsync();
-            return deleteCave;
+            return owner;
         }
 
         /// <summary>
@@ -163,9 +152,9 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="idCave"></param>
         /// <returns></returns>
-        public async Task<List<Cave>> RemoveAllCaves(int idCave)
+        public async Task<List<Cave>> RemoveAllCavesAsync(int ownerId)
         {
-            var deleteCave = await context.Cave.Where(c => c.Id == idCave).ToListAsync();
+            var deleteCave = await context.Cave.Where(c => c.OwnerId == ownerId).ToListAsync();
             foreach (var item in deleteCave)
             {
                 await caveRepository.RemoveCaveAsync(item.Id);
@@ -233,6 +222,34 @@ namespace CaveManager.Repository
                 logger.LogError(e?.InnerException?.ToString());
                 return winesList;
             }
+        }
+        public async Task<List<Wine>> ImportDataForOwnerAsync(Stream createStream, int idOwner)
+        {
+            List<Wine> wines = new List<Wine>();
+            using (createStream/*var fileStreamRead = new FileStream("garageVoiture.xml", FileMode.Open, FileAccess.Read)*/)
+            {
+                StreamReader reader = new StreamReader(createStream);
+                var serializedList = reader.ReadToEnd();
+                var deserializedList = JsonSerializer.Deserialize<List<Wine>>(serializedList);
+
+                foreach (var item in deserializedList)
+                {
+                    item.Drawer.Cave.OwnerId=idOwner;
+                    item.Id = 0;
+                    item.Drawer.Id = 0;
+                    item.DrawerId = 0;
+                    item.Drawer.Cave.Id = 0;
+                    item.Drawer.CaveId = 0;
+                    item.Drawer.Cave.Owner=null;
+                    item.Drawer.Wines.Clear();
+                    item.Drawer.Cave.Drawer.Clear();
+                }
+                context.Wine.AddRange(deserializedList);
+                await context.SaveChangesAsync();
+                return deserializedList;
+            }
+            return wines;
+
         }
 
         //public async Task<List<Cave>> AllDataForOwner(int idOwner)

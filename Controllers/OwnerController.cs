@@ -7,6 +7,8 @@ using System.Security.Claims;
 using CaveManager.Entities;
 using CaveManager.Repository;
 using CaveManager.Entities.DTO;
+using System.Text.Json;
+using System;
 
 namespace CaveManager.Controllers
 {
@@ -15,9 +17,11 @@ namespace CaveManager.Controllers
     public class OwnerController : ControllerBase
     {
         IOwnerRepository ownerRepository;
+        IWebHostEnvironment environment;
         ILogger<OwnerRepository> logger;
-        public OwnerController(IOwnerRepository ownerRepository, ILogger<OwnerRepository> logger)
+        public OwnerController(IOwnerRepository ownerRepository, ILogger<OwnerRepository> logger, IWebHostEnvironment environment)
         {
+            this.environment = environment;
             this.ownerRepository = ownerRepository;
             this.logger = logger;
         }
@@ -118,18 +122,13 @@ namespace CaveManager.Controllers
         [HttpDelete("{idOwner}")]
         public async Task<ActionResult<Owner>> DeleteOwner(int idOwner)
         {
-            bool checkIsConnected = IsConnected();
-            if (checkIsConnected)
-            {
-                // Delete Wine, Drawner and Cave associated with idOwner
-                var caveDelete = await ownerRepository.DeleteCaveAsync(idOwner);
-                var ownerDelete = await ownerRepository.DeleteOwnerAsync(idOwner);
-                if (caveDelete != null && ownerDelete != null)
-                    return Ok("Owner deleted");
-                else
-                    return BadRequest("Cave(s) and Owner was not deleted !");
-            }
-            return BadRequest("Not logged");
+            // Delete Wine, Drawner and Cave associated with idOwner
+           
+            var ownerDelete = await ownerRepository.DeleteOwnerAsync(idOwner);
+            if ( ownerDelete != null)
+                return Ok(ownerDelete);
+            else
+                return BadRequest("Cave(s) and Owner was not deleted !");
         }
 
         /// <summary>
@@ -173,26 +172,22 @@ namespace CaveManager.Controllers
             return BadRequest("Not logged");
         }
 
+       
+
         /// <summary>
         /// Delete Caves associated with an idOwner when deleting his account
-        /// </summary> 
+        /// </summary>
         /// <param name="idOwner"></param>
         /// <returns></returns>
         [HttpDelete("{idOwner}")]
         public async Task<ActionResult<List<Cave>>> DeleteCaves(int idOwner)
         {
-            bool checkIsConnected = IsConnected();
-            if (checkIsConnected)
-            {
-                var caveDelete = await ownerRepository.DeleteCaveAsync(idOwner);
-                if (caveDelete != null)
-                    return Ok(caveDelete);
-                else
-                    return BadRequest("Cave(s) was not deleted !");
-            }
-            return BadRequest("Not logged");
+            var caveDelete = await ownerRepository.RemoveAllCavesAsync(idOwner);
+            if (caveDelete != null)
+                return Ok(caveDelete);
+            else
+                return BadRequest("Cave(s) was not deleted !");
         }
-
         /// <summary>
         /// Check age with user's birthday
         /// </summary>
@@ -228,12 +223,25 @@ namespace CaveManager.Controllers
             return BadRequest("Not logged");
         }
 
+        [HttpPost("{idOwner}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<List<Wine>>> ImportDataForOwner(IFormFile createStream, int idOwner/*[FromForm] string Jfile*/)
+        {
+            List<Wine> wines = await ownerRepository.ImportDataForOwnerAsync(createStream.OpenReadStream(), idOwner);
+            return Ok(wines);
+
+            //return BadRequest("Cette owner n'est pas trouvable");
+        }
+
         /// <summary>
         /// List for all caves with theirs drawers and wines and only peak wine
         /// </summary>
         /// <param name="idOwner"></param>
         /// <returns></returns>
         [HttpGet("{idOwner}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<List<Wine>>> GetAllPeakWineFromOwner(int idOwner)
         {
             bool checkIsConnected = IsConnected();

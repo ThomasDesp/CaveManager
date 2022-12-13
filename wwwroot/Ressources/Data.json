@@ -1,265 +1,254 @@
-{
-  "Result": [
-    {
+[
+  {
+    "Id": 1,
+    "Name": "Vin de fou",
+    "Type": "Red Wine",
+    "Designation": null,
+    "MinVintageRecommended": 2,
+    "MaxVintageRecommended": 8,
+    "Bottling": 2019,
+    "DrawerId": 1,
+    "Drawer": {
       "Id": 1,
-      "Name": "Vin de fou",
-      "Type": "Red Wine",
-      "Designation": null,
-      "MinVintageRecommended": 2,
-      "MaxVintageRecommended": 8,
-      "Bottling": 2019,
-      "DrawerId": 1,
-      "Drawer": {
-        "Id": 1,
-        "Name": "Pomme",
-        "MaxPlace": 10,
-        "PlaceUsed": 2,
-        "CaveId": 1,
-        "Wines": [
-          null,
-          {
-            "Id": 2,
-            "Name": "Vin pas fou",
-            "Type": "Ros\u00E9 Wine",
-            "Designation": null,
-            "MinVintageRecommended": 4,
-            "MaxVintageRecommended": 8,
-            "Bottling": 2011,
-            "DrawerId": 1,
-            "Drawer": null
-          }
-        ],
-        "Cave": {
-          "Id": 1,
-          "Name": "BatCave",
-          "OwnerId": 2,
-          "Owner": {
-            "Id": 2,
-            "IsCGUAccepted": true,
-            "FirstName": "Leo",
-            "LastName": "SMaster",
-            "FullName": null,
-            "Email": "leo@gmail.com",
-            "Password": "1v9A",
-            "Address": null,
-            "PhoneNumber1": null,
-            "PhoneNumber2": null,
-            "PhoneNumber3": null,
-            "Caves": [
-              null,
-              {
-                "Id": 2,
-                "Name": "ThomCave",
-                "OwnerId": 2,
-                "Owner": null,
-                "Drawer": [
-                  {
-                    "Id": 2,
-                    "Name": "Poire",
-                    "MaxPlace": 10,
-                    "PlaceUsed": 1,
-                    "CaveId": 2,
-                    "Wines": [
-                      {
-                        "Id": 3,
-                        "Name": "Vin de fou pas fou",
-                        "Type": "White Wine",
-                        "Designation": null,
-                        "MinVintageRecommended": 10,
-                        "MaxVintageRecommended": 12,
-                        "Bottling": 2012,
-                        "DrawerId": 2,
-                        "Drawer": null
-                      }
-                    ],
-                    "Cave": null
-                  }
-                ]
-              }
-            ]
-          },
-          "Drawer": [
-            null
-          ]
-        }
-      }
-    },
-    {
-      "Id": 2,
-      "Name": "Vin pas fou",
-      "Type": "Ros\u00E9 Wine",
-      "Designation": null,
-      "MinVintageRecommended": 4,
-      "MaxVintageRecommended": 8,
-      "Bottling": 2011,
-      "DrawerId": 1,
-      "Drawer": {
-        "Id": 1,
-        "Name": "Pomme",
-        "MaxPlace": 10,
-        "PlaceUsed": 2,
-        "CaveId": 1,
-        "Wines": [
-          {
-            "Id": 1,
-            "Name": "Vin de fou",
-            "Type": "Red Wine",
-            "Designation": null,
-            "MinVintageRecommended": 2,
-            "MaxVintageRecommended": 8,
-            "Bottling": 2019,
-            "DrawerId": 1,
-            "Drawer": null
-          },
-          null
-        ],
-        "Cave": {
-          "Id": 1,
-          "Name": "BatCave",
-          "OwnerId": 2,
-          "Owner": {
-            "Id": 2,
-            "IsCGUAccepted": true,
-            "FirstName": "Leo",
-            "LastName": "SMaster",
-            "FullName": null,
-            "Email": "leo@gmail.com",
-            "Password": "1v9A",
-            "Address": null,
-            "PhoneNumber1": null,
-            "PhoneNumber2": null,
-            "PhoneNumber3": null,
-            "Caves": [
-              null,
-              {
-                "Id": 2,
-                "Name": "ThomCave",
-                "OwnerId": 2,
-                "Owner": null,
-                "Drawer": [
-                  {
-                    "Id": 2,
-                    "Name": "Poire",
-                    "MaxPlace": 10,
-                    "PlaceUsed": 1,
-                    "CaveId": 2,
-                    "Wines": [
-                      {
-                        "Id": 3,
-                        "Name": "Vin de fou pas fou",
-                        "Type": "White Wine",
-                        "Designation": null,
-                        "MinVintageRecommended": 10,
-                        "MaxVintageRecommended": 12,
-                        "Bottling": 2012,
-                        "DrawerId": 2,
-                        "Drawer": null
-                      }
-                    ],
-                    "Cave": null
-                  }
-                ]
-              }
-            ]
-          },
-          "Drawer": [
-            null
-          ]
-        }
-      }
-    },
-    {
-      "Id": 3,
-      "Name": "Vin de fou pas fou",
-      "Type": "White Wine",
-      "Designation": null,
-      "MinVintageRecommended": 10,
-      "MaxVintageRecommended": 12,
-      "Bottling": 2012,
-      "DrawerId": 2,
-      "Drawer": {
-        "Id": 2,
-        "Name": "Poire",
-        "MaxPlace": 10,
-        "PlaceUsed": 1,
-        "CaveId": 2,
-        "Wines": [
-          null
-        ],
-        "Cave": {
+      "Name": "Pomme",
+      "MaxPlace": 10,
+      "PlaceUsed": 2,
+      "CaveId": 1,
+      "Wines": [
+        null,
+        {
           "Id": 2,
-          "Name": "ThomCave",
-          "OwnerId": 2,
-          "Owner": {
-            "Id": 2,
-            "IsCGUAccepted": true,
-            "FirstName": "Leo",
-            "LastName": "SMaster",
-            "FullName": null,
-            "Email": "leo@gmail.com",
-            "Password": "1v9A",
-            "Address": null,
-            "PhoneNumber1": null,
-            "PhoneNumber2": null,
-            "PhoneNumber3": null,
-            "Caves": [
-              {
-                "Id": 1,
-                "Name": "BatCave",
-                "OwnerId": 2,
-                "Owner": null,
-                "Drawer": [
-                  {
-                    "Id": 1,
-                    "Name": "Pomme",
-                    "MaxPlace": 10,
-                    "PlaceUsed": 2,
-                    "CaveId": 1,
-                    "Wines": [
-                      {
-                        "Id": 1,
-                        "Name": "Vin de fou",
-                        "Type": "Red Wine",
-                        "Designation": null,
-                        "MinVintageRecommended": 2,
-                        "MaxVintageRecommended": 8,
-                        "Bottling": 2019,
-                        "DrawerId": 1,
-                        "Drawer": null
-                      },
-                      {
-                        "Id": 2,
-                        "Name": "Vin pas fou",
-                        "Type": "Ros\u00E9 Wine",
-                        "Designation": null,
-                        "MinVintageRecommended": 4,
-                        "MaxVintageRecommended": 8,
-                        "Bottling": 2011,
-                        "DrawerId": 1,
-                        "Drawer": null
-                      }
-                    ],
-                    "Cave": null
-                  }
-                ]
-              },
-              null
-            ]
-          },
-          "Drawer": [
-            null
-          ]
+          "Name": "Vin pas fou",
+          "Type": "Ros\u00E9 Wine",
+          "Designation": null,
+          "MinVintageRecommended": 4,
+          "MaxVintageRecommended": 8,
+          "Bottling": 2011,
+          "DrawerId": 1,
+          "Drawer": null
         }
+      ],
+      "Cave": {
+        "Id": 1,
+        "Name": "BatCave",
+        "OwnerId": 2,
+        "Owner": {
+          "Id": 2,
+          "IsCGUAccepted": true,
+          "FirstName": "Leo",
+          "LastName": "SMaster",
+          "FullName": null,
+          "Email": "leo@gmail.com",
+          "Password": "1v9A",
+          "Address": null,
+          "PhoneNumber1": null,
+          "PhoneNumber2": null,
+          "PhoneNumber3": null,
+          "Caves": [
+            null,
+            {
+              "Id": 2,
+              "Name": "ThomCave",
+              "OwnerId": 2,
+              "Owner": null,
+              "Drawer": [
+                {
+                  "Id": 2,
+                  "Name": "Poire",
+                  "MaxPlace": 10,
+                  "PlaceUsed": 1,
+                  "CaveId": 2,
+                  "Wines": [
+                    {
+                      "Id": 3,
+                      "Name": "Vin de fou pas fou",
+                      "Type": "White Wine",
+                      "Designation": null,
+                      "MinVintageRecommended": 10,
+                      "MaxVintageRecommended": 12,
+                      "Bottling": 2012,
+                      "DrawerId": 2,
+                      "Drawer": null
+                    }
+                  ],
+                  "Cave": null
+                }
+              ]
+            }
+          ]
+        },
+        "Drawer": [
+          null
+        ]
       }
     }
-  ],
-  "Id": 470,
-  "Exception": null,
-  "Status": 5,
-  "IsCanceled": false,
-  "IsCompleted": true,
-  "IsCompletedSuccessfully": true,
-  "CreationOptions": 0,
-  "AsyncState": null,
-  "IsFaulted": false
-}
+  },
+  {
+    "Id": 2,
+    "Name": "Vin pas fou",
+    "Type": "Ros\u00E9 Wine",
+    "Designation": null,
+    "MinVintageRecommended": 4,
+    "MaxVintageRecommended": 8,
+    "Bottling": 2011,
+    "DrawerId": 1,
+    "Drawer": {
+      "Id": 1,
+      "Name": "Pomme",
+      "MaxPlace": 10,
+      "PlaceUsed": 2,
+      "CaveId": 1,
+      "Wines": [
+        {
+          "Id": 1,
+          "Name": "Vin de fou",
+          "Type": "Red Wine",
+          "Designation": null,
+          "MinVintageRecommended": 2,
+          "MaxVintageRecommended": 8,
+          "Bottling": 2019,
+          "DrawerId": 1,
+          "Drawer": null
+        },
+        null
+      ],
+      "Cave": {
+        "Id": 1,
+        "Name": "BatCave",
+        "OwnerId": 2,
+        "Owner": {
+          "Id": 2,
+          "IsCGUAccepted": true,
+          "FirstName": "Leo",
+          "LastName": "SMaster",
+          "FullName": null,
+          "Email": "leo@gmail.com",
+          "Password": "1v9A",
+          "Address": null,
+          "PhoneNumber1": null,
+          "PhoneNumber2": null,
+          "PhoneNumber3": null,
+          "Caves": [
+            null,
+            {
+              "Id": 2,
+              "Name": "ThomCave",
+              "OwnerId": 2,
+              "Owner": null,
+              "Drawer": [
+                {
+                  "Id": 2,
+                  "Name": "Poire",
+                  "MaxPlace": 10,
+                  "PlaceUsed": 1,
+                  "CaveId": 2,
+                  "Wines": [
+                    {
+                      "Id": 3,
+                      "Name": "Vin de fou pas fou",
+                      "Type": "White Wine",
+                      "Designation": null,
+                      "MinVintageRecommended": 10,
+                      "MaxVintageRecommended": 12,
+                      "Bottling": 2012,
+                      "DrawerId": 2,
+                      "Drawer": null
+                    }
+                  ],
+                  "Cave": null
+                }
+              ]
+            }
+          ]
+        },
+        "Drawer": [
+          null
+        ]
+      }
+    }
+  },
+  {
+    "Id": 3,
+    "Name": "Vin de fou pas fou",
+    "Type": "White Wine",
+    "Designation": null,
+    "MinVintageRecommended": 10,
+    "MaxVintageRecommended": 12,
+    "Bottling": 2012,
+    "DrawerId": 2,
+    "Drawer": {
+      "Id": 2,
+      "Name": "Poire",
+      "MaxPlace": 10,
+      "PlaceUsed": 1,
+      "CaveId": 2,
+      "Wines": [
+        null
+      ],
+      "Cave": {
+        "Id": 2,
+        "Name": "ThomCave",
+        "OwnerId": 2,
+        "Owner": {
+          "Id": 2,
+          "IsCGUAccepted": true,
+          "FirstName": "Leo",
+          "LastName": "SMaster",
+          "FullName": null,
+          "Email": "leo@gmail.com",
+          "Password": "1v9A",
+          "Address": null,
+          "PhoneNumber1": null,
+          "PhoneNumber2": null,
+          "PhoneNumber3": null,
+          "Caves": [
+            {
+              "Id": 1,
+              "Name": "BatCave",
+              "OwnerId": 2,
+              "Owner": null,
+              "Drawer": [
+                {
+                  "Id": 1,
+                  "Name": "Pomme",
+                  "MaxPlace": 10,
+                  "PlaceUsed": 2,
+                  "CaveId": 1,
+                  "Wines": [
+                    {
+                      "Id": 1,
+                      "Name": "Vin de fou",
+                      "Type": "Red Wine",
+                      "Designation": null,
+                      "MinVintageRecommended": 2,
+                      "MaxVintageRecommended": 8,
+                      "Bottling": 2019,
+                      "DrawerId": 1,
+                      "Drawer": null
+                    },
+                    {
+                      "Id": 2,
+                      "Name": "Vin pas fou",
+                      "Type": "Ros\u00E9 Wine",
+                      "Designation": null,
+                      "MinVintageRecommended": 4,
+                      "MaxVintageRecommended": 8,
+                      "Bottling": 2011,
+                      "DrawerId": 1,
+                      "Drawer": null
+                    }
+                  ],
+                  "Cave": null
+                }
+              ]
+            },
+            null
+          ]
+        },
+        "Drawer": [
+          null
+        ]
+      }
+    }
+  }
+]
