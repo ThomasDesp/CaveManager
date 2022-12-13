@@ -34,20 +34,27 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public async Task<Owner> AddOwnerAsync(string firstname, string lastname, string password, string email, string address, string phoneNumber1, string phoneNumber2, string phoneNumber3)
+        public async Task<Owner> AddOwnerAsync(Owner owner)
         {
+            var password = owner.Password;
             var passwordValidated = Password.IsPasswordValidated(password);
             if (passwordValidated)
             {
+                var firstName = owner.FirstName;
+                var lastName = owner.LastName;
+                var email = owner.Email;
+                var address = owner.Address;
+                var phoneNumber1 = owner.PhoneNumber1;
+                var phoneNumber2 = owner.PhoneNumber2;
+                var phoneNumber3 = owner.PhoneNumber3;
                 var passwordHashed = Password.HashPassword(password);
-                Owner owner = new Owner { Id = 0, FirstName = firstname, LastName = lastname, Password = passwordHashed, Email = email, Address = address, PhoneNumber1 = phoneNumber1, PhoneNumber2 = phoneNumber2, PhoneNumber3 = phoneNumber3 };
-                var addOwner = context.Owner.Add(owner);
+                Owner ownerAdded = new Owner { FirstName = firstName, LastName = lastName, Password = passwordHashed, Email = email, Address = address, PhoneNumber1 = phoneNumber1, PhoneNumber2 = phoneNumber2, PhoneNumber3 = phoneNumber3 };
+                var addOwner = context.Owner.Add(ownerAdded);
                 await context.SaveChangesAsync();
-                return owner;
+                return ownerAdded;
             }
             else
             {
-                Owner owner = new Owner();
                 return owner;
             }
         }
@@ -74,16 +81,15 @@ namespace CaveManager.Repository
         /// <param name="phoneNumber2"></param>
         /// <param name="phoneNumber3"></param>
         /// <returns></returns>
-        public async Task<Owner> UpdateOwnerAsync(int idOwner, string firstname, string lastname, string email, string address, string phoneNumber1, string phoneNumber2, string phoneNumber3)
+        public async Task<Owner> UpdateOwnerAsync(int idOwner, Owner owner)
         {
             Owner ownerUpdate = await context.Owner.FirstOrDefaultAsync(o => o.Id == idOwner);
-            ownerUpdate.FirstName = firstname;
-            ownerUpdate.FullName = firstname + lastname;
-            ownerUpdate.Email = email;
-            ownerUpdate.Address = address;
-            ownerUpdate.PhoneNumber1 = phoneNumber1;
-            ownerUpdate.PhoneNumber2 = phoneNumber2;
-            ownerUpdate.PhoneNumber3 = phoneNumber3;
+            ownerUpdate.FirstName = owner.FirstName;
+            ownerUpdate.Email = owner.Email;
+            ownerUpdate.Address = owner.Address;
+            ownerUpdate.PhoneNumber1 = owner.PhoneNumber1;
+            ownerUpdate.PhoneNumber2 = owner.PhoneNumber2;
+            ownerUpdate.PhoneNumber3 = owner.PhoneNumber3;
 
             await context.SaveChangesAsync();
             return ownerUpdate;
@@ -134,8 +140,8 @@ namespace CaveManager.Repository
         /// <returns></returns>
         public async Task<Owner> RetrieveOwnerByPasswordAndLoginAsync(string email, string password)
         {
-            var t = Password.HashPassword(password);
-            return await context.Owner.Where(o => o.Email == email && o.Password == t).FirstOrDefaultAsync();
+            var passwordDb = Password.HashPassword(password);
+            return await context.Owner.Where(o => o.Email == email && o.Password == passwordDb).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -162,7 +168,7 @@ namespace CaveManager.Repository
             var deleteCave = await context.Cave.Where(c => c.Id == idCave).ToListAsync();
             foreach (var item in deleteCave)
             {
-               await caveRepository.RemoveCaveAsync(item.Id);
+                await caveRepository.RemoveCaveAsync(item.Id);
             }
             return deleteCave;
         }
@@ -205,10 +211,10 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="idOwner"></param>
         /// <returns></returns>
-        public async Task<List<Wine>> AllDataForOwnerAsync(int idOwner) //Task<List<Cave>>
+        public async Task<List<Wine>> AllDataForOwnerAsync(int idOwner)
         {
             var winesList = await GetAllWineFromOwnerAsync(idOwner);
-            try 
+            try
             {
                 string fileName = $"wwwroot\\Ressources\\Data.json";
                 using FileStream createStream = File.Create(fileName);
@@ -227,7 +233,6 @@ namespace CaveManager.Repository
                 logger.LogError(e?.InnerException?.ToString());
                 return winesList;
             }
-
         }
 
         //public async Task<List<Cave>> AllDataForOwner(int idOwner)

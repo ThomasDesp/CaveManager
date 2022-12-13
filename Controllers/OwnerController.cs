@@ -36,19 +36,12 @@ namespace CaveManager.Controllers
         /// <summary>
         /// Add Owner to Database
         /// </summary>
-        /// <param name="firstname"></param>
-        /// <param name="lastname"></param>
-        /// <param name="password"></param>
-        /// <param name="email"></param>
-        /// <param name="address"></param>
-        /// <param name="phoneNumber1"></param>
-        /// <param name="phoneNumber2"></param>
-        /// <param name="phoneNumber3"></param>
+        /// <param name="owner"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Owner>> PostAddOwner(string firstname, string lastname, string password, string email, string address, string phoneNumber1, string phoneNumber2, string phoneNumber3)
+        public async Task<ActionResult<Owner>> PostAddOwner(Owner owner)
         {
-            var ownerCreated = await ownerRepository.AddOwnerAsync(firstname, lastname, password, email, address, phoneNumber1, phoneNumber2, phoneNumber3);
+            var ownerCreated = await ownerRepository.AddOwnerAsync(owner);
 
             if (ownerCreated != null)
                 return Ok(ownerCreated);
@@ -62,7 +55,7 @@ namespace CaveManager.Controllers
         /// <param name="idOwner"></param>
         /// <returns></returns>
         [HttpGet("{idOwner}")]
-        public async Task<ActionResult<Owner>> GetWine(int idOwner)
+        public async Task<ActionResult<Owner>> GetOwner(int idOwner)
         {
             var getOwner = Ok(await ownerRepository.SelectOwnerAsync(idOwner));
             if (getOwner != null)
@@ -71,42 +64,50 @@ namespace CaveManager.Controllers
                 return BadRequest("Owner was not found !");
         }
 
-
-
-
-
-
-
         /// <summary>
         /// Modify an owner
         /// </summary>
-        /// /// <param name="idOwner"></param>
-        /// <param name="firstname"></param>
-        /// <param name="lastname"></param>
-        /// <param name="email"></param>
-        /// <param name="address"></param>
-        /// <param name="phoneNumber1"></param>
-        /// <param name="phoneNumber2"></param>
-        /// <param name="phoneNumber3"></param>
+        /// <param name="idOwner"></param>
+        /// <param name="dTOOwnerModification"></param>
         /// <returns></returns>
         [HttpPut("{idOwner}")]
-        public async Task<ActionResult<Owner>> PutOwner(int idOwner, string firstname, string lastname, string email, string address, string phoneNumber1, string phoneNumber2, string phoneNumber3)
+        public async Task<ActionResult<Owner>> PutOwner(int idOwner, [FromForm] DTOOwnerModification dTOOwnerModification)
         {
-            var putOwner = Ok(await ownerRepository.UpdateOwnerAsync(idOwner, firstname, lastname, email, address, phoneNumber1, phoneNumber2, phoneNumber3));
-            if (putOwner != null)
-                return Ok(putOwner);
-            else
-                return BadRequest("Owner was not modified !");
+            bool checkIsConnected = IsConnected();
+            if (checkIsConnected)
+            {
+                var owner = new Owner
+                {
+                    FirstName = dTOOwnerModification.FirstName,
+                    LastName = dTOOwnerModification.LastName,
+                    Email = dTOOwnerModification.Email,
+                    Address = dTOOwnerModification.Address,
+                    PhoneNumber1 = dTOOwnerModification.PhoneNumber1,
+                    PhoneNumber2 = dTOOwnerModification.PhoneNumber1,
+                    PhoneNumber3 = dTOOwnerModification.PhoneNumber1
+                };
+                var putOwner = Ok(await ownerRepository.UpdateOwnerAsync(idOwner, owner));
+                if (putOwner != null)
+                    return Ok(putOwner);
+                else
+                    return BadRequest("Owner was not modified !");
+            }
+            return BadRequest("Not logged");
         }
 
         [HttpPut("{idOwner}")]
-        public async Task<ActionResult<Owner>> PutOwnerPassword(int idOwner,string password)
+        public async Task<ActionResult<Owner>> PutOwnerPassword(int idOwner, string password)
         {
-            var putOwnerPassword = Ok(await ownerRepository.UpdateOwnerPasswordAsync(idOwner, password));
-            if (putOwnerPassword != null)
-                return Ok(putOwnerPassword);
-            else
-                return BadRequest("Owner was not modified !");
+            bool checkIsConnected = IsConnected();
+            if (checkIsConnected)
+            {
+                var putOwnerPassword = await ownerRepository.UpdateOwnerPasswordAsync(idOwner, password);
+                if (putOwnerPassword.Item2 == true)
+                    return Ok(putOwnerPassword);
+                else
+                    return BadRequest("Owner was not modified !");
+            }
+            return BadRequest("Not logged");
         }
 
         /// <summary>
@@ -117,13 +118,18 @@ namespace CaveManager.Controllers
         [HttpDelete("{idOwner}")]
         public async Task<ActionResult<Owner>> DeleteOwner(int idOwner)
         {
-            // Delete Wine, Drawner and Cave associated with idOwner
-            var caveDelete = await ownerRepository.DeleteCaveAsync(idOwner);
-            var ownerDelete = await ownerRepository.DeleteOwnerAsync(idOwner);
-            if (caveDelete != null && ownerDelete != null)
-                return Ok("Owner deleted");
-            else
-                return BadRequest("Cave(s) and Owner was not deleted !");
+            bool checkIsConnected = IsConnected();
+            if (checkIsConnected)
+            {
+                // Delete Wine, Drawner and Cave associated with idOwner
+                var caveDelete = await ownerRepository.DeleteCaveAsync(idOwner);
+                var ownerDelete = await ownerRepository.DeleteOwnerAsync(idOwner);
+                if (caveDelete != null && ownerDelete != null)
+                    return Ok("Owner deleted");
+                else
+                    return BadRequest("Cave(s) and Owner was not deleted !");
+            }
+            return BadRequest("Not logged");
         }
 
         /// <summary>
@@ -158,8 +164,13 @@ namespace CaveManager.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync();
-            return Ok("Logout");
+            bool checkIsConnected = IsConnected();
+            if (checkIsConnected)
+            {
+                await HttpContext.SignOutAsync();
+                return Ok("Logout");
+            }
+            return BadRequest("Not logged");
         }
 
         /// <summary>
@@ -170,11 +181,16 @@ namespace CaveManager.Controllers
         [HttpDelete("{idOwner}")]
         public async Task<ActionResult<List<Cave>>> DeleteCaves(int idOwner)
         {
-            var caveDelete = await ownerRepository.DeleteCaveAsync(idOwner);
-            if (caveDelete != null)
-                return Ok(caveDelete);
-            else
-                return BadRequest("Cave(s) was not deleted !");
+            bool checkIsConnected = IsConnected();
+            if (checkIsConnected)
+            {
+                var caveDelete = await ownerRepository.DeleteCaveAsync(idOwner);
+                if (caveDelete != null)
+                    return Ok(caveDelete);
+                else
+                    return BadRequest("Cave(s) was not deleted !");
+            }
+            return BadRequest("Not logged");
         }
 
         /// <summary>
@@ -200,11 +216,16 @@ namespace CaveManager.Controllers
         [HttpGet("{idOwner}")]
         public async Task<ActionResult<List<Wine>>> AllDataForOwner(int idOwner)
         {
-            var jsonCreate = await ownerRepository.AllDataForOwnerAsync(idOwner);
-            if (jsonCreate != null)
-                return Ok(jsonCreate);
-            else
-                return BadRequest("Json file was not created, this owner do not exist");
+            bool checkIsConnected = IsConnected();
+            if (checkIsConnected)
+            {
+                var jsonCreate = await ownerRepository.AllDataForOwnerAsync(idOwner);
+                if (jsonCreate != null)
+                    return Ok(jsonCreate);
+                else
+                    return BadRequest("Json file was not created, this owner do not exist");
+            }
+            return BadRequest("Not logged");
         }
 
         /// <summary>
@@ -215,11 +236,16 @@ namespace CaveManager.Controllers
         [HttpGet("{idOwner}")]
         public async Task<ActionResult<List<Wine>>> GetAllPeakWineFromOwner(int idOwner)
         {
-            var wines = await ownerRepository.GetAllPeakWineFromOwnerAsync(idOwner);
-            if (wines != null)
-                return Ok(wines);
-            else
-                return BadRequest("The caves's list don't exist");
+            bool checkIsConnected = IsConnected();
+            if (checkIsConnected)
+            {
+                var wines = await ownerRepository.GetAllPeakWineFromOwnerAsync(idOwner);
+                if (wines != null)
+                    return Ok(wines);
+                else
+                    return BadRequest("The caves's list don't exist");
+            }
+            return BadRequest("Not logged");
         }
 
         /// <summary>
@@ -230,20 +256,16 @@ namespace CaveManager.Controllers
         [HttpGet("{idOwner}")]
         public async Task<ActionResult<List<Wine>>> GetAllWineFromOwner(int idOwner)
         {
-            var wines = await ownerRepository.GetAllWineFromOwnerAsync(idOwner);
-            if (wines != null)
-                return Ok(wines);
-            else
-                return BadRequest("The cave's list don't exist");
-
+            bool checkIsConnected = IsConnected();
+            if (checkIsConnected)
+            {
+                var wines = await ownerRepository.GetAllWineFromOwnerAsync(idOwner);
+                if (wines != null)
+                    return Ok(wines);
+                else
+                    return BadRequest("The cave's list don't exist");
+            }
+            return BadRequest("Not logged");
         }
     }
-} 
-
-
-//bool checkIsConnected = IsConnected();
-//if (checkIsConnected)
-//{
-
-//}
-//retrun BadRequest("Not logged");
+}
