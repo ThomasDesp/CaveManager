@@ -108,9 +108,10 @@ namespace CaveManager.Repository
                 var name = duplicateWine.Name;
                 var type = duplicateWine.Type;
                 var designation = duplicateWine.Designation;
+                var bottling = duplicateWine.Bottling;
                 var minVintageRecommended = duplicateWine.MinVintageRecommended;
                 var maxVintageRecommended = duplicateWine.MaxVintageRecommended;
-                Wine wine = new Wine { Name = name, Type = type, Designation = designation, MinVintageRecommended = minVintageRecommended, MaxVintageRecommended = maxVintageRecommended };
+                Wine wine = new Wine { Name = name, Type = type, Designation = designation,Bottling= bottling , MinVintageRecommended = minVintageRecommended, MaxVintageRecommended = maxVintageRecommended };
 
                 var res =await AddWineAsync(wine, idDrawer);
                 await context.SaveChangesAsync();
