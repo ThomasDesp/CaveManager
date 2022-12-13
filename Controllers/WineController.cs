@@ -35,12 +35,14 @@ namespace CaveManager.Controllers
         }
 
         /// <summary>
-        /// Add a Wine to Drawer
+        /// Add a wine to a drawer
         /// </summary>
-        /// <param name="wine"></param>
         /// <param name="idDrawer"></param>
+        /// <param name="dTOwine"></param>
         /// <returns></returns>
         [HttpPost("{idDrawer}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<Wine>> AddWine(int idDrawer, [FromForm] DTOWine dTOwine)
         {
             bool checkIsConnected = IsConnected();
@@ -65,13 +67,14 @@ namespace CaveManager.Controllers
             return BadRequest("Not logged");
         }
 
-
         /// <summary>
         /// Get a wine by his id
         /// </summary>
         /// <param name="idWine"></param>
         /// <returns></returns>
         [HttpGet("{idWine}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<Wine>> GetWine(int idWine)
         {
             bool checkIsConnected = IsConnected();
@@ -90,6 +93,8 @@ namespace CaveManager.Controllers
         /// <param name="idWine></param>
         /// <returns></returns>
         [HttpDelete("{idWine}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<Wine>> DeleteWine(int idWine)
         {
             bool checkIsConnected = IsConnected();
@@ -113,6 +118,8 @@ namespace CaveManager.Controllers
         /// <param name="maxVintageRecommended"></param>
         /// <returns></returns>
         [HttpPut("{idWine}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<Wine>> PutWine(int idWine, DTOWine dTOWine)
         {
             bool checkIsConnected = IsConnected();
@@ -136,6 +143,8 @@ namespace CaveManager.Controllers
         /// <param name="idDrawer"></param>
         /// <returns></returns>
         [HttpPost("{idDrawer}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<Wine>> DuplicateWine(int idWine, int idDrawer)
         {
             bool checkIsConnected = IsConnected();

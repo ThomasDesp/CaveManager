@@ -38,6 +38,8 @@ namespace CaveManager.Controllers
         /// <param name="idCave"></param>
         /// <returns></returns>
         [HttpGet("{idCave}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<Cave>> GetCave(int idCave)
         {
             bool checkIsConnected = IsConnected();
@@ -58,6 +60,8 @@ namespace CaveManager.Controllers
         /// <param name="idOwner"></param>
         /// <returns></returns>
         [HttpGet("{idOwner}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<List<Cave>>> GetAllCaveFromOwner(int idOwner)
         {
             bool checkIsConnected = IsConnected();
@@ -78,6 +82,8 @@ namespace CaveManager.Controllers
         /// <param name="idCave"></param>
         /// <returns></returns>
         [HttpGet("{idCave}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<List<Drawer>>> GetAllDrawer(int idCave)
         {
             bool checkIsConnected = IsConnected();
@@ -96,10 +102,12 @@ namespace CaveManager.Controllers
         /// <summary>
         /// Add a cave
         /// </summary>
-        /// <param name="cave"></param>
+        /// <param name="dtoCave"></param>
         /// <param name="idOwner"></param>
         /// <returns></returns>
         [HttpPost("{idOwner}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<Cave>> AddCave(DTOCave dtoCave, int idOwner)
         {
             bool checkIsConnected = IsConnected();
@@ -123,6 +131,8 @@ namespace CaveManager.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<Cave>> UpdateCave(int id, string name)
         {
             bool checkIsConnected = IsConnected();
@@ -144,6 +154,8 @@ namespace CaveManager.Controllers
         /// <param name="idCave></param>
         /// <returns></returns>
         [HttpDelete("{idCave}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<Cave>> RemoveCave(int idCave)
         {
             bool checkIsConnected = IsConnected();

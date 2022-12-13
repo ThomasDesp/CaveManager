@@ -38,6 +38,8 @@ namespace CaveManager.Controllers
         /// <param name="idDrawer"></param>
         /// <returns></returns>
         [HttpGet("{idDrawer}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<Drawer>> GetDrawer(int idDrawer)
         {
             bool checkIsConnected = IsConnected();
@@ -55,6 +57,8 @@ namespace CaveManager.Controllers
         /// <param name="idDrawer"></param>
         /// <returns></returns>
         [HttpGet("{idDrawer}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<List<Wine>>> GetAllWinesFromADrawer(int idDrawer)
         {
             bool checkIsConnected = IsConnected();
@@ -76,6 +80,8 @@ namespace CaveManager.Controllers
         /// <param name="dTODrawer"></param>
         /// <returns></returns>
         [HttpGet("{idDrawer}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<DTODrawer>> AddDrawer(DTODrawer dTODrawer)
         {
             bool checkIsConnected = IsConnected();
@@ -99,6 +105,8 @@ namespace CaveManager.Controllers
         /// <param name="dTODrawer"></param>
         /// <returns></returns>
         [HttpPut("{idDrawer}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<Drawer>> UpdateDrawer(int idDrawer, DTODrawer dTODrawer)
         {
             bool checkIsConnected = IsConnected();
@@ -121,6 +129,8 @@ namespace CaveManager.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpDelete("{idCave}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<Drawer>> DeleteDrawer(int drawerId)
         {
             bool checkIsConnected = IsConnected();
@@ -135,6 +145,5 @@ namespace CaveManager.Controllers
             }
             return BadRequest("Not logged");
         }
-
     }
 }
