@@ -122,13 +122,18 @@ namespace CaveManager.Controllers
         [HttpDelete("{idOwner}")]
         public async Task<ActionResult<Owner>> DeleteOwner(int idOwner)
         {
-            // Delete Wine, Drawner and Cave associated with idOwner
-           
-            var ownerDelete = await ownerRepository.DeleteOwnerAsync(idOwner);
-            if ( ownerDelete != null)
-                return Ok(ownerDelete);
-            else
-                return BadRequest("Cave(s) and Owner was not deleted !");
+            bool checkIsConnected = IsConnected();
+            if (checkIsConnected)
+            {
+                // Delete Wine, Drawner and Cave associated with idOwner
+
+                var ownerDelete = await ownerRepository.DeleteOwnerAsync(idOwner);
+                if (ownerDelete != null)
+                    return Ok(ownerDelete);
+                else
+                    return BadRequest("Cave(s) and Owner was not deleted !");
+            }
+            return BadRequest("Not logged");
         }
 
         /// <summary>
@@ -172,7 +177,7 @@ namespace CaveManager.Controllers
             return BadRequest("Not logged");
         }
 
-       
+
 
         /// <summary>
         /// Delete Caves associated with an idOwner when deleting his account
@@ -182,11 +187,16 @@ namespace CaveManager.Controllers
         [HttpDelete("{idOwner}")]
         public async Task<ActionResult<List<Cave>>> DeleteCaves(int idOwner)
         {
-            var caveDelete = await ownerRepository.RemoveAllCavesAsync(idOwner);
-            if (caveDelete != null)
-                return Ok(caveDelete);
-            else
-                return BadRequest("Cave(s) was not deleted !");
+            bool checkIsConnected = IsConnected();
+            if (checkIsConnected)
+            {
+                var caveDelete = await ownerRepository.RemoveAllCavesAsync(idOwner);
+                if (caveDelete != null)
+                    return Ok(caveDelete);
+                else
+                    return BadRequest("Cave(s) was not deleted !");
+            }
+            return BadRequest("Not logged");
         }
         /// <summary>
         /// Check age with user's birthday
@@ -223,15 +233,26 @@ namespace CaveManager.Controllers
             return BadRequest("Not logged");
         }
 
+        /// <summary>
+        /// Import data from a json file
+        /// </summary>
+        /// <param name="createStream"></param>
+        /// <param name="idOwner"></param>
+        /// <returns></returns>
         [HttpPost("{idOwner}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<List<Wine>>> ImportDataForOwner(IFormFile createStream, int idOwner/*[FromForm] string Jfile*/)
+        public async Task<ActionResult<List<Wine>>> ImportDataForOwner(IFormFile createStream, int idOwner)
         {
-            List<Wine> wines = await ownerRepository.ImportDataForOwnerAsync(createStream.OpenReadStream(), idOwner);
-            return Ok(wines);
-
-            //return BadRequest("Cette owner n'est pas trouvable");
+            bool checkIsConnected = IsConnected();
+            if (checkIsConnected)
+            {
+                List<Wine> wines = await ownerRepository.ImportDataForOwnerAsync(createStream.OpenReadStream(), idOwner);
+                if (wines != null)
+                    return Ok(wines);
+                return BadRequest("Owner not found");
+            }
+            return BadRequest("Not logged");
         }
 
         /// <summary>
