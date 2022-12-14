@@ -37,27 +37,33 @@ namespace CaveManager.Repository
         /// <returns></returns>
         public async Task<Owner> AddOwnerAsync(Owner owner)
         {
-            var password = owner.Password;
-            var passwordValidated = Password.IsPasswordValidated(password);
-            if (passwordValidated)
+            if (owner.Password!= null)
             {
-                var firstName = owner.FirstName;
-                var lastName = owner.LastName;
-                var email = owner.Email;
-                var address = owner.Address;
-                var phoneNumber1 = owner.PhoneNumber1;
-                var phoneNumber2 = owner.PhoneNumber2;
-                var phoneNumber3 = owner.PhoneNumber3;
-                var passwordHashed = Password.HashPassword(password);
-                Owner ownerAdded = new Owner { FirstName = firstName, LastName = lastName, Password = passwordHashed, Email = email, Address = address, PhoneNumber1 = phoneNumber1, PhoneNumber2 = phoneNumber2, PhoneNumber3 = phoneNumber3 };
-                var addOwner = context.Owner.Add(ownerAdded);
-                await context.SaveChangesAsync();
-                return ownerAdded;
+                var password = owner.Password;
+                var passwordValidated = Password.IsPasswordValidated(password);
+                if (passwordValidated)
+                {
+                    var firstName = owner.FirstName;
+                    var lastName = owner.LastName;
+                    var email = owner.Email;
+                    var address = owner.Address;
+                    var phoneNumber1 = owner.PhoneNumber1;
+                    var phoneNumber2 = owner.PhoneNumber2;
+                    var phoneNumber3 = owner.PhoneNumber3;
+                    var passwordHashed = Password.HashPassword(password);
+                    Owner ownerAdded = new Owner { FirstName = firstName, LastName = lastName, Password = passwordHashed, Email = email, Address = address, PhoneNumber1 = phoneNumber1, PhoneNumber2 = phoneNumber2, PhoneNumber3 = phoneNumber3 };
+                    var addOwner = context.Owner.Add(ownerAdded);
+                    await context.SaveChangesAsync();
+                    return ownerAdded;
+                }
+                else
+                {
+                    return owner;
+                }
             }
-            else
-            {
-                return owner;
-            }
+            return owner;
+            
+            
         }
 
         /// <summary>
@@ -252,12 +258,6 @@ namespace CaveManager.Repository
 
         }
 
-        //public async Task<List<Cave>> AllDataForOwner(int idOwner)
-        //{
-        //    var getAll = await context.Cave.Where(c => c.OwnerId == idOwner).ToListAsync();
-        //    return getAll;
-        //}
-
         /// <summary>
         /// List for all caves with theirs drawers and wines
         /// </summary>
@@ -268,6 +268,10 @@ namespace CaveManager.Repository
             //var wines = await context.Wine.Include(w => w.Drawer).ThenInclude(d => d.Cave).Where(w => w.Drawer.IdCave == idCave && w.Bottling+w.MinVintageRecommended <= date && w.Bottling + w.MaxVintageRecommended >= date ).ToListAsync();
             var wines = await context.Wine.Include(w => w.Drawer).ThenInclude(d => d.Cave).ThenInclude(o => o.Owner)
                 .Where(w => w.Drawer.Cave.OwnerId == idOwner).ToListAsync();
+            foreach (var item in wines)
+            {
+                item.Drawer.Cave.Owner.Password = null;
+            }
             return wines;
         }
 

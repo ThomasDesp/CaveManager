@@ -173,7 +173,7 @@ namespace CaveManager.Controllers
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<Owner>> PostAddOwner(Owner owner)
+        public async Task<ActionResult<Owner>> PostAddOwner([FromForm] Owner owner)
         {
             var ownerCreated = await ownerRepository.AddOwnerAsync(owner);
 
