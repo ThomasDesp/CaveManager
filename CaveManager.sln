@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaveManager", "CaveManager.csproj", "{F10D1DF7-6099-4A0B-BDA8-E22E7C718B2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaveManagerTests2", "..\CaveManagerTests2\CaveManagerTests2.csproj", "{6BBF1887-1A8C-4F53-832B-CF3D35B392A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaveManagerTests2", "CaveManagerTests2\CaveManagerTests2.csproj", "{6BBF1887-1A8C-4F53-832B-CF3D35B392A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
