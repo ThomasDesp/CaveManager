@@ -10,7 +10,6 @@ namespace CaveManager.Repository.Repository.Contract
         Task<Owner> UpdateOwnerAsync(int idOwner, Owner owner);
         Task<(string, bool)> UpdateOwnerPasswordAsync(int idOwner, string password);
         Task<Owner> RetrieveOwnerByPasswordAndLoginAsync(string email, string password);
-       
         Task<bool> CheckAgeAsync(DateTime birthDate);
         Task<List<Wine>> GetAllWineFromOwnerAsync(int idOwner);
         Task<List<Wine>> GetAllPeakWineFromOwnerAsync(int idOwner);

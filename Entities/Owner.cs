@@ -26,7 +26,7 @@ namespace CaveManager.Entities
 
         public Owner()
         {
-
+            IsCGUAccepted = false;
         }
 
     }

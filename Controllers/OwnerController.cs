@@ -9,6 +9,7 @@ using CaveManager.Repository;
 using CaveManager.Entities.DTO;
 using System.Text.Json;
 using System;
+using CaveManager.Migrations;
 
 namespace CaveManager.Controllers
 {
@@ -173,8 +174,21 @@ namespace CaveManager.Controllers
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<Owner>> PostAddOwner([FromForm] Owner owner)
+        public async Task<ActionResult<Owner>> PostAddOwner([FromForm] DTOOwner dTOOwner)
         {
+            var owner = new Owner
+            {
+                IsCGUAccepted = false,
+                FirstName = dTOOwner.FirstName,
+                LastName = dTOOwner.LastName,
+                FullName = dTOOwner.FullName,
+                Email = dTOOwner.Email,
+                Password = dTOOwner.Password,
+                Address = dTOOwner.Address,
+                PhoneNumber1 = dTOOwner.PhoneNumber1,
+                PhoneNumber2 = dTOOwner.PhoneNumber2,
+                PhoneNumber3 = dTOOwner.PhoneNumber3
+            };
             var ownerCreated = await ownerRepository.AddOwnerAsync(owner);
 
             if (ownerCreated != null)
@@ -184,7 +198,7 @@ namespace CaveManager.Controllers
         }
 
         /// <summary>
-        /// Check age with user's birthday
+        /// Check age with owner's birthday
         /// </summary>
         /// <param name="birthDate"></param>
         /// <returns></returns>

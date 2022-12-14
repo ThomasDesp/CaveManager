@@ -81,16 +81,22 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="idWine"></param>
         /// <returns></returns>
-        public async Task<Wine> DeleteWineAsync(int idWine)
+        public async Task<(Wine wine, string error)> DeleteWineAsync(int idWine)
         {
             var deleteWine = await context.Wine.Where(w => w.Id == idWine).SingleOrDefaultAsync();
             if (deleteWine != null)
             {
-                context.Wine.Remove(deleteWine);
-                await context.SaveChangesAsync();
+                var drawer = await context.Drawer.Where(d => d.Id == deleteWine.DrawerId).SingleOrDefaultAsync();
+                if (drawer.PlaceUsed < drawer.MaxPlace)
+                {
+                    context.Wine.Remove(deleteWine);
+                    await context.SaveChangesAsync();
+                    return (deleteWine, "ok");
+                }
+                return (deleteWine, "No place available");
             }
-
-            return deleteWine;
+           
+            return (deleteWine, "Wine was not found");
         }
 
         /// <summary>
@@ -114,21 +120,46 @@ namespace CaveManager.Repository
                 Wine wine = new Wine { Name = name, Type = type, Designation = designation,Bottling= bottling , MinVintageRecommended = minVintageRecommended, MaxVintageRecommended = maxVintageRecommended };
 
                 var res =await AddWineAsync(wine, idDrawer);
-                await context.SaveChangesAsync();
+                if (res.error == "ok")
+                {
+                    await context.SaveChangesAsync();
+                }
                 return (res.wine, res.error);
             }
             return(duplicateWine,"Wine not found");
             
         }
-
-        public async Task<Owner> RetrieveUserByPasswordAndLogin(string password, string email)
+        
+        /// <summary>
+        /// Move a wine and add it to a specific drawer
+        /// </summary>
+        /// <param name="idWine"></param>
+        /// <param name="idDrawer"></param>
+        /// <returns></returns>
+        public async Task<(Wine wine, string error)> MoveWineAsync(int idWine, int idDrawer)
         {
-            var zo = context.Owner.Where(u => u.Password == password && u.Email == email).FirstOrDefault();
-            return zo;
+            var moveWine = await context.Wine.Where(w => w.Id == idWine).SingleOrDefaultAsync();
+            if (moveWine != null)
+            {
+                var name = moveWine.Name;
+                var type = moveWine.Type;
+                var designation = moveWine.Designation;
+                var bottling = moveWine.Bottling;
+                var minVintageRecommended = moveWine.MinVintageRecommended;
+                var maxVintageRecommended = moveWine.MaxVintageRecommended;
+                Wine wine = new Wine { Name = name, Type = type, Designation = designation, Bottling = bottling, MinVintageRecommended = minVintageRecommended, MaxVintageRecommended = maxVintageRecommended };
+                
+                var res = await AddWineAsync(wine, idDrawer);
+                if (res.error == "ok")
+                {
+                    var deleteWine = await DeleteWineAsync(idWine);
+                    await context.SaveChangesAsync();
+                    return (res.wine, res.error);
+                }
+                return (res.wine, res.error);
+            }
+            return (moveWine, "Wine not found");
+
         }
-
-
-
-
     }
 }

@@ -80,13 +80,7 @@ namespace CaveManager.Repository
         /// Update an owner by his id
         /// </summary>
         /// <param name="idOwner"></param>
-        /// <param name="firstname"></param>
-        /// <param name="lastname"></param>
-        /// <param name="email"></param>
-        /// <param name="address"></param>
-        /// <param name="phoneNumber1"></param>
-        /// <param name="phoneNumber2"></param>
-        /// <param name="phoneNumber3"></param>
+        /// <param name="owner"></param>
         /// <returns></returns>
         public async Task<Owner> UpdateOwnerAsync(int idOwner, Owner owner)
         {

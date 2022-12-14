@@ -10,6 +10,4 @@ public interface ICaveRepository
     Task<Cave> RemoveCaveAsync(int idCave);
     Task<bool> RemoveAllDrawerAsync(int idCave);
     Task<List<Cave>> GetAllCaveFromAOwner(int ownerId);
-
-
 }

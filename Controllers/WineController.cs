@@ -35,6 +35,26 @@ namespace CaveManager.Controllers
         }
 
         /// <summary>
+        /// Get a wine by his id
+        /// </summary>
+        /// <param name="idWine"></param>
+        /// <returns></returns>
+        [HttpGet("{idWine}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<Wine>> GetWine(int idWine)
+        {
+            bool checkIsConnected = IsConnected();
+            if (checkIsConnected)
+            {
+                var wine = await wineRepository.GetWineAsync(idWine);
+                if (wine != null) return Ok(wine);
+                return BadRequest("Wine not found");
+            }
+            return BadRequest("Not logged");
+        }
+
+        /// <summary>
         /// Add a wine to a drawer
         /// </summary>
         /// <param name="idDrawer"></param>
@@ -68,41 +88,47 @@ namespace CaveManager.Controllers
         }
 
         /// <summary>
-        /// Get a wine by his id
+        /// Duplicate a wine and add it to a specific drawer
         /// </summary>
         /// <param name="idWine"></param>
+        /// <param name="idDrawer"></param>
         /// <returns></returns>
-        [HttpGet("{idWine}")]
+        [HttpPost("{idDrawer}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<Wine>> GetWine(int idWine)
+        public async Task<ActionResult<Wine>> DuplicateWine(int idWine, int idDrawer)
         {
             bool checkIsConnected = IsConnected();
             if (checkIsConnected)
             {
-                var wine = await wineRepository.GetWineAsync(idWine);
-                if (wine != null) return Ok(wine);
-                return BadRequest("Wine not found");
+                var wine = await wineRepository.DuplicateWineAsync(idWine, idDrawer);
+                if (wine.error != "ok")
+                    return Ok(wine.wine);
+                else
+                    return BadRequest(wine.error);
             }
             return BadRequest("Not logged");
         }
 
         /// <summary>
-        /// Delete a wine
+        /// Move a wine and add it to a specific drawer
         /// </summary>
-        /// <param name="idWine></param>
+        /// <param name="idWine"></param>
+        /// <param name="idDrawer"></param>
         /// <returns></returns>
-        [HttpDelete("{idWine}")]
+        [HttpPost("{idDrawer}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<Wine>> DeleteWine(int idWine)
+        public async Task<ActionResult<Wine>> MoveWine(int idWine, int idDrawer)
         {
             bool checkIsConnected = IsConnected();
             if (checkIsConnected)
             {
-                var wine = await wineRepository.DeleteWineAsync(idWine);
-                if (wine != null) return Ok(wine);
-                return BadRequest("Wine not found, try with a correct id");
+                var wine = await wineRepository.MoveWineAsync(idWine, idDrawer);
+                if (wine.error != "ok")
+                    return Ok(wine.wine);
+                else
+                    return BadRequest(wine.error);
             }
             return BadRequest("Not logged");
         }
@@ -137,24 +163,23 @@ namespace CaveManager.Controllers
         }
 
         /// <summary>
-        /// Duplicate a wine and add it to a specific drawer
+        /// Delete a wine
         /// </summary>
-        /// <param name="idWine"></param>
-        /// <param name="idDrawer"></param>
+        /// <param name="idWine></param>
         /// <returns></returns>
-        [HttpPost("{idDrawer}")]
+        [HttpDelete("{idWine}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<Wine>> DuplicateWine(int idWine, int idDrawer)
+        public async Task<ActionResult<Wine>> DeleteWine(int idWine)
         {
             bool checkIsConnected = IsConnected();
             if (checkIsConnected)
             {
-                var wine = await wineRepository.DuplicateWineAsync(idWine, idDrawer);
-                if (wine.error != "ok")
-                    return Ok(wine.wine);
+                var wineDeleted = await wineRepository.DeleteWineAsync(idWine);
+                if (wineDeleted.error == "ok")
+                    return Ok(wineDeleted.wine);
                 else
-                    return BadRequest(wine.error);
+                    return BadRequest(wineDeleted.error);
             }
             return BadRequest("Not logged");
         }
