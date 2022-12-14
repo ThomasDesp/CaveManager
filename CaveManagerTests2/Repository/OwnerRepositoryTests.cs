@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CaveManager.Entities;
 using CaveManager.Entities.DTO;
+using CaveManager.Repository;
+using CaveManager.Repository.Repository.Contract;
 
 namespace CaveManager.Repository.Tests
 {
@@ -29,7 +31,7 @@ namespace CaveManager.Repository.Tests
         }
 
         [TestMethod()]
-        public async Task CheckAgeAsyncTestFail()
+        public async Task CheckAgeAsyncTestFailTooYoung()
         {
             var date = new DateTime(2018, 10, 05);
 
@@ -42,7 +44,7 @@ namespace CaveManager.Repository.Tests
         }
 
         [TestMethod()]
-        public async Task CheckAgeAsyncTestFail2()
+        public async Task CheckAgeAsyncTestFailDateFromTheFuture()
         {
             var date = new DateTime(2100, 10, 05);
 
@@ -56,7 +58,7 @@ namespace CaveManager.Repository.Tests
 
 
         [TestMethod()]
-        public async Task GetAllUsersAsyncTest()
+        public async Task GetAllUsersAsyncTestSuccess()
         {
             // Bdd create
             var builder = new DbContextOptionsBuilder<CaveManagerContext>().UseInMemoryDatabase("CaveManagerTest");
