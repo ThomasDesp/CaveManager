@@ -27,9 +27,9 @@ namespace CaveManager.Controllers
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
             if (idCurrentUser == null)
-                return true;
-            else
                 return false;
+            else
+                return true;
         }
 
         /// <summary>
@@ -45,8 +45,10 @@ namespace CaveManager.Controllers
             bool checkIsConnected = IsConnected();
             if (checkIsConnected)
             {
-                var drawers = await drawerRepository.SelectDrawerAsync(idDrawer);
-                return Ok(drawers);
+                var drawer = await drawerRepository.SelectDrawerAsync(idDrawer);
+                if (drawer != null)
+                    return Ok(drawer);
+                return BadRequest("This drawer was not found");
             }
             return BadRequest("Not logged");
         }
@@ -65,9 +67,12 @@ namespace CaveManager.Controllers
             if (checkIsConnected)
             {
                 var wines = await drawerRepository.GetAllWinesFromADrawerAsync(idDrawer);
+
                 if (wines != null)
                 {
-                    return Ok(wines);
+                    if (wines.Count > 0)
+                        return Ok(wines);
+                    return BadRequest("This drawer don't have any wine(s).");
                 }
                 return BadRequest("Drawers not found");
             }
@@ -77,18 +82,19 @@ namespace CaveManager.Controllers
         /// <summary>
         /// Add a drawer
         /// </summary>
+        /// <param name="idCave"></param>
         /// <param name="dTODrawer"></param>
         /// <returns></returns>
-        [HttpGet("{idDrawer}")]
+        [HttpGet("{idCave}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<DTODrawer>> AddDrawer(DTODrawer dTODrawer)
+        public async Task<ActionResult<DTODrawer>> AddDrawer(int idCave,[FromForm]DTODrawer dTODrawer)
         {
             bool checkIsConnected = IsConnected();
             if (checkIsConnected)
             {
-                var nouveauDrawer = new Drawer { Name = dTODrawer.Name, MaxPlace = dTODrawer.MaxPlace, PlaceUsed = dTODrawer.PlaceUsed };
-                var drawer = await drawerRepository.AddDrawerAsync(nouveauDrawer);
+                var newDrawer = new Drawer { Name = dTODrawer.Name, MaxPlace = dTODrawer.MaxPlace, PlaceUsed = 0 };
+                var drawer = await drawerRepository.AddDrawerAsync(newDrawer, idCave);
                 if (drawer != null)
                 {
                     return Ok(dTODrawer);
@@ -107,18 +113,18 @@ namespace CaveManager.Controllers
         [HttpPut("{idDrawer}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<Drawer>> UpdateDrawer(int idDrawer, DTODrawer dTODrawer)
+        public async Task<ActionResult<(Drawer drawer, string error)>> UpdateDrawer(int idDrawer, [FromForm] DTODrawer dTODrawer)
         {
             bool checkIsConnected = IsConnected();
             if (checkIsConnected)
             {
-                var nouveauDrawer = new Drawer { Name = dTODrawer.Name, MaxPlace = dTODrawer.MaxPlace, PlaceUsed = dTODrawer.PlaceUsed };
-                var drawer = await drawerRepository.UpdateDrawerAsync(idDrawer, nouveauDrawer);
-                if (drawer != null)
+                var newDrawer = new Drawer { Name = dTODrawer.Name, MaxPlace = dTODrawer.MaxPlace};
+                var drawer = await drawerRepository.UpdateDrawerAsync(idDrawer, newDrawer);
+                if (drawer.error == "ok")
                 {
-                    return Ok(drawer);
+                    return Ok(drawer.drawer);
                 }
-                return BadRequest("Drawer not found");
+                return BadRequest(drawer.error);
             }
             return BadRequest("Not logged");
         }
@@ -126,9 +132,9 @@ namespace CaveManager.Controllers
         /// <summary>
         /// Delete a Drawer with his id
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="drawerId"></param>
         /// <returns></returns>
-        [HttpDelete("{idCave}")]
+        [HttpDelete("{drawerId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public async Task<ActionResult<Drawer>> DeleteDrawer(int drawerId)

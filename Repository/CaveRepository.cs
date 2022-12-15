@@ -66,10 +66,11 @@ namespace CaveManager.Repository
         public async Task<Cave> UpdateCaveAsync(int Id, string Name)
         {
             Cave caveUpdate = await context.Cave.FirstOrDefaultAsync(u => u.Id == Id);
-            caveUpdate.Name = Name;
-            //caveUpdate.
-
-            await context.SaveChangesAsync();
+            if (caveUpdate != null) 
+            {
+                caveUpdate.Name = Name;
+                await context.SaveChangesAsync();
+            }
             return caveUpdate;
         }
 

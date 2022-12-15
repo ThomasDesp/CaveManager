@@ -22,12 +22,17 @@ namespace CaveManager.Repository
         /// Add an cave
         /// </summary>
         /// <param name="drawer"></param>
+        /// <param name="idCave"></param>
         /// <returns></returns>
-        public async Task<Drawer> AddDrawerAsync(Drawer drawer)
+        public async Task<Drawer> AddDrawerAsync(Drawer drawer, int idCave)
         {
-
-            var addDrawer = context.Drawer.Add(drawer);
-            await context.SaveChangesAsync();
+            var cave = await context.Cave.FindAsync(idCave);
+            if (cave != null)
+            {
+                var addDrawer = await context.Drawer.AddAsync(drawer);
+                await context.SaveChangesAsync();
+                return drawer;
+            }
             return drawer;
         }
 
@@ -38,8 +43,9 @@ namespace CaveManager.Repository
         /// <returns></returns>
         public async Task<Drawer> SelectDrawerAsync(int idDrawer)
         {
-            return await context.Drawer.FindAsync(idDrawer);
+            return await context.Drawer.Where(d => d.Id == idDrawer).SingleOrDefaultAsync();
         }
+
         /// <summary>
         /// Get wines by his drawer's id 
         /// </summary>
@@ -47,27 +53,31 @@ namespace CaveManager.Repository
         /// <returns></returns>
         public async Task<List<Wine>> GetAllWinesFromADrawerAsync(int idDrawer)
         {
-            return await context.Wine.Where(w => w.Id == idDrawer).ToListAsync();
+            return await context.Wine.Where(w => w.DrawerId == idDrawer).ToListAsync();
         }
 
         /// <summary>
         /// Update an Drawer by his id
         /// </summary>
-        /// <param name="dTODrawer"></param>
+        /// <param name="idDrawer"></param>
+        /// <param name="drawer"></param>
         /// <returns></returns>
-        public async Task<Drawer> UpdateDrawerAsync(int idDrawer, Drawer drawer)
+        public async Task<(Drawer drawer, string error)> UpdateDrawerAsync(int idDrawer, Drawer drawer)
         {
             Drawer drawerUpdate = await context.Drawer.FindAsync(idDrawer);
             if (drawerUpdate != null)
             {
-                drawerUpdate.Name = drawer.Name;
-                drawerUpdate.MaxPlace = drawer.MaxPlace;
-                drawerUpdate.PlaceUsed = drawer.PlaceUsed;
-                await context.SaveChangesAsync();
-                return drawerUpdate;
+                if (drawerUpdate.PlaceUsed < drawer.MaxPlace)
+                {
+                    drawerUpdate.Name = drawer.Name;
+                    drawerUpdate.MaxPlace = drawer.MaxPlace;
+                    drawerUpdate.PlaceUsed = drawer.PlaceUsed;
+                    await context.SaveChangesAsync();
+                    return (drawerUpdate,"ok");
+                }
+                return (drawerUpdate, "This drawer have more wine than this new max capacity");
             }
-           
-            return drawerUpdate;
+            return (drawerUpdate, "Drawer not found");
         }
 
         /// <summary>

@@ -29,9 +29,9 @@ namespace CaveManager.Controllers
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
             if (idCurrentUser == null)
-                return true;
-            else
                 return false;
+            else
+                return true;
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace CaveManager.Controllers
             if (checkIsConnected)
             {
                 var wine = await wineRepository.DuplicateWineAsync(idWine, idDrawer);
-                if (wine.error != "ok")
+                if (wine.error == "ok")
                     return Ok(wine.wine);
                 else
                     return BadRequest(wine.error);
@@ -125,7 +125,7 @@ namespace CaveManager.Controllers
             if (checkIsConnected)
             {
                 var wine = await wineRepository.MoveWineAsync(idWine, idDrawer);
-                if (wine.error != "ok")
+                if (wine.error == "ok")
                     return Ok(wine.wine);
                 else
                     return BadRequest(wine.error);
@@ -135,18 +135,14 @@ namespace CaveManager.Controllers
 
         /// <summary>
         /// Modify a wine
-        /// </summary> 
+        /// </summary>
         /// <param name="idWine"></param>
-        /// <param name="name"></param>
-        /// <param name="type"></param>
-        /// <param name="designation"></param>
-        /// <param name="minVintageRecommended"></param>
-        /// <param name="maxVintageRecommended"></param>
+        /// <param name="dTOWine"></param>
         /// <returns></returns>
         [HttpPut("{idWine}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<Wine>> PutWine(int idWine, DTOWine dTOWine)
+        public async Task<ActionResult<Wine>> PutWine(int idWine, [FromForm]DTOWine dTOWine)
         {
             bool checkIsConnected = IsConnected();
             if (checkIsConnected)

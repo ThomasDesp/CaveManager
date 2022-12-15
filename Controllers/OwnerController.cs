@@ -33,9 +33,9 @@ namespace CaveManager.Controllers
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
             if (idCurrentUser == null)
-                return true;
-            else
                 return false;
+            else
+                return true;
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace CaveManager.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<Owner>> GetOwner(int idOwner)
         {
-            var getOwner = Ok(await ownerRepository.SelectOwnerAsync(idOwner));
+            var getOwner = await ownerRepository.SelectOwnerAsync(idOwner);
             if (getOwner != null)
                 return Ok(getOwner);
             else
@@ -79,7 +79,7 @@ namespace CaveManager.Controllers
 
             ClaimsIdentity identity = new(new List<Claim> { emailClaim, nameClaim, gvClaim, idClaim }, CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
-            return Ok($"{ownerCreated.LastName}logged");
+            return Ok($"{ownerCreated.LastName} logged");
         }
 
         /// <summary>
@@ -137,7 +137,11 @@ namespace CaveManager.Controllers
             {
                 var wines = await ownerRepository.GetAllPeakWineFromOwnerAsync(idOwner);
                 if (wines != null)
-                    return Ok(wines);
+                {
+                    if (wines.Count > 0)
+                        return Ok(wines);
+                    return BadRequest("No wine found");
+                }
                 else
                     return BadRequest("The caves's list don't exist");
             }
@@ -159,7 +163,11 @@ namespace CaveManager.Controllers
             {
                 var wines = await ownerRepository.GetAllWineFromOwnerAsync(idOwner);
                 if (wines != null)
-                    return Ok(wines);
+                {
+                    if (wines.Count > 0)
+                        return Ok(wines);
+                    return BadRequest("No wine found");
+                }
                 else
                     return BadRequest("The cave's list don't exist");
             }
@@ -169,16 +177,19 @@ namespace CaveManager.Controllers
         /// <summary>
         /// Add Owner to Database
         /// </summary>
-        /// <param name="owner"></param>
+        /// <param name="dTOOwner"></param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public async Task<ActionResult<Owner>> PostAddOwner([FromForm] DTOOwner dTOOwner)
         {
+            if (dTOOwner.Password == null) 
+            {
+                return BadRequest("Password is required !");
+            }
             var owner = new Owner
             {
-                IsCGUAccepted = false,
                 FirstName = dTOOwner.FirstName,
                 LastName = dTOOwner.LastName,
                 FullName = dTOOwner.FullName,
@@ -191,10 +202,10 @@ namespace CaveManager.Controllers
             };
             var ownerCreated = await ownerRepository.AddOwnerAsync(owner);
 
-            if (ownerCreated != null)
-                return Ok(ownerCreated);
+            if (ownerCreated.error == "ok")
+                return Ok(ownerCreated.owner);
             else
-                return BadRequest("Account is not created, please check the logs !");
+                return BadRequest($"Account is not created, please check the logs ! {ownerCreated.error}");
         }
 
         /// <summary>
@@ -250,6 +261,10 @@ namespace CaveManager.Controllers
             bool checkIsConnected = IsConnected();
             if (checkIsConnected)
             {
+                if (dTOOwnerModification.FirstName == null || dTOOwnerModification.LastName == null || dTOOwnerModification.Email == null)
+                {
+                    return BadRequest("Firstname, lastname and email are required");
+                }
                 var owner = new Owner
                 {
                     FirstName = dTOOwnerModification.FirstName,
@@ -260,11 +275,11 @@ namespace CaveManager.Controllers
                     PhoneNumber2 = dTOOwnerModification.PhoneNumber1,
                     PhoneNumber3 = dTOOwnerModification.PhoneNumber1
                 };
-                var putOwner = Ok(await ownerRepository.UpdateOwnerAsync(idOwner, owner));
+                var putOwner = await ownerRepository.UpdateOwnerAsync(idOwner, owner);
                 if (putOwner != null)
                     return Ok(putOwner);
                 else
-                    return BadRequest("Owner was not modified !");
+                    return BadRequest("Owner was not found");
             }
             return BadRequest("Not logged");
         }
@@ -278,16 +293,20 @@ namespace CaveManager.Controllers
         [HttpPut("{idOwner}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<Owner>> PutOwnerPassword(int idOwner, string password)
+        public async Task<ActionResult<string>> PutOwnerPassword(int idOwner, string password)
         {
             bool checkIsConnected = IsConnected();
             if (checkIsConnected)
             {
+                if (password == null)
+                {
+                    return BadRequest("Password is required");
+                }
                 var putOwnerPassword = await ownerRepository.UpdateOwnerPasswordAsync(idOwner, password);
                 if (putOwnerPassword.Item2 == true)
-                    return Ok(putOwnerPassword);
+                    return Ok("Password was modified");
                 else
-                    return BadRequest("Owner was not modified !");
+                    return BadRequest($"Password was not modified ! {putOwnerPassword.Item1}");
             }
             return BadRequest("Not logged");
         }
@@ -306,12 +325,11 @@ namespace CaveManager.Controllers
             if (checkIsConnected)
             {
                 // Delete Wine, Drawner and Cave associated with idOwner
-
                 var ownerDelete = await ownerRepository.DeleteOwnerAsync(idOwner);
                 if (ownerDelete != null)
                     return Ok(ownerDelete);
                 else
-                    return BadRequest("Cave(s) and Owner was not deleted !");
+                    return BadRequest("Owner don't found");
             }
             return BadRequest("Not logged");
         }
@@ -331,7 +349,11 @@ namespace CaveManager.Controllers
             {
                 var caveDelete = await ownerRepository.RemoveAllCavesAsync(idOwner);
                 if (caveDelete != null)
-                    return Ok(caveDelete);
+                {
+                    if (caveDelete.Count > 0)
+                        return Ok(caveDelete);
+                    return BadRequest("This owner don't have any cave(s)");
+                }
                 else
                     return BadRequest("Cave(s) was not deleted !");
             }

@@ -5,7 +5,7 @@ namespace CaveManager.Repository.Repository.Contract
 {
     public interface IOwnerRepository
     {
-        Task<Owner> AddOwnerAsync(Owner owner);
+        Task<(Owner owner, string error)> AddOwnerAsync(Owner owner);
         Task<Owner> SelectOwnerAsync(int idOwner);
         Task<Owner> UpdateOwnerAsync(int idOwner, Owner owner);
         Task<(string, bool)> UpdateOwnerPasswordAsync(int idOwner, string password);

@@ -28,11 +28,12 @@ namespace CaveManager.Repository
             var drawer = await context.Drawer.FindAsync(idDrawer);
             if (drawer != null)
             {
+
                 if (drawer.PlaceUsed < drawer.MaxPlace)
                 {
                     wine.DrawerId = idDrawer;
                     var addWine = await context.Wine.AddAsync(wine);
-                    if (addWine != null)
+                    if (addWine != null && wine.MaxVintageRecommended > wine.MinVintageRecommended)
                     {
                         await context.SaveChangesAsync();
                         return (wine,"ok");

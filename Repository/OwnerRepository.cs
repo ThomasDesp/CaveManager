@@ -35,35 +35,27 @@ namespace CaveManager.Repository
         /// </summary>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public async Task<Owner> AddOwnerAsync(Owner owner)
+        public async Task<(Owner owner, string error)> AddOwnerAsync(Owner owner)
         {
-            if (owner.Password!= null)
+
+            var password = owner.Password;
+            var passwordValidated = Password.IsPasswordValidated(password);
+            if (passwordValidated)
             {
-                var password = owner.Password;
-                var passwordValidated = Password.IsPasswordValidated(password);
-                if (passwordValidated)
-                {
-                    var firstName = owner.FirstName;
-                    var lastName = owner.LastName;
-                    var email = owner.Email;
-                    var address = owner.Address;
-                    var phoneNumber1 = owner.PhoneNumber1;
-                    var phoneNumber2 = owner.PhoneNumber2;
-                    var phoneNumber3 = owner.PhoneNumber3;
-                    var passwordHashed = Password.HashPassword(password);
-                    Owner ownerAdded = new Owner { FirstName = firstName, LastName = lastName, Password = passwordHashed, Email = email, Address = address, PhoneNumber1 = phoneNumber1, PhoneNumber2 = phoneNumber2, PhoneNumber3 = phoneNumber3 };
-                    var addOwner = context.Owner.Add(ownerAdded);
-                    await context.SaveChangesAsync();
-                    return ownerAdded;
-                }
-                else
-                {
-                    return owner;
-                }
+                var firstName = owner.FirstName;
+                var lastName = owner.LastName;
+                var email = owner.Email;
+                var address = owner.Address;
+                var phoneNumber1 = owner.PhoneNumber1;
+                var phoneNumber2 = owner.PhoneNumber2;
+                var phoneNumber3 = owner.PhoneNumber3;
+                var passwordHashed = Password.HashPassword(password);
+                Owner ownerAdded = new Owner { FirstName = firstName, LastName = lastName, Password = passwordHashed, Email = email, Address = address, PhoneNumber1 = phoneNumber1, PhoneNumber2 = phoneNumber2, PhoneNumber3 = phoneNumber3 };
+                var addOwner = context.Owner.Add(ownerAdded);
+                await context.SaveChangesAsync();
+                return (ownerAdded, "ok");
             }
-            return owner;
-            
-            
+            return (owner, "The password is incorrect");
         }
 
         /// <summary>
@@ -85,14 +77,16 @@ namespace CaveManager.Repository
         public async Task<Owner> UpdateOwnerAsync(int idOwner, Owner owner)
         {
             Owner ownerUpdate = await context.Owner.FirstOrDefaultAsync(o => o.Id == idOwner);
-            ownerUpdate.FirstName = owner.FirstName;
-            ownerUpdate.Email = owner.Email;
-            ownerUpdate.Address = owner.Address;
-            ownerUpdate.PhoneNumber1 = owner.PhoneNumber1;
-            ownerUpdate.PhoneNumber2 = owner.PhoneNumber2;
-            ownerUpdate.PhoneNumber3 = owner.PhoneNumber3;
-
-            await context.SaveChangesAsync();
+            if (ownerUpdate != null)
+            {
+                ownerUpdate.FirstName = owner.FirstName;
+                ownerUpdate.Email = owner.Email;
+                ownerUpdate.Address = owner.Address;
+                ownerUpdate.PhoneNumber1 = owner.PhoneNumber1;
+                ownerUpdate.PhoneNumber2 = owner.PhoneNumber2;
+                ownerUpdate.PhoneNumber3 = owner.PhoneNumber3;
+                await context.SaveChangesAsync();
+            }
             return ownerUpdate;
         }
 
@@ -141,9 +135,13 @@ namespace CaveManager.Repository
         public async Task<Owner> DeleteOwnerAsync(int idOwner)
         {
             var owner = await context.Owner.Where(c => c.Id == idOwner).SingleOrDefaultAsync();
-            var deleteCave = await RemoveAllCavesAsync(idOwner);
-            context.Owner.Remove(owner);
-            await context.SaveChangesAsync();
+            if (owner != null)
+            {
+                var deleteCave = await RemoveAllCavesAsync(idOwner);
+                context.Owner.Remove(owner);
+                await context.SaveChangesAsync();
+                return owner;
+            }
             return owner;
         }
 
@@ -211,7 +209,6 @@ namespace CaveManager.Repository
                     new JsonSerializerOptions
                     {
                         ReferenceHandler = ReferenceHandler.IgnoreCycles,
-                        //Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Utf),
                         WriteIndented = true
                     });
                 await createStream.DisposeAsync();
@@ -223,33 +220,46 @@ namespace CaveManager.Repository
                 return winesList;
             }
         }
+
+        /// <summary>
+        /// Import data
+        /// </summary>
+        /// <param name="createStream"></param>
+        /// <param name="idOwner"></param>
+        /// <returns></returns>
         public async Task<List<Wine>> ImportDataForOwnerAsync(Stream createStream, int idOwner)
         {
             List<Wine> wines = new List<Wine>();
-            using (createStream/*var fileStreamRead = new FileStream("garageVoiture.xml", FileMode.Open, FileAccess.Read)*/)
+            try
             {
-                StreamReader reader = new StreamReader(createStream);
-                var serializedList = reader.ReadToEnd();
-                var deserializedList = JsonSerializer.Deserialize<List<Wine>>(serializedList);
-
-                foreach (var item in deserializedList)
+                using (createStream)
                 {
-                    item.Drawer.Cave.OwnerId=idOwner;
-                    item.Id = 0;
-                    item.Drawer.Id = 0;
-                    item.DrawerId = 0;
-                    item.Drawer.Cave.Id = 0;
-                    item.Drawer.CaveId = 0;
-                    item.Drawer.Cave.Owner=null;
-                    item.Drawer.Wines.Clear();
-                    item.Drawer.Cave.Drawer.Clear();
-                }
-                context.Wine.AddRange(deserializedList);
-                await context.SaveChangesAsync();
-                return deserializedList;
-            }
-            return wines;
+                    StreamReader reader = new StreamReader(createStream);
+                    var serializedList = reader.ReadToEnd();
+                    var deserializedList = JsonSerializer.Deserialize<List<Wine>>(serializedList);
 
+                    foreach (var item in deserializedList)
+                    {
+                        item.Drawer.Cave.OwnerId = idOwner;
+                        item.Id = 0;
+                        item.Drawer.Id = 0;
+                        item.DrawerId = 0;
+                        item.Drawer.Cave.Id = 0;
+                        item.Drawer.CaveId = 0;
+                        item.Drawer.Cave.Owner = null;
+                        item.Drawer.Wines.Clear();
+                        item.Drawer.Cave.Drawer.Clear();
+                    }
+                    context.Wine.AddRange(deserializedList);
+                    await context.SaveChangesAsync();
+                    return deserializedList;
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e?.InnerException?.ToString());
+                return wines;
+            }
         }
 
         /// <summary>

@@ -27,9 +27,9 @@ namespace CaveManager.Controllers
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
             if (idCurrentUser == null)
-                return true;
-            else
                 return false;
+            else
+                return true;
         }
 
         /// <summary>
@@ -69,7 +69,13 @@ namespace CaveManager.Controllers
             {
                 var caves = await caveRepository.GetAllCaveFromAOwner(idOwner);
                 if (caves != null)
-                    return Ok(caves);
+                {
+                    if (caves.Count > 0)
+                    {
+                        return Ok(caves);
+                    }
+                    return BadRequest("This owner don't have any cave(s).");
+                }
                 else
                     return BadRequest("Owner not found");
             }
@@ -92,7 +98,11 @@ namespace CaveManager.Controllers
                 var drawers = await caveRepository.GetAllDrawerFromACave(idCave);
                 if (drawers != null)
                 {
-                    return Ok(drawers);
+                    if (drawers.Count > 0)
+                    {
+                        return Ok(drawers);
+                    }
+                    return BadRequest("This cave don't have any drawer(s).");
                 }
                 return BadRequest("No Cave found");
             }
@@ -108,7 +118,7 @@ namespace CaveManager.Controllers
         [HttpPost("{idOwner}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<Cave>> AddCave(DTOCave dtoCave, int idOwner)
+        public async Task<ActionResult<Cave>> AddCave([FromForm]DTOCave dtoCave, int idOwner)
         {
             bool checkIsConnected = IsConnected();
             if (checkIsConnected)
