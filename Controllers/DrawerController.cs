@@ -85,7 +85,7 @@ namespace CaveManager.Controllers
         /// <param name="idCave"></param>
         /// <param name="dTODrawer"></param>
         /// <returns></returns>
-        [HttpGet("{idCave}")]
+        [HttpPost("{idCave}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public async Task<ActionResult<DTODrawer>> AddDrawer(int idCave,[FromForm]DTODrawer dTODrawer)
